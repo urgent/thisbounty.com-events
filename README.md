@@ -1,6 +1,10 @@
+### thisbounty.com
+
+![img](https://user-images.githubusercontent.com/1377758/81485701-3343a700-921d-11ea-8efe-65082a16d6d3.png)
+
 ### Problem
 
-Everyone needs a job
+Jobs
 
 ### Solution
 
@@ -25,8 +29,6 @@ For small projects, start with a small budget.
 For disagreements, chat with the community. Someone will help you. Everyone works together.
 
 SOON: Automatic crypto payout on test pass/fail.
-
-Payment in custys accepted
 
 ### Business objectives
 
