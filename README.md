@@ -1,6 +1,6 @@
 ### thisbounty.com
 
-![img](https://user-images.githubusercontent.com/1377758/81485701-3343a700-921d-11ea-8efe-65082a16d6d3.png)
+![img](https://user-images.githubusercontent.com/1377758/81486044-1eb4de00-9220-11ea-9dd0-35d151056d01.png)
 
 ### Problem
 
