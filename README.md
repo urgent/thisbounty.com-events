@@ -104,6 +104,18 @@ Decreases with less programmer use of process
 
 Outage for programmers on process removal
 
+### Gameplay
+
+Hits occur from rules with brain.js
+Oversights, for instance, did not know storybook needs extra config for static files + typescript. Usually from not doing it before
+Programmers screen gets hit if we don't make \$25 a day
+Propsector screen appears, and can go away:
+
+- Clientele
+- Funding
+- Setup
+- Team
+
 ### Closing Thoughts
 
 - I don't want to work.
