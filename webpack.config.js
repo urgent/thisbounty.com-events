@@ -1,3 +1,4 @@
+const DiezWebpackPlugin = require('diez-webpack-plugin')
 module.exports = {
   mode: 'production',
 
@@ -8,12 +9,15 @@ module.exports = {
     // Add '.ts' and '.tsx' as resolvable extensions.
     extensions: ['.ts', '.tsx']
   },
-
+  plugins: [
+    new DiezWebpackPlugin({
+      sdk: '@urgent/thisbounty-styles'
+    })
+  ],
   module: {
     rules: [
       {
         test: /\.ts(x?)$/,
-        exclude: /node_modules/,
         use: [
           {
             loader: 'ts-loader'
@@ -44,6 +48,7 @@ module.exports = {
   // dependencies, which allows browsers to cache those libraries between builds.
   externals: {
     react: 'React',
-    'react-dom': 'ReactDOM'
+    'react-dom': 'ReactDOM',
+    '@urgent/thisbounty-styles': 'urgent/thisbounty-styles'
   }
 }

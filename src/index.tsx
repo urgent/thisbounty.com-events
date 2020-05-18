@@ -1,17 +1,21 @@
 import * as React from "react";
 import * as ReactDOM from "react-dom";
+// need to just publish /build directory
+import { DesignLanguage, Diez } from '@urgent/thisbounty-styles'
 
-
-
-import { Hello } from "./components/Hello";
 import { UserLevel } from "./components/UserLevel";
 
+const diezDs = new Diez(DesignLanguage);
 
-// Listen to changes in the design language
+diezDs.attach((ds) => {
 
-// The ds has been updated!
-ReactDOM.render(
-    <UserLevel degree={4} />,
+    const DSContext = React.createContext(ds);
 
-    document.getElementById("example")
-);
+    ReactDOM.render(
+        <DSContext.Provider value={ds}>
+            <UserLevel degree={4} ds={ds} />,
+        </DSContext.Provider>,
+        document.getElementById("example")
+    );
+
+})

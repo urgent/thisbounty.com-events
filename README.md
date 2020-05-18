@@ -122,3 +122,16 @@ Propsector screen appears, and can go away:
 - I want to see what I want built.
 - If someone else does the hard work, I don't care.
 - I don't want to read either. Please use graphics.
+
+### Developer Hurt Loosing
+
+https://news.ycombinator.com/edit?id=23223604
+Logged hurt events during development:
+
+- Diez extract from Figma for SVG. Heal by exporting SVG from figma.
+
+- Github Package Registry. Need setup to publish design guide.
+
+- Design tokens not extracted by diez, for instance borders
+
+- Diez compile to webpack build. Need to add to webpack externals to build.
