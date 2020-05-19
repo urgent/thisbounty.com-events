@@ -107,6 +107,7 @@ Outage for programmers on process removal
 ### Gameplay
 
 Hits occur from rules with brain.js
+Hits source from github issues
 Oversights, for instance, did not know storybook needs extra config for static files + typescript. Usually from not doing it before
 Programmers screen gets hit if we don't make \$25 a day
 Propsector screen appears, and can go away:
@@ -135,3 +136,5 @@ Logged hurt events during development:
 - Design tokens not extracted by diez, for instance borders
 
 - Diez compile to webpack build. Need to add to webpack externals to build.
+
+- Storybook does not detect compiled diez module from Github package registry
