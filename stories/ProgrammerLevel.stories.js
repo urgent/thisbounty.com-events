@@ -6,4 +6,12 @@ export default {
   component: ProgrammerLevel
 }
 
-export const normal = () => <ProgrammerLevel percent={50} />
+export const full = () => <ProgrammerLevel percent={100} />
+
+export const half = () => <ProgrammerLevel percent={50} />
+
+export const primary = () => <ProgrammerLevel percent={100} color='#343A40' />
+
+primary.story = {
+  name: 'with Primary color'
+}
