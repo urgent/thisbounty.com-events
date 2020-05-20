@@ -1,13 +1,16 @@
-import React, { useState } from "react";
-import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
-import { faHeart } from '@fortawesome/free-solid-svg-icons'
-import { faHeart as faEmptyHeart } from '@fortawesome/free-regular-svg-icons'
+import React, { useState, useEffect } from "react";
+import eventEmitter from "../eventEmitter"
 
 export interface MoneybarProps { max: number; money: number; }
 
 export const Moneybar = (props: MoneybarProps): React.ReactElement => {
     const [money, setMoney] = useState(props.money);
     const [max, setMaxMoney] = useState(props.max);
+
+    useEffect(() => {
+        eventEmitter.on('your-event', () => setMoney(3))
+
+    })
 
     return <>
         <button onClick={() => setMoney(3)} >Set Money</button>
