@@ -40,7 +40,7 @@ End with advancing collective human knowledge.
 
 Lives on your phone.
 
-If it's good, it's published.
+If it's good, it goes live.
 
 Reverse projects with focus on division of labor.
 
@@ -54,7 +54,7 @@ Usually hits happen happens when you haven't done it before
 
 Heals when work processes are proven to be fixed and code is shipped
 
-Grows with completed projects and reference code
+Grows with completed projects, reference code, open source contributions, and wins against competing process systems
 
 At zero loose a life
 
@@ -76,7 +76,7 @@ With enough money, any can build anything, so we need a limit
 
 Heals when funding is made available
 
-Grows with completed projects, customers and earnings
+Grows with completed projects, customers and earnings, and wins against competing process systems
 
 At zero, nothing really happens, just can't buy anything until funded.
 
@@ -124,7 +124,7 @@ Propsector screen appears, and can go away:
 - If someone else does the hard work, I don't care.
 - I don't want to read either. Please use graphics.
 
-### Developer Hurt Loosing
+### Developer Hurt Log
 
 https://news.ycombinator.com/edit?id=23223604
 Logged hurt events during development:
@@ -138,3 +138,7 @@ Logged hurt events during development:
 - Diez compile to webpack build. Need to add to webpack externals to build.
 
 - Storybook does not detect compiled diez module from Github package registry
+
+- Event emitter instead of context or lifting up state to prevent rerenders
+
+- Sass for storybook, needed preset

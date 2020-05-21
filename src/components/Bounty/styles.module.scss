@@ -1,0 +1,52 @@
+.bounty {
+  display: grid;
+  grid-template-columns: [image] 2fr [stats] 3fr;
+  width: 320px;
+  background-color: #212529;
+  border-radius: 10px;
+  color: #fff;
+
+  .image {
+    grid-column: image;
+    width: 128px;
+    height: 192px;
+  }
+
+  .stats {
+    grid-column: stats;
+    display: grid;
+    grid-template-rows: [title] 1fr [life] 1fr [money] 1fr [programmer] 1fr [user] 1fr;
+    height: 184px;
+    margin-left: 8px;
+  }
+
+  .title {
+    grid-row: title;
+    display: grid;
+    grid-template-columns: [header] 2fr [id] 1fr;
+  }
+
+  .title h2 {
+    grid-column: header;
+  }
+
+  .title h3 {
+    grid-column: id;
+  }
+
+  .life {
+    grid-row: life;
+  }
+
+  .money {
+    grid-row: money;
+  }
+
+  .programmer {
+    grid-row: programmer;
+  }
+
+  .user {
+    grid-row: user;
+  }
+}

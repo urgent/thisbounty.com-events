@@ -9,6 +9,7 @@ export default {
 export const bounty = () => (
   <Bounty
     id='1'
+    image='/King of Hearts.svg'
     title='test'
     life={2}
     maxlife={3}

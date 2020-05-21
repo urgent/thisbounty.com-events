@@ -10,7 +10,6 @@ export const Lifebar = (props: LifebarProps): React.ReactElement => {
     const [max, setMax] = useState(props.max);
 
     return <>
-        <button onClick={() => setLife(3)} >Set Life</button>
         {Array(life).fill(<FontAwesomeIcon icon={faHeart} />).concat(
             Array(max - life).fill(<FontAwesomeIcon icon={faEmptyHeart} />)
         )}

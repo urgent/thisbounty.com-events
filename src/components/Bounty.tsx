@@ -9,7 +9,7 @@ import eventEmitter from "../eventEmitter"
 export interface BountyProps {
   id: string,
   title: string,
-  src: string,
+  image: string,
   life: number,
   maxlife: number,
   money: number,
@@ -18,14 +18,13 @@ export interface BountyProps {
   user?: number
 }
 
-export const Bounty = (props: BountyProps): React.ReactElement =>
-  <div><button onClick={() => eventEmitter.emit('your-event')} >Send Event</button>
-    <View
-      image={<img src={props.src} />}
-      title={props.title}
-      id={props.id}
-      life={<Lifebar life={props.life} max={props.maxlife} />}
-      money={<Moneybar money={props.money} max={props.maxmoney} />}
-      programmer={<ProgrammerLevel percent={props.programmer} />}
-      user={<UserLevel degree={props.user} />}
-    /></div>;
+export const Bounty = (props: BountyProps): React.ReactElement => <><button onClick={() => eventEmitter.emit('your-event')} >Send Event</button>
+  <View
+    image={<img src={props.image} />}
+    title={props.title}
+    id={props.id}
+    life={<Lifebar life={props.life} max={props.maxlife} />}
+    money={<Moneybar money={props.money} max={props.maxmoney} />}
+    programmer={<ProgrammerLevel percent={props.programmer} />}
+    user={<UserLevel degree={props.user} />}
+  /></>;

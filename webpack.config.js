@@ -1,4 +1,6 @@
 const DiezWebpackPlugin = require('diez-webpack-plugin')
+const MiniCssExtractPlugin = require('mini-css-extract-plugin')
+
 module.exports = {
   mode: 'production',
 
@@ -7,11 +9,15 @@ module.exports = {
 
   resolve: {
     // Add '.ts' and '.tsx' as resolvable extensions.
-    extensions: ['.ts', '.tsx']
+    extensions: ['.ts', '.tsx', '.scss']
   },
   plugins: [
     new DiezWebpackPlugin({
       sdk: '@urgent/thisbounty-styles'
+    }),
+    new MiniCssExtractPlugin({
+      filename: '[name].[hash].css',
+      chunkFilename: '[id].[hash].css'
     })
   ],
   module: {
@@ -38,6 +44,39 @@ module.exports = {
             options: {}
           }
         ]
+      },
+      {
+        test: /\.module\.s(a|c)ss$/,
+        loader: [
+          MiniCssExtractPlugin.loader,
+          {
+            loader: 'css-loader',
+            options: {
+              modules: true,
+              sourceMap: false
+            }
+          },
+          {
+            loader: 'sass-loader',
+            options: {
+              sourceMap: false
+            }
+          }
+        ]
+      },
+      {
+        test: /\.s(a|c)ss$/,
+        exclude: /\.module.(s(a|c)ss)$/,
+        loader: [
+          MiniCssExtractPlugin.loader,
+          'css-loader',
+          {
+            loader: 'sass-loader',
+            options: {
+              sourceMap: false
+            }
+          }
+        ]
       }
     ]
   },
@@ -49,6 +88,6 @@ module.exports = {
   externals: {
     react: 'React',
     'react-dom': 'ReactDOM',
-    '@urgent/thisbounty-styles': 'urgent/thisbounty-styles'
+    '@urgent/thisbounty-styles': '@urgent/thisbounty-styles'
   }
 }
