@@ -15,38 +15,61 @@
   .stats {
     grid-column: stats;
     display: grid;
-    grid-template-rows: [title] 1fr [life] 1fr [money] 1fr [programmer] 1fr [user] 1fr;
+    grid-template-rows: [title] 1fr [life] 1fr [money] 1fr [programmer] 2fr [user] 1fr [icons] 2fr;
     height: 184px;
-    margin-left: 8px;
+  }
+
+  .bar {
   }
 
   .title {
     grid-row: title;
     display: grid;
     grid-template-columns: [header] 2fr [id] 1fr;
+    margin-left: 8px;
+  }
+
+  .title * {
+    margin: 4px 0 0 0;
   }
 
   .title h2 {
     grid-column: header;
+    font-size: 0.8rem;
   }
 
   .title h3 {
     grid-column: id;
+    font-size: 1.2rem;
+    height: 1.2rem;
+    text-align: center;
+  }
+
+  .gutter {
+    grid-row: gutter;
   }
 
   .life {
     grid-row: life;
+    margin-left: 8px;
   }
 
   .money {
     grid-row: money;
+    margin-left: 4px;
   }
 
   .programmer {
     grid-row: programmer;
+    vertical-align: middle;
   }
 
   .user {
     grid-row: user;
+    text-align: center;
+  }
+
+  .user img {
+    margin: 0 2px;
   }
 }

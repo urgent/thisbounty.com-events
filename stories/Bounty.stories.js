@@ -13,10 +13,10 @@ export const bounty = () => (
     title='test'
     life={2}
     maxlife={3}
-    money={2}
+    money={0}
     maxmoney={3}
-    user={1}
-    programmer={50}
+    user={4}
+    programmer={100}
   />
 )
 

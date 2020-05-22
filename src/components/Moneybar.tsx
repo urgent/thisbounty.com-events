@@ -16,22 +16,23 @@ export const Moneybar = (props: MoneybarProps): React.ReactElement => {
         <svg
             xmlns="http://www.w3.org/2000/svg"
             xmlnsXlink="http://www.w3.org/1999/xlink"
-            width="188"
+            width="180"
             height="37"
             fill="none"
             version="1.1"
-            viewBox="0 0 188 37"
+            viewBox="0 0 180 37"
+            style={{ display: "flex" }}
         >
             <g clip-path="url(#clip0)">
                 <g filter="url(#filter0_d)">
                     <path
                         fill="url(#linearGradient4670)"
-                        d={`M14 14h${money / max * 168.5}c5.059-.106 4.081 8.083-.793 7H14v-7z`}
+                        d={`M14 14h${money / max * 160}c5.059-.106 4.081 8.083-.793 7H14v-7z`}
                     ></path>
                     <path
                         stroke="#fff"
                         strokeWidth="2"
-                        d="M14 13h-1v9h169.5a4.5 4.5 0 000-9z"
+                        d="M14 13h-1v9h159.5a4.5 4.5 0 000-9z"
                     ></path>
                 </g>
                 <path
@@ -53,7 +54,7 @@ export const Moneybar = (props: MoneybarProps): React.ReactElement => {
             <defs id="defs935">
                 <filter
                     id="filter0_d"
-                    width="184"
+                    width="176"
                     height="19"
                     x="8"
                     y="12"
@@ -98,7 +99,7 @@ export const Moneybar = (props: MoneybarProps): React.ReactElement => {
                 <linearGradient
                     id="paint0_linear"
                     x1="14"
-                    x2="186"
+                    x2="178"
                     y1="21"
                     y2="21"
                     gradientUnits="userSpaceOnUse"
@@ -112,7 +113,7 @@ export const Moneybar = (props: MoneybarProps): React.ReactElement => {
                 <linearGradient
                     id="linearGradient4670"
                     x1="14"
-                    x2="186"
+                    x2="178"
                     y1="21"
                     y2="21"
                     gradientUnits="userSpaceOnUse"

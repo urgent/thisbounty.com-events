@@ -117,6 +117,16 @@ Propsector screen appears, and can go away:
 - Setup
 - Team
 
+Work comes in form of playing cards. 2 to 10, AKQJ, 4 suits.
+
+New button asks for URL. Click on stage, and things start happening. Fork github, provision figma, add storybook and diez provisioning.
+
+> What I did yesterday
+
+< What I'm doing now
+
+! Problems
+
 ### Closing Thoughts
 
 - I don't want to work.
@@ -142,3 +152,5 @@ Logged hurt events during development:
 - Event emitter instead of context or lifting up state to prevent rerenders
 
 - Sass for storybook, needed preset
+
+- diez integration into webpack for sass

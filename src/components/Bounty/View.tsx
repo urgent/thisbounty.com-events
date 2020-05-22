@@ -19,7 +19,7 @@ export const View = (props: ViewProps): React.ReactElement => {
         </div>
         <div className={styles.stats}>
             <div className={`${styles.title} ${styles.bar}`}>
-                <h2>{props.title}</h2> <h3>{props.id}</h3>
+                <h2>{props.title}</h2> <h3>#{props.id}</h3>
             </div>
             <div className={`${styles.life} ${styles.bar}`}>
                 {props.life}
@@ -30,7 +30,9 @@ export const View = (props: ViewProps): React.ReactElement => {
             <div className={`${styles.programmer} ${styles.bar}`}>
                 {props.programmer}
             </div>
-            {props.user}
+            <div className={`${styles.user} ${styles.bar}`}>
+                {props.user}
+            </div>
         </div>
     </div>
 };

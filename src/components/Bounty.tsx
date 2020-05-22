@@ -25,6 +25,6 @@ export const Bounty = (props: BountyProps): React.ReactElement => <><button onCl
     id={props.id}
     life={<Lifebar life={props.life} max={props.maxlife} />}
     money={<Moneybar money={props.money} max={props.maxmoney} />}
-    programmer={<ProgrammerLevel percent={props.programmer} />}
+    programmer={<ProgrammerLevel percent={props.programmer} color="#FFFFFF" shadow="box-shadow: 8px 8px 8px black;" />}
     user={<UserLevel degree={props.user} />}
   /></>;

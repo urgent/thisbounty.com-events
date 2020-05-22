@@ -1,0 +1,13 @@
+.lifebar {
+  color: #f03e3e;
+
+  .full {
+    stroke: #fff;
+    stroke-width: 50px;
+    margin-right: 2px;
+  }
+
+  .empty {
+    color: none;
+  }
+}
