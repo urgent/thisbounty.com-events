@@ -154,3 +154,8 @@ Logged hurt events during development:
 - Sass for storybook, needed preset
 
 - diez integration into webpack for sass
+
+### Coming Soon
+
+- Automatic crypto payout on test pass/fail.
+- Geo database of offline dat addresses for download in app. Communicate with background sync device to device.

@@ -8,7 +8,8 @@ export interface ViewProps {
     life: React.ReactElement,
     money: React.ReactElement,
     programmer: React.ReactElement,
-    user: React.ReactElement
+    user: React.ReactElement,
+    icon?: React.ReactElement
 }
 
 export const View = (props: ViewProps): React.ReactElement => {
@@ -32,6 +33,9 @@ export const View = (props: ViewProps): React.ReactElement => {
             </div>
             <div className={`${styles.user} ${styles.bar}`}>
                 {props.user}
+            </div>
+            <div className={styles.icon}>
+                {props.icon}
             </div>
         </div>
     </div>

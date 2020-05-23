@@ -3,7 +3,6 @@
   grid-template-columns: [image] 2fr [stats] 3fr;
   width: 320px;
   background-color: #212529;
-  border-radius: 10px;
   color: #fff;
 
   .image {
@@ -15,18 +14,18 @@
   .stats {
     grid-column: stats;
     display: grid;
-    grid-template-rows: [title] 1fr [life] 1fr [money] 1fr [programmer] 2fr [user] 1fr [icons] 2fr;
+    grid-template-rows: [title] 1fr [life] 1fr [money] 1fr [user] 1fr [programmer] 2fr [icons] 2fr;
     height: 184px;
   }
 
   .bar {
+    margin-left: 8px;
   }
 
   .title {
     grid-row: title;
     display: grid;
     grid-template-columns: [header] 2fr [id] 1fr;
-    margin-left: 8px;
   }
 
   .title * {
@@ -62,6 +61,7 @@
   .programmer {
     grid-row: programmer;
     vertical-align: middle;
+    margin-left: 0px;
   }
 
   .user {
@@ -71,5 +71,12 @@
 
   .user img {
     margin: 0 2px;
+  }
+
+  .icon {
+    display: flex;
+    flex-direction: column-reverse;
+    align-items: flex-end;
+    margin-right: 4px;
   }
 }
