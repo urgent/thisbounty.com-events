@@ -88,6 +88,6 @@ module.exports = {
   externals: {
     react: 'React',
     'react-dom': 'ReactDOM',
-    '@urgent/thisbounty-styles': '@urgent/thisbounty-styles'
+    '@urgent/thisbounty-styles': 'urgent/thisbounty-styles'
   }
 }
