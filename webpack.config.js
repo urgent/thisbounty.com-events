@@ -13,7 +13,7 @@ module.exports = {
   },
   plugins: [
     new DiezWebpackPlugin({
-      sdk: '@urgent/thisbounty-styles'
+      sdk: '@thisbounty/styles'
     }),
     new MiniCssExtractPlugin({
       filename: '[name].[hash].css',
@@ -87,7 +87,6 @@ module.exports = {
   // dependencies, which allows browsers to cache those libraries between builds.
   externals: {
     react: 'React',
-    'react-dom': 'ReactDOM',
-    '@urgent/thisbounty-styles': 'urgent/thisbounty-styles'
+    'react-dom': 'ReactDOM'
   }
 }

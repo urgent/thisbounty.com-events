@@ -155,6 +155,8 @@ Logged hurt events during development:
 
 - diez integration into webpack for sass
 
+- GPR support for Netlify
+
 ### Coming Soon
 
 - Automatic crypto payout on test pass/fail.
