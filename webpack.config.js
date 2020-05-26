@@ -10,11 +10,11 @@ module.exports = {
 
   resolve: {
     // Add '.ts' and '.tsx' as resolvable extensions.
-    extensions: ['.ts', '.tsx', '.scss']
+    extensions: ['.ts', '.tsx', '.scss', '.js']
   },
   plugins: [
     new DiezWebpackPlugin({
-      sdk: '@thisbounty/styles'
+      sdk: 'diez-thisbounty-styles'
     }),
     new MiniCssExtractPlugin({
       filename: '[name].[hash].css',
@@ -91,7 +91,6 @@ module.exports = {
   // dependencies, which allows browsers to cache those libraries between builds.
   externals: {
     react: 'React',
-    'react-dom': 'ReactDOM',
-    '@thisbounty/styles': 'thisbounty/styles'
+    'react-dom': 'ReactDOM'
   }
 }
