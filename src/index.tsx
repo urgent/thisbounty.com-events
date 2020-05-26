@@ -1,6 +1,6 @@
 import * as React from "react";
 import * as ReactDOM from "react-dom";
-import { DesignLanguage, Diez } from '@urgent/thisbounty-styles'
+import { DesignLanguage, Diez } from '@thisbounty/styles'
 
 import { UserLevel } from "./components/UserLevel";
 
