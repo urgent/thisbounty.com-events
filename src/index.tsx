@@ -1,20 +1,10 @@
-import * as React from "react";
-import * as ReactDOM from "react-dom";
-import { DesignLanguage, Diez } from '@thisbounty/styles'
+import * as React from 'react'
+import * as ReactDOM from 'react-dom'
 
-import { UserLevel } from "./components/UserLevel";
+import { UserLevel } from './components/UserLevel'
 
-const diezDs = new Diez(DesignLanguage);
+ReactDOM.render(
+  <UserLevel degree={4} />,
 
-diezDs.attach((ds) => {
-
-    const DSContext = React.createContext(ds);
-
-    ReactDOM.render(
-        <DSContext.Provider value={ds}>
-            <UserLevel degree={4} />,
-        </DSContext.Provider>,
-        document.getElementById("example")
-    );
-
-})
+  document.getElementById('example')
+)

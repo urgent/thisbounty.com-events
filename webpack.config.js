@@ -1,5 +1,6 @@
 const DiezWebpackPlugin = require('diez-webpack-plugin')
 const MiniCssExtractPlugin = require('mini-css-extract-plugin')
+const HtmlWebpackPlugin = require('html-webpack-plugin')
 
 module.exports = {
   mode: 'production',
@@ -18,6 +19,9 @@ module.exports = {
     new MiniCssExtractPlugin({
       filename: '[name].[hash].css',
       chunkFilename: '[id].[hash].css'
+    }),
+    new HtmlWebpackPlugin({
+      template: 'src/index.html'
     })
   ],
   module: {

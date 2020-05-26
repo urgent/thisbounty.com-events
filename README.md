@@ -157,6 +157,8 @@ Logged hurt events during development:
 
 - GPR support for Netlify
 
+- Webpack html plugin instead of html template from Typescript, netlify build directory
+
 ### Coming Soon
 
 - Automatic crypto payout on test pass/fail.
