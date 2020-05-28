@@ -159,6 +159,20 @@ Logged hurt events during development:
 
 - Webpack html plugin instead of html template from Typescript, netlify build directory
 
+- Diez remove lottie
+
+- Typescript demo, need dev server
+
+- Copy static files
+
+- Diez source map errors, need exclude in config
+
+- Need vs code debug
+
+- Need tests, needed sourcemaps in webpack config
+
+- Launch storybook and test and dev server on start dev
+
 ### Coming Soon
 
 - Automatic crypto payout on test pass/fail.

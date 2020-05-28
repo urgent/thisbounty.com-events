@@ -1,13 +1,14 @@
 const DiezWebpackPlugin = require('diez-webpack-plugin')
 const MiniCssExtractPlugin = require('mini-css-extract-plugin')
 const HtmlWebpackPlugin = require('html-webpack-plugin')
+const CopyPlugin = require('copy-webpack-plugin')
 
 module.exports = {
   mode: 'production',
-
-  // Enable sourcemaps for debugging webpack's output.
+  devServer: {
+    writeToDisk: true
+  },
   devtool: 'source-map',
-
   resolve: {
     // Add '.ts' and '.tsx' as resolvable extensions.
     extensions: ['.ts', '.tsx', '.scss', '.js']
@@ -22,6 +23,9 @@ module.exports = {
     }),
     new HtmlWebpackPlugin({
       template: 'src/index.html'
+    }),
+    new CopyPlugin({
+      patterns: [{ from: 'static', to: 'static' }]
     })
   ],
   module: {
@@ -38,7 +42,8 @@ module.exports = {
       {
         enforce: 'pre',
         test: /\.js$/,
-        loader: 'source-map-loader'
+        loader: 'source-map-loader',
+        exclude: [/.*@diez.*/]
       },
       {
         test: /\.(png|jpe?g|gif)$/,
