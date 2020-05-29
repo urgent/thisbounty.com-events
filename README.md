@@ -1,8 +1,8 @@
-### thisbounty.com
+# thisbounty.com
 
 ![img](https://user-images.githubusercontent.com/1377758/81486044-1eb4de00-9220-11ea-9dd0-35d151056d01.png)
 
-### Problem
+## Problem
 
 Jobs
 
@@ -136,7 +136,7 @@ New button asks for URL. Click on stage, and things start happening. Fork github
 
 ### Developer Hurt Log
 
-https://news.ycombinator.com/edit?id=23223604
+[https://news.ycombinator.com/edit?id=23223604]
 Logged hurt events during development:
 
 - Diez extract from Figma for SVG. Heal by exporting SVG from figma.
@@ -172,6 +172,8 @@ Logged hurt events during development:
 - Need tests, needed sourcemaps in webpack config
 
 - Launch storybook and test and dev server on start dev
+
+- Use functions to help with debugging instead of callbacks
 
 ### Coming Soon
 
