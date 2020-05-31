@@ -1,6 +1,7 @@
 import * as React from 'react'
 import * as ReactDOM from 'react-dom'
 import { DesignLanguage, Diez } from 'diez-thisbounty-styles'
+import styles from './index.scss'
 
 import { Bounty } from './components/Bounty'
 
