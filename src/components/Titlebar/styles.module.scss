@@ -1,0 +1,13 @@
+.titlebar {
+  background: #212529;
+  text-align: left;
+  grid-row: titlebar;
+  font-size: 1rem;
+  line-height: 60px;
+  margin: 0;
+}
+
+.titlebar a {
+  color: #fff;
+  text-decoration: none;
+}

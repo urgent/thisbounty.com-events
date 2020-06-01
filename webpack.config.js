@@ -78,6 +78,7 @@ module.exports = {
         exclude: /\.module.(s(a|c)ss)$/,
         loader: [
           MiniCssExtractPlugin.loader,
+          'style-loader',
           'css-loader',
           {
             loader: 'sass-loader',

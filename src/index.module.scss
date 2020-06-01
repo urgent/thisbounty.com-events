@@ -1,0 +1,4 @@
+.app {
+  display: grid;
+  grid-template-rows: [titlebar] 60px [content] 1fr;
+}

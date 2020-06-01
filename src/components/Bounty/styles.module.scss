@@ -1,9 +1,23 @@
+div {
+  .bounty {
+    &:nth-child(2) {
+      border-radius: 10px 10px 0 0;
+
+      img {
+        border-radius: 10px 0 0 0;
+      }
+    }
+  }
+}
+
 .bounty {
   display: grid;
   grid-template-columns: [image] 2fr [stats] 3fr;
   width: 320px;
   background-color: #212529;
   color: #fff;
+  margin: 0 auto;
+  box-shadow: 7px 7px 7px rgba(0, 0, 0, 0.5);
 
   .image {
     grid-column: image;
