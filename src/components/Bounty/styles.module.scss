@@ -1,3 +1,5 @@
+@import 'diez-thisbounty-styles/static/styles.scss';
+
 div {
   .bounty {
     &:nth-child(2) {
@@ -14,10 +16,10 @@ div {
   display: grid;
   grid-template-columns: [image] 2fr [stats] 3fr;
   width: 320px;
-  background-color: #212529;
+  background-color: $thisbounty-com-style-guide-colors-primary;
   color: #fff;
   margin: 0 auto;
-  box-shadow: 7px 7px 7px rgba(0, 0, 0, 0.5);
+  box-shadow: $thisbounty-com-style-guide-shadows-render;
 
   .image {
     grid-column: image;
@@ -80,7 +82,6 @@ div {
 
   .user {
     grid-row: user;
-    text-align: center;
   }
 
   .user img {

@@ -175,6 +175,8 @@ Logged hurt events during development:
 
 - Use functions to help with debugging instead of callbacks
 
+- Need both js and css integration for diez. js for body background color. css for sass modules.
+
 ### Coming Soon
 
 - Automatic crypto payout on test pass/fail.

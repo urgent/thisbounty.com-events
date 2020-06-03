@@ -1,5 +1,7 @@
+@import 'diez-thisbounty-styles/static/styles.scss';
+
 .titlebar {
-  background: #212529;
+  background: $thisbounty-com-style-guide-colors-primary;
   text-align: left;
   grid-row: titlebar;
   font-size: 1rem;

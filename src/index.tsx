@@ -7,9 +7,10 @@ import styles from './index.module.scss'
 
 const diezDs = new Diez(DesignLanguage)
 
-diezDs.attach(ds => {
+diezDs.attach((ds: DesignLanguage) => {
   const body = document.querySelector('body')
-  body.style.backgroundColor = '#343a40'
+  body.style.backgroundColor =
+    ds.thisbountyComStyleGuideTokens.colors.secondary.color
   body.style.margin = '0'
 
   const DSContext = React.createContext(ds)

@@ -6,7 +6,7 @@ import { UserLevel } from './UserLevel'
 import { View } from './Bounty/View'
 import eventEmitter from '../eventEmitter'
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
-import faGithub from '@fortawesome/free-brands-svg-icons/faGithub'
+import { faGithub } from '@fortawesome/free-brands-svg-icons/faGithub'
 
 export interface BountyProps {
   id: string
@@ -35,11 +35,6 @@ export const Bounty = (props: BountyProps): React.ReactElement => (
       />
     }
     user={<UserLevel degree={props.user} />}
-    icon={
-      <>
-        {' '}
-        <FontAwesomeIcon icon={faGithub} />
-      </>
-    }
+    icon={<FontAwesomeIcon icon={faGithub} />}
   />
 )

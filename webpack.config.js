@@ -3,6 +3,7 @@ const MiniCssExtractPlugin = require('mini-css-extract-plugin')
 const HtmlWebpackPlugin = require('html-webpack-plugin')
 const CopyPlugin = require('copy-webpack-plugin')
 
+
 module.exports = {
   mode: 'production',
   devServer: {
@@ -25,7 +26,7 @@ module.exports = {
       template: 'src/index.html'
     }),
     new CopyPlugin({
-      patterns: [{ from: 'static', to: 'static' }]
+      patterns: [{ from: 'static', to: 'static' }, { from: './static/favicon/' }]
     })
   ],
   module: {

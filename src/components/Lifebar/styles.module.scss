@@ -1,5 +1,7 @@
+@import 'diez-thisbounty-styles/static/styles.scss';
+
 .lifebar {
-  color: #f03e3e;
+  color: $thisbounty-com-style-guide-colors-red;
 
   .full {
     stroke: #fff;

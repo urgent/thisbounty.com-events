@@ -26,6 +26,12 @@
       "internalConsoleOptions": "neverOpen",
       "port": 9229,
       "trace": true
+    },
+    {
+      "type": "node",
+      "request": "launch",
+      "name": "Launch Webpack",
+      "program": "${workspaceFolder}/node_modules/webpack/bin/webpack.js"
     }
   ]
 }
