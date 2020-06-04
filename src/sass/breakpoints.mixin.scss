@@ -1,0 +1,21 @@
+$portrait-width: 414px;
+$landscape-width: 896px;
+$desktop-width: 1024px;
+
+@mixin portrait {
+  @media (min-width: #{$portrait-width}) and (max-width: #{$landscape-width - 1px}) {
+    @content;
+  }
+}
+
+@mixin landscape {
+  @media (min-width: #{$landscape-width}) and (max-width: #{$desktop-width - 1px}) {
+    @content;
+  }
+}
+
+@mixin desktop {
+  @media (min-width: #{$desktop-width}) {
+    @content;
+  }
+}

@@ -1,4 +1,12 @@
+@import './sass/breakpoints.mixin.scss';
+
 .app {
   display: grid;
   grid-template-rows: [titlebar] 60px [content] 1fr;
+
+  @include landscape {
+    grid-template-rows: inherit;
+    grid-template-columns: repeat(auto-fit, minmax(330px, 0fr));
+    justify-content: center;
+  }
 }

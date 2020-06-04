@@ -1,4 +1,5 @@
 @import 'diez-thisbounty-styles/static/styles.scss';
+@import '../../sass/breakpoints.mixin.scss';
 
 .titlebar {
   background: $thisbounty-com-style-guide-colors-primary;
@@ -7,9 +8,22 @@
   font-size: 1rem;
   line-height: 60px;
   margin: 0;
+
+  @include portrait {
+    display: none;
+  }
+
+  @include landscape {
+    display: none;
+  }
 }
 
 .titlebar a {
   color: #fff;
   text-decoration: none;
+  margin-left: 0.5rem;
+
+  &:hover {
+    text-decoration: underline;
+  }
 }
