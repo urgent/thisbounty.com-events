@@ -29,6 +29,39 @@ diezDs.attach((ds: DesignLanguage) => {
           programmer={50}
           user={1}
         />
+        <Bounty
+          id='1'
+          title='Test'
+          image='/static/King of Hearts.svg'
+          life={2}
+          maxlife={3}
+          money={2}
+          maxmoney={3}
+          programmer={50}
+          user={1}
+        />
+        <Bounty
+          id='1'
+          title='Test'
+          image='/static/King of Hearts.svg'
+          life={2}
+          maxlife={3}
+          money={2}
+          maxmoney={3}
+          programmer={50}
+          user={1}
+        />
+        <Bounty
+          id='1'
+          title='Test'
+          image='/static/King of Hearts.svg'
+          life={2}
+          maxlife={3}
+          money={2}
+          maxmoney={3}
+          programmer={50}
+          user={1}
+        />
       </div>
     </DSContext.Provider>,
     document.getElementById('root')

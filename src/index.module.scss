@@ -2,11 +2,20 @@
 
 .app {
   display: grid;
-  grid-template-rows: [titlebar] 60px [content] 1fr;
+  font-family: 'Roboto', 'sans';
+
+  @include desktop {
+    grid-template-rows: [titlebar] 60px [content] 1fr;
+  }
 
   @include landscape {
     grid-template-rows: inherit;
     grid-template-columns: repeat(auto-fit, minmax(330px, 0fr));
     justify-content: center;
+  }
+
+  @include portrait {
+    grid-template-columns: inherit;
+    justify-content: inherit;
   }
 }
