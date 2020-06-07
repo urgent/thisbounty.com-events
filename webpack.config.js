@@ -6,13 +6,17 @@ const CopyPlugin = require('copy-webpack-plugin')
 
 module.exports = {
   mode: 'production',
+  target: 'web',
   devServer: {
     writeToDisk: true
   },
   devtool: 'source-map',
   resolve: {
     // Add '.ts' and '.tsx' as resolvable extensions.
-    extensions: ['.ts', '.tsx', '.scss', '.js']
+    extensions: ['.ts', '.tsx', '.scss', '.js'],
+    alias: {
+      fs: 'graceful-fs'
+    }
   },
   plugins: [
     new DiezWebpackPlugin({
