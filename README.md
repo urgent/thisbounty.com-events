@@ -115,27 +115,31 @@ Build process -> No users, high persistence, authority, existings users need pag
 Damage occurs from oversights, for instance, did not know storybook needs extra config for static files + typescript. Usually from not doing it before.
 
 Consensus:
-One user may send a change across websockets. For instance hurting a bounty.
-Other users may reverse it with consensus. For instance healing a bounty.
+
+- One user may send a change across websockets. For instance hurting a bounty.
+- Other users may reverse it with consensus. For instance healing a bounty.
 
 Symbols:
-Hurt: Bounce back bounty, red flash
-Heal: Heart floats from bounty
-Temp Lead: Blinking cursor
-"\*" on Temporary Lead -> Existing lead was moved from a bounty, instead of a new lead being created on the bounty.
+
+- Hurt: Bounce back bounty, red flash
+- Heal: Heart floats from bounty
+- Temp Lead: Blinking cursor
+- \* on Temporary Lead -> Existing lead was moved from a bounty, instead of a new lead being created on the bounty.
 
 IndexDB
-Click on new button -> Lead shows up on right with temporary ID
-Click on bounty -> Leads change on right. Scrollable.
-Click on card -> Lead action. Github issues, figma, local vscode, in app, for instance project storm board for the task. On bookmark, automated provisioning, launching a figma project or github repo.
-Click on view -> grid view, like sticker coupon cutout with animations to show live
-Click on search -> keyboard input. Indexed search, and also fun commands.
-Click on bomb -> changes the bounties. When button clicked, bomb turns to home. Click and click again for easter egg game.
+
+- Click on new button -> Lead shows up on right with temporary ID
+- Click on bounty -> Leads change on right. Scrollable.
+- Click on card -> Lead action. Github issues, figma, local vscode, in app, for instance project storm board for the task. On bookmark, automated provisioning, launching a figma project or github repo.
+- Click on view -> grid view, like sticker coupon cutout with animations to show live
+- Click on search -> keyboard input. Indexed search, and also fun commands.
+- Click on bomb -> changes the bounties. When button clicked, bomb turns to home. Click and click again for easter egg game.
 
 Websocket
-Click on lead -> Card button shows up on bottom with suit and number. Bookmark in IndexDB
-Click on edit -> Move lead to bounty, repeat bookmark progress with star
-Click on help -> chat opens up like xfire halo chat, irc commands
+
+- Click on lead -> Card button shows up on bottom with suit and number. Bookmark in IndexDB
+- Click on edit -> Move lead to bounty, repeat bookmark progress with star
+- Click on help -> chat opens up like xfire halo chat, irc commands
 
 ### Closing Thoughts
 
