@@ -4,7 +4,7 @@ import { Moneybar } from './Moneybar'
 import { ProgrammerLevel } from './ProgrammerLevel'
 import { UserLevel } from './UserLevel'
 import { View } from './Bounty/View'
-import eventEmitter from '../eventEmitter'
+import eventEmitter from '../utilities/eventEmitter'
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 import { faGithub } from '@fortawesome/free-brands-svg-icons/faGithub'
 
@@ -20,21 +20,19 @@ export interface BountyProps {
   user?: number
 }
 
-export const Bounty = (props: BountyProps): React.ReactElement => (
-  <View
-    image={<img src={props.image} />}
-    title={props.title}
-    id={props.id}
-    life={<Lifebar life={props.life} max={props.maxlife} />}
-    money={<Moneybar money={props.money} max={props.maxmoney} />}
-    programmer={
-      <ProgrammerLevel
-        percent={props.programmer}
-        color='#000000'
-        shadow='box-shadow: 8px 8px 8px black;'
-      />
-    }
-    user={<UserLevel degree={props.user} />}
-    icon={<FontAwesomeIcon icon={faGithub} />}
-  />
-)
+export function Bounty (props: BountyProps): React.ReactElement {
+  return (
+    <View
+      image={<img src={props.image} />}
+      title={props.title}
+      id={props.id}
+      life={<Lifebar life={props.life} max={props.maxlife} />}
+      money={<Moneybar money={props.money} max={props.maxmoney} />}
+      programmer={
+        <ProgrammerLevel percent={props.programmer} color='#000000' />
+      }
+      user={<UserLevel degree={props.user} />}
+      icon={<FontAwesomeIcon icon={faGithub} />}
+    />
+  )
+}

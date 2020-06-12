@@ -6,140 +6,140 @@
 
 Jobs
 
-### Solution
+## Solution
 
-Open market
+Open market, level playing field, stick to the script
 
-Level playing field
+## Principles
 
-Stick to the script
+### 1. Track goals, like reduced costs. Money matters. Code and operations don't
 
-### How does it make money
+All roads lead to finance. New clients attract finance. Taps on a keyboard tune them out.
+
+### 2. Focus on core business
+
+- Fix programmer freelancing bugs of access, fees, collaboration and knowledge.
+- Instead of one project, one programmer, programmers collaborate.
+- New projects have no entry. Work has proven defined stages.
+- Scale out projects from websites and apps to research as needed for jobs.
+
+### 3. Build clear rules outside the tech
+
+#### To hire a programmer
+
+1. Click on a Bounty. A Bounty is a proven software production method.
+2. Click on the New Button to create a Lead. A Lead is a work order.
+
+#### To work
+
+1. Click on a Lead. A Lead Card bookmarks.
+2. Click on the Lead Card. A Lead Action occurs.
+3. A Lead Action opens an offsite platform like figma or github issues, in-app features like project storm, or launches a local IDE.
+
+### 4. List everything not core business. At least you are aware
+
+- Project management gamification
+- Graphic design
+- [React component communication](https://stackoverflow.com/a/61582960/11971788)
+- Design framework and component library integration
+- Build
+- Dev server and debugging
+- Webpack HTML template
+- Arcade demo mode
+- localForage for app persistence
+- Websocket for communication between users
+- Websocket message validation with io-ts
+- Bot for admin
+- Bot for reporting
+
+### 5. Fix bugs. Add features. Limit hot fixes
+
+Better to start with a bug fix than an overarching vision which often meanders.
+
+Start with existing platforms. Use their features, and more important community users. Likely you are not the first one who had the idea.
+
+Start with your own community who have less stake in losses.
+
+Think of replacing a packaged app, such as WhatsApp replacing the phone button and Instagram replacing the camera.
+
+In mechanics, designs simplify by tightening bolts. Any stress less than within the bolts goes away.
+Use your own apps. Be the major stress of your own apps. Consume all the content. Then all other users have a ways to go before they catch up.
+
+Augment and accent is easier than aggregate or disrupt.
+
+### 6. Use IDEs and version control instead of inner platforms
+
+Users are more resourceful than you think. Customers hire experts for a reason.
+
+### 7. If simple features like sort do not work, remove the complex code, go back to the tutorial
+
+If plans fail, get over it and move on.
+
+### 8. Either don't do it, or do it full effort
+
+Learn to say no.
+
+Launch quick. Get to live customers fast even if it's just a newsletter signup.
+
+### 9. Encourage others. Favor the launch, not who launches
+
+Sometimes abandoning a known idea is the fastest way to see it built.
+
+If it doesn't get built, there's a reason. Sometimes the world is not a nice place. Best not to provoke.
+
+## How does it make money
 
 Be the best worker on a level playing field
 
 No boss, no owner
 
-### How do I get paid
+## How do I get paid
 
-For big projects, open a joint checking account with clients at any online bank. Then open one of your own. Deposit payment to joint account, then transfer to your own account.
+For big leads, open a joint checking account with clients at any online bank. Then open one of your own. Deposit payment to joint account, then transfer to your own account.
 
-For small projects, start with a small budget. I can start work for free really sells.
+For small leads, start with a small budget. I can start work for free really sells.
 
 For disagreements, chat with the community. Someone will help you. Everyone works together.
 
 SOON: Automatic crypto payout on test pass/fail.
 
-### Business objectives
+## Gameplay
 
-Start with easy work, software implementation mostly.
+### Lifebar: Environment changes bounty
 
-End with advancing collective human knowledge.
+Hit on "Haven't done it before"
 
-### Features
+Heals on closing leads
 
-Lives on your phone.
+Grows by
 
-If it's good, it goes live.
+- Existing projects that experience success
+- Knowledge base
+- Reference code
+- Open source contributions
+- Wins against competing bounties. Bounties can hunt one another.
 
-Reverse projects with focus on division of labor.
+At zero loose a life. Earn a life by "guessing the play", predicting what's wrong with risk management and incident response strategies. Great way to bait hunts by other bounties.
 
-### Lifebar
+Loosing all lives, start over. Back to basics.
 
-Project health
+### Moneybar: Bounty changes environment
 
-Hit when something on the project goes wrong
+Hit on bounty pay out
 
-Usually hits happen happens when you haven't done it before
-
-Heals when work processes are proven to be fixed and code is shipped
-
-Grows with completed projects, reference code, open source contributions, and wins against competing process systems
-
-At zero loose a life
-
-Earn a life with risk management and incident response strategies
-
-Loosing all lives remove process from site
-
-Game over: "Restart the game" cameo with saved checkpoints, bringing process back to site.
-
-Design Guidance: Environment changes project
-
-### Moneybar
-
-Stamina for power-ups
-
-Hit when buying something for the project
-
-With enough money, anyone can build anything, so we need a limit
-
-Heals when funding is made available
+Heals on bounty funding
 
 Grows with completed projects, customers and earnings, and wins against competing process systems
 
-At zero, nothing really happens, just can't buy anything until funded.
-
-Can still work for free.
-
-Design Guidance: Project changes environment
+At zero, not funded.
 
 ### User Level
 
-Increases with greater market use of features built with process
-
-Decreases with less market use of features built with process
-
-No outage for users on process removal
-
-Features eventually will need support
-
-Users will go somewhere.
+Number of users of products created by this bounty. Users need to go somewhere.
 
 ### Programmer Level
 
-Increases with greater programmer use of process
-
-Decreases with less programmer use of process
-
-Outage for programmers on process removal
-
-### App backing services:
-
-Websocket server -> broadcasts to all users, ephemeral.
-IndexDB -> Single user only, persistent.
-Build process -> No users, high persistence, authority, existings users need page reload or websocket update.
-
-### Gameplay
-
-Damage occurs from oversights, for instance, did not know storybook needs extra config for static files + typescript. Usually from not doing it before.
-
-Consensus:
-
-- One user may send a change across websockets. For instance hurting a bounty.
-- Other users may reverse it with consensus. For instance healing a bounty.
-
-Symbols:
-
-- Hurt: Bounce back bounty, red flash
-- Heal: Heart floats from bounty
-- Temp Lead: Blinking cursor
-- \* on Temporary Lead -> Existing lead was moved from a bounty, instead of a new lead being created on the bounty.
-
-IndexDB
-
-- Click on new button -> Lead shows up on right with temporary ID
-- Click on bounty -> Leads change on right. Scrollable.
-- Click on card -> Lead action. Github issues, figma, local vscode, in app, for instance project storm board for the task. On bookmark, automated provisioning, launching a figma project or github repo.
-- Click on view -> grid view, like sticker coupon cutout with animations to show live
-- Click on search -> keyboard input. Indexed search, and also fun commands.
-- Click on bomb -> changes the bounties. When button clicked, bomb turns to home. Click and click again for easter egg game.
-
-Websocket
-
-- Click on lead -> Card button shows up on bottom with suit and number. Bookmark in IndexDB
-- Click on edit -> Move lead to bounty, repeat bookmark progress with star
-- Click on help -> chat opens up like xfire halo chat, irc commands
+Number of programmers working on this bounty.
 
 ### Closing Thoughts
 
@@ -150,7 +150,6 @@ Websocket
 
 ### Developer Hurt Log
 
-[https://news.ycombinator.com/edit?id=23223604]
 Logged hurt events during development:
 
 - Diez extract from Figma for SVG. Heal by exporting SVG from figma.

@@ -1,6 +1,16 @@
-import * as React from "react";
+import * as React from 'react'
 import * as animation from './UserLevel/animation.gif'
 
-export interface UserLevelProps { degree: number }
+export interface UserLevelProps {
+  degree: number
+}
 
-export const UserLevel = (props: UserLevelProps): React.ReactElement => <>{Array(props.degree).fill(<img src={animation.default} />)}</>;
+export function UserLevel (props: UserLevelProps): React.ReactElement {
+  return (
+    <>
+      {Array.from(Array(props.degree), (_, i) => (
+        <img key={i} src={animation.default} />
+      ))}
+    </>
+  )
+}

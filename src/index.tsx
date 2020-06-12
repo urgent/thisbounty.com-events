@@ -14,6 +14,7 @@ diezDs.attach((ds: DesignLanguage) => {
   body.style.margin = '0'
 
   const DSContext = React.createContext(ds)
+
   ReactDOM.render(
     <DSContext.Provider value={ds}>
       <div className={styles.app}>

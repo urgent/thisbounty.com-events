@@ -1,37 +1,23 @@
 {
-    "compilerOptions": {
-        "outDir": "./dist/",
-        "sourceMap": true,
-        "noImplicitAny": true,
-        "module": "commonjs",
-        "target": "es6",
-        "esModuleInterop": true,
-        "lib": [
-            "es2019",
-            "dom"
-        ],
-        "jsx": "react",
-        "rootDirs": [
-            "src",
-            "stories"
-        ],
-        "baseUrl": "src",
-        "paths": {
-            "Diez/*": [
-                "../diez/thisbounty-styles/design-language/build/diez-thisbounty-styles-web/*"
-            ]
-        },
-        "typeRoots": [
-            "./node_modules/@types",
-            "./custom_typings"
-        ]
+  "compilerOptions": {
+    "outDir": "./dist/",
+    "sourceMap": true,
+    "noImplicitAny": true,
+    "module": "commonjs",
+    "target": "es6",
+    "esModuleInterop": true,
+    "allowSyntheticDefaultImports": true,
+    "lib": ["es2019", "dom"],
+    "jsx": "react",
+    "rootDirs": ["src", "stories"],
+    "baseUrl": "src",
+    "paths": {
+      "Diez/*": [
+        "../diez/thisbounty-styles/design-language/build/diez-thisbounty-styles-web/*"
+      ]
     },
-    "include": [
-        "src/**/*"
-    ],
-    "exclude": [
-        "node_modules",
-        "dist",
-        "design",
-    ]
+    "typeRoots": ["./node_modules/@types", "./custom_typings"]
+  },
+  "include": ["src/**/*"],
+  "exclude": ["node_modules", "dist", "design"]
 }
