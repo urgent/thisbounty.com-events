@@ -192,6 +192,18 @@ Logged hurt events during development:
 
 - Dat bundle size. 1.1 MB way too large.
 
+- Nest.js platform too much, container registry, host, database, auth, schema stitching
+
+- React in html template from CDN, switch for development build.
+
+- Avoid double include in index html. Webpack will add main.
+
+- Function composition for effects, for testing.
+
+- Removing event listeners in useEffect
+
+- Anonymous component in react profiler. How to avoid.
+
 ### Coming Soon
 
 - Automatic crypto payout on test pass/fail.

@@ -11,7 +11,7 @@ export const Moneybar = (props: MoneybarProps): React.ReactElement => {
   const [max, setMaxMoney] = useState(props.max)
 
   useEffect(() => {
-    eventEmitter.on('your-event', () => setMoney(3))
+    // eventEmitter.on('your-event', () => setMoney(3))
   })
 
   return (
@@ -128,3 +128,5 @@ export const Moneybar = (props: MoneybarProps): React.ReactElement => {
     </>
   )
 }
+
+Moneybar.displayName = 'Moneybar'

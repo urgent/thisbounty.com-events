@@ -12,3 +12,5 @@ export function Titlebar (props: TitlebarProps): React.ReactElement {
     </h1>
   )
 }
+
+Titlebar.displayName = 'Titlebar'

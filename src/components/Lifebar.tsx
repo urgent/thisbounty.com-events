@@ -17,8 +17,8 @@ export function Lifebar (props: LifebarProps): React.ReactElement {
     <div className={styles.lifebar}>
       {
         <>
-          <Life count={life} icon={faHeart} style={styles.full} />
-          <Life count={max - life} icon={faEmptyHeart} style={styles.empty} />
+          <Heart count={life} icon={faHeart} style={styles.full} />
+          <Heart count={max - life} icon={faEmptyHeart} style={styles.empty} />
         </>
       }
     </div>
@@ -31,7 +31,7 @@ interface LifeProps {
   style: string
 }
 
-function Life (props: LifeProps): React.ReactElement {
+function Heart (props: LifeProps): React.ReactElement {
   return (
     <>
       {Array.from(Array(props.count), (_, i) => (
@@ -40,3 +40,6 @@ function Life (props: LifeProps): React.ReactElement {
     </>
   )
 }
+
+Lifebar.displayName = 'Lifebar'
+Heart.displayName = 'Heart'

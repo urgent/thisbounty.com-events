@@ -14,3 +14,5 @@ export function UserLevel (props: UserLevelProps): React.ReactElement {
     </>
   )
 }
+
+UserLevel.displayName = 'UserLevel'

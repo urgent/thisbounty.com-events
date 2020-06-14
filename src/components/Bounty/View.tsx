@@ -12,7 +12,7 @@ export interface ViewProps {
   icon?: React.ReactElement
 }
 
-export const View = (props: ViewProps): React.ReactElement => {
+export function View (props: ViewProps): React.ReactElement {
   return (
     <div className={styles.bounty}>
       <div className={styles.image}>{props.image}</div>
@@ -31,3 +31,5 @@ export const View = (props: ViewProps): React.ReactElement => {
     </div>
   )
 }
+
+View.displayName = 'Bounty View'

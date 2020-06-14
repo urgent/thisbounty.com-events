@@ -14,3 +14,5 @@ export const ProgrammerLevel = (
 ): React.ReactElement => (
   <View width={scale(props.percent)} color={props.color} />
 )
+
+ProgrammerLevel.displayName = 'ProgrammerLevel'

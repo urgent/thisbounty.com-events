@@ -1,4 +1,13 @@
 import localForage from 'localforage'
+
+let didCancel = false
+async function store () {
+  if (!didCancel) {
+    // Ignore if we started fetching something else
+    await localForage.setItem('somekey', 'some value2')
+  }
+}
+
 ;(async () => {
   try {
     await localForage.setItem('somekey', 'some value2')
