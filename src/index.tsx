@@ -3,6 +3,7 @@ import * as ReactDOM from 'react-dom'
 import { DesignLanguage, Diez } from 'diez-thisbounty-styles'
 import { Titlebar } from './components/Titlebar'
 import { Bounty } from './components/Bounty'
+import { Leadbar } from './components/Lead'
 import styles from './index.module.scss'
 import eventEmitter from './utilities/eventEmitter'
 
@@ -30,7 +31,6 @@ diezDs.attach((ds: DesignLanguage) => {
           maxmoney={3}
           programmer={50}
           user={1}
-          leads={[{ suit: 'H', number: 'K' }]}
         />
         <Bounty
           id='2'
@@ -42,7 +42,6 @@ diezDs.attach((ds: DesignLanguage) => {
           maxmoney={3}
           programmer={50}
           user={1}
-          leads={[{ suit: 'H', number: 'K' }]}
         />
         <Bounty
           id='3'
@@ -54,7 +53,6 @@ diezDs.attach((ds: DesignLanguage) => {
           maxmoney={3}
           programmer={50}
           user={1}
-          leads={[{ suit: 'H', number: 'K' }]}
         />
         <Bounty
           id='4'
@@ -66,12 +64,20 @@ diezDs.attach((ds: DesignLanguage) => {
           maxmoney={3}
           programmer={50}
           user={1}
+        />
+        <Leadbar
           leads={[{ suit: 'H', number: 'K' }]}
+          bounty={'1'}
+          visible={true}
         />
         <button
           onClick={() =>
-            eventEmitter.emit('bounty(1).lead.new()', {
-              data: JSON.stringify({ suit: 'H', number: 'K' })
+            eventEmitter.emit('NEW_LEAD', {
+              data: JSON.stringify({
+                suit: 'H',
+                number: Math.floor(Math.random() * 10) + 1,
+                bounty: '1'
+              })
             })
           }
         >
