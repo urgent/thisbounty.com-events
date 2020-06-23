@@ -202,7 +202,27 @@ Logged hurt events during development:
 
 - Removing event listeners in useEffect
 
-- Anonymous component in react profiler. How to avoid.
+- Anonymous component in react profiler. How to avoid. displayName property
+
+- setState(() => {}) function version for extra time in useEffect
+
+- [Efficient render for events](https://github.com/urgent/thisbounty.com/issues/19#issuecomment-644483635)
+
+- io-ts brings fp-ts, small bundle, use that
+
+- fp principles, either
+
+- function composition. Test for pipe.
+
+- Write types for clarity
+
+- folding either, using separate handles
+
+- Task instead of io-ts
+
+- Reader instead of passing props
+
+- setState only on success, to avoid reconciliation. setState would need to be curried and pass to every fold
 
 ### Coming Soon
 

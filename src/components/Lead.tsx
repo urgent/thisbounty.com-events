@@ -1,8 +1,8 @@
 import React, { useState, useEffect } from 'react'
 import eventEmitter from '../utilities/eventEmitter'
 import socket from '../utilities/socket'
-import localForage from 'localforage'
-import { Mutate, Effect, leadCreate } from './Lead/effect'
+import { create, run } from './Lead/effect'
+import { pipe } from 'fp-ts/lib/function'
 
 export interface LeadbarProps {
   leads: LeadProps[]
@@ -10,40 +10,34 @@ export interface LeadbarProps {
   visible: boolean
 }
 
-interface LeadbarEffect {
-  leads: LeadProps[]
-  setLeads: React.Dispatch<React.SetStateAction<LeadProps[]>>
-  bounty: string
-  handle: (
-    mutate: Mutate
-  ) => (
-    effect: Effect
-  ) => (state: LeadProps[]) => (response: MessageEvent) => void
-}
+/**
+ * Lead component props
+ */
 export interface LeadProps {
   suit: 'C' | 'D' | 'H' | 'S' | 'X'
   number: number | 'A' | 'K' | 'Q' | 'J'
 }
 
-let handle: (response: MessageEvent) => void
+let handle: (message: MessageEvent) => void
 
 export function Leadbar (props: LeadbarProps): React.ReactElement {
   const [leads, setLeads] = useState(props.leads)
 
-  const store: Effect = async function (update: LeadProps[]) {
-    await localForage.setItem(`bounty(${props.bounty}).leads`, update)
-  }
-
-  handle = event => {
-    setLeads(prevLeads => {
-      const state = [...prevLeads, JSON.parse(event.data)]
-      store(state)
-      return state
-    })
+  handle = (message: MessageEvent) => {
+    return pipe(
+      // create an effect to set state and save to local storage
+      create(leads)(message),
+      // create return type is a union of io-ts error, string error, or a Task
+      // if no errors, run Task with required dependencies
+      // if errors, return errors. @TODO: if error emit in userland events or set state in local component.
+      run({ bounty: props.bounty, setState: setLeads })
+    )
   }
 
   useEffect(() => {
-    socket.onmessage = handle
+    socket.onmessage = message => {
+      handle(message)
+    }
     eventEmitter.on('NEW_LEAD', handle)
     // remove listeners on each render
     return () => {
