@@ -1,4 +1,4 @@
-# thisbounty.com
+# thisbounty.com No Catch, No Pay
 
 ![img](https://user-images.githubusercontent.com/1377758/81486044-1eb4de00-9220-11ea-9dd0-35d151056d01.png)
 
@@ -220,9 +220,15 @@ Logged hurt events during development:
 
 - Task instead of io-ts
 
-- Reader instead of passing props
+- Reader instead of passing params, setState only on success, to avoid reconciliation. setState would need to be curried and pass to every fold
 
-- setState only on success, to avoid reconciliation. setState would need to be curried and pass to every fold
+- state in useEffect deps list
+
+- unit testing function composition. Best to test the output of the unit, not the composition
+
+- throwing exception inside a jest async. Best to test if function is returned.
+
+- except.any instead of type of.
 
 ### Coming Soon
 

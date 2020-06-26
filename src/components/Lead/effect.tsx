@@ -4,55 +4,55 @@ import * as t from 'io-ts'
 import { Either, fold, left, right } from 'fp-ts/lib/Either'
 import { task, Task } from 'fp-ts/lib/Task'
 import { Reader } from 'fp-ts/lib/Reader'
-import { pipe } from 'fp-ts/lib/function'
+import { pipe, identity } from 'fp-ts/lib/function'
 
 /**
  * Runtime type for a Bounty lead
  */
-export const Lead = t.type({
+export const Runtime = t.type({
   suit: t.keyof({ C: null, D: null, H: null, S: null, X: null }),
   number: t.union([t.keyof({ A: null, K: null, Q: null, J: null }), t.Int])
 })
 
-type Lead = t.TypeOf<typeof Lead>
+type Runtime = t.TypeOf<typeof Runtime>
 
 /**
- * Add a Lead to component state
+ * Merge runtime with component state
  */
-type Merge = (lead: Lead) => (state: LeadProps[]) => Either<string, LeadProps>
+type Merge = (
+  state: LeadProps[]
+) => (runtime: Runtime) => Either<Error, LeadProps[]>
 
 /**
  * Check uniqueness and merge
- * @param {Lead} lead Runtime lead to add to state
  * @param {LeadProps[]} state React component state
- * @returns {Either<string, LeadProps>} Merged state and runtime, or non-unique error
+ * @param {Runtime} runtime Runtime to add to state
+ * @returns {Either<Error, LeadProps[]>} Merged state and runtime, or non-unique error
  */
-
-// don't need to pass state. probably best to take out that either, and just merge unique. array to set to array
-
-export const merge: Merge = lead => (state = []) => {
+export const merge: Merge = state => runtime => {
   if (
-    state.some(value => {
-      console.log(value)
-      console.log(lead)
-      console.log(value.suit === lead.suit && value.number === lead.number)
-      return value.suit === lead.suit && value.number === lead.number
-    })
+    state.some(
+      (value: LeadProps) =>
+        value.suit === runtime.suit && value.number === runtime.number
+    )
   ) {
-    return left(`${lead.suit}${lead.number} already exists in state`)
+    return left(
+      new Error(`${runtime.suit}${runtime.number} already exists in state.`)
+    )
+  } else {
+    return right([runtime, ...state])
   }
-  return right(lead)
 }
 
 /**
- * Reader for deps required on successful merge
+ * Prompt for dependencies required to run setState function or local storage id
  */
-type Success = Reader<Dependencies, Task<Promise<void>>>
+export type Prompt = Reader<Dependencies, Task<void>>
 
 /**
- * Requirements for effectful mutation on succesful merge
+ * Dependencies needed to run effect
  * @export
- * @interface Dependencies
+ * @interface dependencies
  */
 export interface Dependencies {
   bounty: string
@@ -60,87 +60,105 @@ export interface Dependencies {
 }
 
 /**
- * Runtime handler for lead decode
+ * Effect to run on succesful runtime validation
  */
-export type OnRuntime = (
-  state: LeadProps[]
-) => (runtime: Lead) => Success | string
+export type Effect = (deps: Dependencies) => (state: LeadProps[]) => void
 
 /**
- * Decode runtime and fold to merge with state
- * @param {LeadProps[]} state Existing React component state
- * @param {Lead} runtime Runtime lead to merge with state
- * @returns {Success | string} Reader returning an effectful function or error message
+ * Set state and save to local storage
+ * @param {Dependencies} deps Dependencies needed to run effect
+ * @param {LeadProps[]} state State to set and save to local storage
  */
-export const onRuntime: OnRuntime = state => runtime =>
-  fold<string, LeadProps, Success | string>(
-    (error: string): string => error,
-    onMerge
-  )(merge(runtime)(state))
+const effect: Effect = deps => async state => {
+  deps.setState(state)
+  await localForage.setItem(`${deps.bounty}.leads`, state)
+}
 
 /**
  * Handle to merge runtime with state
  */
-export type OnMerge = (merge: LeadProps) => Success
+export type OnMerge = (merge: LeadProps[]) => Prompt
 
 /**
- * Return effect which saves merge to local storage and state
+ * Return effect which saves to local storage and state
  * @param {LeadProps} merge Merged state with runtime
- * @returns {Success} Requirement prompt to set state and run effect
+ * @returns {Prompt} Prompt for Dependencies or errors
  */
-export const onMerge: OnMerge = (merge: LeadProps): Success => deps => {
-  const mutate = async () => {
-    deps.setState(prev => {
-      return Array.from(new Set([merge, ...prev]))
-    })
-    await localForage.setItem(`${deps.bounty}.leads`, merge)
-  }
-  return task.of(mutate())
+export const onMerge: OnMerge = (merge: LeadProps[]): Prompt => deps =>
+  task.of(effect(deps)(merge))
+
+/**
+ * Handle to decode runtime and merge with state
+ */
+export type OnRuntime = (
+  state: LeadProps[]
+) => (runtime: Runtime) => Error | Prompt
+
+/**
+ * Decode runtime and merge. Return errors or effectful function to run
+ * @param {LeadProps[]} state React component state
+ * @param {Runtime} runtime Runtime to add to state
+ */
+export const onRuntime: OnRuntime = function (state) {
+  return runtime =>
+    pipe(
+      merge(state)(runtime),
+      fold<Error, LeadProps[], Error | Prompt>(identity, onMerge)
+    )
 }
 
 /**
- * Effectual function for lead create
+ * Create an effectual function from a runtime message
  */
-type Create = (
-  state: LeadProps[]
-) => (event: MessageEvent) => Success | t.Errors | string
+type Create = (state: LeadProps[]) => (event: MessageEvent) => Result
 
 /**
- * Merge state with runtime
- * @param {LeadProps[]} state Existing state
- * @param {MessageEvent} event Runtime
- * @returns {Success | t.Errors | string} Effectful function to run on success, or existing state
+ * Effectful function
+ */
+type Result = Prompt | Error
+
+/**
+ * Cast a io-ts Lead decode error into a Node Error
+ * @param {t.Errors} error error to convert
+ */
+const contraError = (error: t.Errors) =>
+  Error(
+    error.reduce(
+      (prev, current): string => `${prev} ${current.context}:${current.value}`,
+      ''
+    )
+  )
+
+/**
+ * Create an effectful function to merge runtime with state, set state, and save to local storage
+ * @param {MessageEvent} event Runtime message
+ * @returns {Result} Prompt for Dependencies or decode/function errors
  */
 export const create: Create = state => event =>
   pipe(
     event.data,
     JSON.parse,
-    Lead.decode,
-    // this doesn't get rid of the either.
-    fold<t.Errors, Lead, Success | t.Errors | string>(
-      (error: t.Errors) => error,
-      onRuntime(state)
-    )
+    Runtime.decode,
+    fold<t.Errors, Runtime, Prompt | Error>(contraError, onRuntime(state))
   )
 
 /**
- * Check for successful merge, if function or errors
- * @param {Success | t.Errors | string} merge Result of merge state with runtime
- * @returns {boolean} True if merge is callable
+ * Checks for callable input to determine if Result is a Prompt
+ * @param {Result} result
+ * @returns {boolean} True if result is callable
  */
-export const isSuccess = (merge: Success | t.Errors | string): boolean =>
-  typeof merge === 'function'
+export const isPrompt = (result: Result): boolean =>
+  typeof result === 'function'
 
 /**
- * Run effect if callable
+ * Run result if callable
  * @param {Dependencies} deps Requirements for effects
- * @returns {Success | t.Errors | string}
+ * @param {Result} result result from a Create call
+ * @returns {Result} Constant correct result with effectful function called
  */
-export const run = (deps: Dependencies) => (
-  effect: Success | t.Errors | string
-) => {
-  if (isSuccess(effect)) {
-    void (effect as Success)(deps)()
+export const run = (deps: Dependencies) => (result: Result) => {
+  if (isPrompt(result)) {
+    void (result as Prompt)(deps)()
   }
-  return effect
+  return result
 }

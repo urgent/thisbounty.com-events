@@ -1,71 +1,81 @@
-import { Lead, merge, onRuntime, onMerge, create, isSuccess, run } from './effect';
+import { Runtime, merge, onRuntime, onMerge, create, isPrompt, run } from './effect';
 import { left, right, isLeft } from 'fp-ts/lib/Either'
-import { pipe } from 'fp-ts/lib/function'
-import { fold } from 'fp-ts/lib/Either'
+import { task } from 'fp-ts/lib/Task'
 
 
 const valid = { suit: "H", number: 2 };
 const misnumber = { suit: "H", number: "Z" };
 const missuit = { suit: "Z", number: "K" }
-const reader = { bounty: "1", setState: () => { } }
 const deps = { setState: () => { }, bounty: "1" }
-
+const data = JSON.stringify(valid);
+const event = { data }
 
 test('Merge right', () => {
-  expect(merge(valid)([])).toStrictEqual(right([valid]))
+  const unit = merge([])(valid);
+  const result = right([valid]);
+  expect(unit).toStrictEqual(result)
 });
 
 test('Merge left', () => {
-  expect(merge(valid)([valid])).toStrictEqual(left(`${valid.suit}${valid.number} already exists in state`))
+  const unit = merge([valid])(valid);
+  const error = left(Error(`${valid.suit}${valid.number} already exists in state.`));
+  expect(unit).toStrictEqual(error)
 });
 
 test('Decode -> Merge right', () => {
-  expect(merge(Lead.decode(valid))([])).toStrictEqual(right([Lead.decode(valid)]))
+  const unit = merge([])(Runtime.decode(valid));
+  const result = right([Runtime.decode(valid)]);
+  expect(unit).toStrictEqual(result)
 });
 
 test('Decode left', () => {
-  expect(isLeft(Lead.decode(misnumber))).toBeTruthy()
+  const suit = Runtime.decode(missuit);
+  expect(isLeft(suit)).toBeTruthy()
+
+  const number = Runtime.decode(misnumber);
+  expect(isLeft(number)).toBeTruthy()
 });
 
-test('onRuntime folds to onMerge', () => {
-  const _ = onRuntime([])(Lead.decode(valid));
-  const merge = onMerge(Lead.decode(valid));
-  expect(_.toString()).toEqual(merge.toString())
+test('onRuntime returns a Task', () => {
+  const prompt = onRuntime([])(valid);
+  expect(prompt).toEqual(expect.any(Function))
+  const error = onRuntime([valid])(valid)
+  expect(error instanceof Error).toBeTruthy()
 });
 
-test('onMerge task does not throw', () => {
-  expect(onMerge([valid])(reader)).not.toThrow()
+test('onMerge returns a Task', () => {
+  const prompt = onMerge([valid])
+  expect(prompt).toEqual(expect.any(Function))
 });
 
-test('create is the pipe of parse, decode fold onRuntime ', () => {
-  const _ = create([])({ data: JSON.stringify(valid) });
-  const build = pipe(JSON.stringify(valid), JSON.parse, Lead.decode, fold(() => { }, onRuntime([])));
-  expect(_.toString()).toEqual(build.toString())
+test('create returns a function', () => {
+  const unit = create([])(event)(deps);
+  expect(unit).toEqual(expect.any(Function))
 });
 
-test('isSuccess returns true with a function', () => {
-  expect(isSuccess((() => { }))).toEqual(true)
+test('isPrompt returns true with a function', () => {
+  expect(isPrompt((() => { }))).toEqual(true)
 });
 
-test('isSuccess returns false with an object', () => {
-  expect(isSuccess({})).toEqual(false)
+test('isPrompt returns false with an Error', () => {
+  expect(isPrompt(new Error())).toEqual(false)
 });
 
-test('run calls a function if success', (done) => {
+test('run calls a function on Prompt input', () => {
   expect(
     () => run(deps)((deps) => { throw ('Run!') })).toThrow()
-  done()
 });
 
-test('run returns error if error', (done) => {
-  const _ = run(deps)('error');
-  expect(_.toString()).toEqual('error')
-  done()
+test('run returns error if error', () => {
+  const error = new Error('error');
+  // runs side effect if not error and returns result
+  const _ = run(deps)(error);
+  expect(_).toEqual(error)
 })
 
-test('run returns effect if success', (done) => {
-  const effect = (deps) => () => { return 'Run!' };
-  const _ = run(deps)(effect);
-  expect(_.toString()).toEqual(effect.toString())
-  done()
+test('run returns results on Prompt input', () => {
+  const result = (prompt) => task.of(() => { return 'Run!' });
+  // runs side effect if not error and returns result
+  const _ = run(deps)(result);
+  expect(_(deps)()).toEqual(result(deps)())
 })

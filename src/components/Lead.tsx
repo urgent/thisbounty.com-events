@@ -22,29 +22,29 @@ let handle: (message: MessageEvent) => void
 
 export function Leadbar (props: LeadbarProps): React.ReactElement {
   const [leads, setLeads] = useState(props.leads)
-
-  handle = (message: MessageEvent) => {
-    return pipe(
-      // create an effect to set state and save to local storage
-      create(leads)(message),
-      // create return type is a union of io-ts error, string error, or a Task
-      // if no errors, run Task with required dependencies
-      // if errors, return errors. @TODO: if error emit in userland events or set state in local component.
-      run({ bounty: props.bounty, setState: setLeads })
-    )
-  }
+  console.log(`render, includes state`)
+  console.log(leads)
 
   useEffect(() => {
-    socket.onmessage = message => {
-      handle(message)
-    }
+    handle = (message: MessageEvent) =>
+      pipe(
+        // create an effect to set state and save to local storage
+        create(leads)(message),
+        // create return type is a union of io-ts error, string error, or a Task
+        // if no errors, run Task with required dependencies
+        // if errors, return errors. @TODO: if error emit in userland events or set state in local component.
+        run({ bounty: props.bounty, setState: setLeads })
+      )
+
+    socket.onmessage = handle
+
     eventEmitter.on('NEW_LEAD', handle)
     // remove listeners on each render
     return () => {
-      socket.removeEventListener('message', handle)
-      eventEmitter.off(`CREATE_LEAD`, handle)
+      socket.removeEventListener('NEW_LEAD', handle)
+      eventEmitter.off(`NEW_LEAD`, handle)
     }
-  }, [])
+  }, [leads])
 
   return (
     <>

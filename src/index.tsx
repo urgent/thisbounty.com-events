@@ -66,7 +66,12 @@ diezDs.attach((ds: DesignLanguage) => {
           user={1}
         />
         <Leadbar
-          leads={[{ suit: 'H', number: 'K' }]}
+          leads={[
+            { suit: 'H', number: 'A' },
+            { suit: 'H', number: 'K' },
+            { suit: 'H', number: 'Q' },
+            { suit: 'H', number: 'J' }
+          ]}
           bounty={'1'}
           visible={true}
         />

@@ -1,0 +1,146 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<svg
+   xmlns:dc="http://purl.org/dc/elements/1.1/"
+   xmlns:cc="http://creativecommons.org/ns#"
+   xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#"
+   xmlns:svg="http://www.w3.org/2000/svg"
+   xmlns="http://www.w3.org/2000/svg"
+   xmlns:sodipodi="http://sodipodi.sourceforge.net/DTD/sodipodi-0.dtd"
+   xmlns:inkscape="http://www.inkscape.org/namespaces/inkscape"
+   sodipodi:docname="heal badge.svg"
+   inkscape:version="1.0 (4035a4fb49, 2020-05-01)"
+   id="svg701"
+   version="1.1"
+   viewBox="0 0 210 297"
+   height="297mm"
+   width="210mm">
+  <defs
+     id="defs695">
+    <filter
+       id="filter1624"
+       inkscape:label="Drop Shadow"
+       style="color-interpolation-filters:sRGB;">
+      <feFlood
+         id="feFlood1614"
+         result="flood"
+         flood-color="rgb(0,0,0)"
+         flood-opacity="0.498039" />
+      <feComposite
+         id="feComposite1616"
+         result="composite1"
+         operator="in"
+         in2="SourceGraphic"
+         in="flood" />
+      <feGaussianBlur
+         id="feGaussianBlur1618"
+         result="blur"
+         stdDeviation="7"
+         in="composite1" />
+      <feOffset
+         id="feOffset1620"
+         result="offset"
+         dy="7"
+         dx="7" />
+      <feComposite
+         id="feComposite1622"
+         result="composite2"
+         operator="over"
+         in2="offset"
+         in="SourceGraphic" />
+    </filter>
+    <filter
+       id="filter5857"
+       inkscape:label="Drop Shadow"
+       style="color-interpolation-filters:sRGB;">
+      <feFlood
+         id="feFlood5847"
+         result="flood"
+         flood-color="rgb(0,0,0)"
+         flood-opacity="0.498039" />
+      <feComposite
+         id="feComposite5849"
+         result="composite1"
+         operator="out"
+         in2="SourceGraphic"
+         in="flood" />
+      <feGaussianBlur
+         id="feGaussianBlur5851"
+         result="blur"
+         stdDeviation="25"
+         in="composite1" />
+      <feOffset
+         id="feOffset5853"
+         result="offset"
+         dy="-15"
+         dx="-15" />
+      <feComposite
+         id="feComposite5855"
+         result="composite2"
+         operator="atop"
+         in2="SourceGraphic"
+         in="offset" />
+    </filter>
+  </defs>
+  <sodipodi:namedview
+     inkscape:document-rotation="0"
+     inkscape:window-maximized="1"
+     inkscape:window-y="0"
+     inkscape:window-x="0"
+     inkscape:window-height="1015"
+     inkscape:window-width="1920"
+     showgrid="false"
+     inkscape:current-layer="layer1"
+     inkscape:document-units="mm"
+     inkscape:cy="1073.1161"
+     inkscape:cx="-601.58395"
+     inkscape:zoom="0.28300781"
+     inkscape:pageshadow="2"
+     inkscape:pageopacity="0.0"
+     borderopacity="1.0"
+     bordercolor="#666666"
+     pagecolor="#ffffff"
+     id="base" />
+  <metadata
+     id="metadata698">
+    <rdf:RDF>
+      <cc:Work
+         rdf:about="">
+        <dc:format>image/svg+xml</dc:format>
+        <dc:type
+           rdf:resource="http://purl.org/dc/dcmitype/StillImage" />
+        <dc:title></dc:title>
+      </cc:Work>
+    </rdf:RDF>
+  </metadata>
+  <g
+     id="layer1"
+     inkscape:groupmode="layer"
+     inkscape:label="Layer 1">
+    <g
+       transform="translate(-0.52916663,3.1750001)"
+       style="filter:url(#filter1624)"
+       id="g1592">
+      <g
+         id="g1612">
+        <path
+           style="fill:#fffffc;fill-opacity:1;stroke:#fffffe;stroke-width:32.31663513;stroke-linejoin:round;stroke-opacity:1"
+           inkscape:connector-curvature="0"
+           id="path904"
+           d="M 105.81487,114.30421 64.022349,27.607016 h 78.361081 z" />
+        <path
+           style="fill:#fffffc;fill-opacity:1;stroke-width:10.77221107"
+           inkscape:connector-curvature="0"
+           id="path906"
+           d="m 105.81546,263.61699 c 46.16255,0 83.58502,-43.12846 83.58502,-96.33122 0,-53.201 -37.42247,-96.329935 -83.58502,-96.329935 -46.162768,0 -83.585074,43.128935 -83.585074,96.329935 0,53.20276 37.422306,96.33122 83.585074,96.33122 z" />
+      </g>
+    </g>
+    <g
+       style="fill:#ff0000;stroke:#000000;stroke-width:0;stroke-opacity:1;filter:url(#filter5857)"
+       id="use4677"
+       transform="matrix(-0.19479102,-0.20052254,0.19479102,-0.20052254,104.75653,220.44254)">
+      <path
+         id="path5567"
+         d="M 0,200 V 0 h 200 a 100,100 90 0 1 0,200 100,100 90 0 1 -200,0 z" />
+    </g>
+  </g>
+</svg>
