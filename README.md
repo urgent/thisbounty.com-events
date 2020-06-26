@@ -150,86 +150,14 @@ Number of programmers working on this bounty.
 
 ### Developer Hurt Log
 
-Logged hurt events during development:
+Health earned during development. See issues for badges.
 
-- Diez extract from Figma for SVG. Heal by exporting SVG from figma.
-
-- Github Package Registry. Need setup to publish design guide.
-
-- Design tokens not extracted by diez, for instance borders
-
-- Diez compile to webpack build. Need to add to webpack externals to build.
-
-- Storybook does not detect compiled diez module from Github package registry
-
-- Event emitter instead of context or lifting up state to prevent rerenders
-
-- Sass for storybook, needed preset
-
-- diez integration into webpack for sass
-
-- GPR support for Netlify
-
-- Webpack html plugin instead of html template from Typescript, netlify build directory
-
-- Diez remove lottie
-
-- Typescript demo, need dev server
-
-- Copy static files
-
-- Diez source map errors, need exclude in config
-
-- Need vs code debug
-
-- Need tests, needed sourcemaps in webpack config
-
-- Launch storybook and test and dev server on start dev
-
-- Use functions to help with debugging instead of callbacks
-
-- Need both js and css integration for diez. js for body background color. css for sass modules.
-
-- Dat bundle size. 1.1 MB way too large.
-
-- Nest.js platform too much, container registry, host, database, auth, schema stitching
-
-- React in html template from CDN, switch for development build.
-
-- Avoid double include in index html. Webpack will add main.
-
-- Function composition for effects, for testing.
-
-- Removing event listeners in useEffect
-
-- Anonymous component in react profiler. How to avoid. displayName property
-
-- setState(() => {}) function version for extra time in useEffect
-
-- [Efficient render for events](https://github.com/urgent/thisbounty.com/issues/19#issuecomment-644483635)
-
-- io-ts brings fp-ts, small bundle, use that
-
-- fp principles, either
-
-- function composition. Test for pipe.
-
-- Write types for clarity
-
-- folding either, using separate handles
-
-- Task instead of io-ts
-
-- Reader instead of passing params, setState only on success, to avoid reconciliation. setState would need to be curried and pass to every fold
-
-- state in useEffect deps list
-
-- unit testing function composition. Best to test the output of the unit, not the composition
-
-- throwing exception inside a jest async. Best to test if function is returned.
-
-- except.any instead of type of.
+1.5
+2.1
+3.15
+4.7
 
 ### Coming Soon
 
+- Health auto heal knowledge base from github issues
 - Automatic crypto payout on test pass/fail.

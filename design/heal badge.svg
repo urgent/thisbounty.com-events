@@ -7,6 +7,9 @@
    xmlns="http://www.w3.org/2000/svg"
    xmlns:sodipodi="http://sodipodi.sourceforge.net/DTD/sodipodi-0.dtd"
    xmlns:inkscape="http://www.inkscape.org/namespaces/inkscape"
+   inkscape:export-ydpi="2.7367003"
+   inkscape:export-xdpi="2.7367003"
+   inkscape:export-filename="/home/steve/src/thisbounty.com/design/heart.png"
    sodipodi:docname="heal badge.svg"
    inkscape:version="1.0 (4035a4fb49, 2020-05-01)"
    id="svg701"
@@ -108,7 +111,7 @@
         <dc:format>image/svg+xml</dc:format>
         <dc:type
            rdf:resource="http://purl.org/dc/dcmitype/StillImage" />
-        <dc:title></dc:title>
+        <dc:title />
       </cc:Work>
     </rdf:RDF>
   </metadata>
@@ -137,7 +140,7 @@
     <g
        style="fill:#ff0000;stroke:#000000;stroke-width:0;stroke-opacity:1;filter:url(#filter5857)"
        id="use4677"
-       transform="matrix(-0.19479102,-0.20052254,0.19479102,-0.20052254,104.75653,220.44254)">
+       transform="matrix(-0.19479102,-0.20052254,0.19479102,-0.20052254,105.2857,219.3842)">
       <path
          id="path5567"
          d="M 0,200 V 0 h 200 a 100,100 90 0 1 0,200 100,100 90 0 1 -200,0 z" />
