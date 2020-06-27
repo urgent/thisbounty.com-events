@@ -1,7 +1,13 @@
 @import './sass/breakpoints.mixin.scss';
 
+body {
+  overflow-x: hidden;
+}
+
 .app {
   display: grid;
+  position: fixed;
+  width: 100%;
   font-family: 'Roboto', 'sans';
 
   @include desktop {
@@ -17,5 +23,18 @@
   @include portrait {
     grid-template-columns: inherit;
     justify-content: inherit;
+  }
+
+  #content {
+    display: grid;
+    grid-template-columns: [navbar] 60px [bounties] auto [leadbar] 60px;
+  }
+
+  #navbar {
+    grid-column: navbar;
+  }
+
+  #bounties {
+    grid-column: bounties;
   }
 }

@@ -24,5 +24,3 @@ export const View = (props: ViewProps): React.ReactElement => (
     />
   </div>
 )
-
-View.displayName = 'ProgrammerLevel View'

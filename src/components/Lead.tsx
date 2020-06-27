@@ -2,7 +2,21 @@ import React, { useState, useEffect } from 'react'
 import eventEmitter from '../utilities/eventEmitter'
 import socket from '../utilities/socket'
 import { create, run } from './Lead/effect'
+import styles from './Lead/styles.module.scss'
 import { pipe } from 'fp-ts/lib/function'
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
+import { faHeart } from '@fortawesome/free-solid-svg-icons/faHeart'
+import club from './Lead/club'
+import diamond from './Lead/diamond'
+import spade from './Lead/spade'
+
+const suit = {
+  H: <FontAwesomeIcon icon={faHeart} className={styles.heart} />,
+  C: club,
+  D: diamond,
+  S: spade,
+  X: '*'
+}
 
 export interface LeadbarProps {
   leads: LeadProps[]
@@ -22,8 +36,6 @@ let handle: (message: MessageEvent) => void
 
 export function Leadbar (props: LeadbarProps): React.ReactElement {
   const [leads, setLeads] = useState(props.leads)
-  console.log(`render, includes state`)
-  console.log(leads)
 
   useEffect(() => {
     handle = (message: MessageEvent) =>
@@ -31,8 +43,8 @@ export function Leadbar (props: LeadbarProps): React.ReactElement {
         // create an effect to set state and save to local storage
         create(leads)(message),
         // create return type is a union of io-ts error, string error, or a Task
-        // if no errors, run Task with required dependencies
-        // if errors, return errors. @TODO: if error emit in userland events or set state in local component.
+        // if no error, run Task with required dependencies
+        // if lead decode or duplicate error, return error without running side effects
         run({ bounty: props.bounty, setState: setLeads })
       )
 
@@ -47,14 +59,24 @@ export function Leadbar (props: LeadbarProps): React.ReactElement {
   }, [leads])
 
   return (
-    <>
+    <div id={styles.leadbar}>
       {leads.map((lead: LeadProps) => (
-        <div
-          key={`${lead.suit}${lead.number}`}
-          style={{ color: '#FFF' }}
-        >{`${lead.suit}${lead.number}`}</div>
+        <Lead {...lead} />
       ))}
-    </>
+    </div>
+  )
+}
+
+export function Lead (props: LeadProps) {
+  return (
+    <button
+      className={styles.lead}
+      key={`${props.suit}${props.number}`}
+      style={{ color: '#FFF' }}
+    >
+      {suit[props.suit]}&nbsp;
+      {`${props.number}`}
+    </button>
   )
 }
 

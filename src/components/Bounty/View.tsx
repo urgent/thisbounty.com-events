@@ -31,5 +31,3 @@ export function View (props: ViewProps): React.ReactElement {
     </div>
   )
 }
-
-View.displayName = 'Bounty View'
