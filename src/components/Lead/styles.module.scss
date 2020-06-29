@@ -1,0 +1,32 @@
+@import 'diez-thisbounty-styles/static/styles.scss';
+
+#leadbar {
+  position: absolute;
+  top: 60px;
+  right: 0px;
+
+  .lead {
+    display: block;
+    scroll-snap-align: start;
+    background-color: $thisbounty-com-style-guide-colors-secondary;
+    border-radius: 16px;
+    border: 1px solid $thisbounty-com-style-guide-colors-primary;
+    box-shadow: $thisbounty-com-style-guide-shadows-render;
+    width: 72px;
+    height: 32px;
+    margin: 0px -24px 4px 10px;
+    line-height: 24px;
+    padding-right: 24px;
+    &:hover {
+      cursor: pointer;
+      text-decoration: underline;
+    }
+    svg {
+      width: 16px;
+      height: 14px;
+    }
+    .heart {
+      color: $thisbounty-com-style-guide-colors-red;
+    }
+  }
+}

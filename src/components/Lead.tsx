@@ -18,10 +18,16 @@ const suit = {
   X: '*'
 }
 
+/**
+ 
+LeadbarProps passed as an array.
+Find bounty id.
+
+ */
+
 export interface LeadbarProps {
-  leads: LeadProps[]
+  leads: Record<string, LeadProps[]>
   bounty: string
-  visible: boolean
 }
 
 /**
@@ -33,15 +39,16 @@ export interface LeadProps {
 }
 
 let handle: (message: MessageEvent) => void
-
+let bookmark = (message: MessageEvent) => console.log(message)
 export function Leadbar (props: LeadbarProps): React.ReactElement {
   const [leads, setLeads] = useState(props.leads)
+  const [bounty, setBounty] = useState(props.bounty)
 
   useEffect(() => {
     handle = (message: MessageEvent) =>
       pipe(
         // create an effect to set state and save to local storage
-        create(leads)(message),
+        create(leads[bounty])(message),
         // create return type is a union of io-ts error, string error, or a Task
         // if no error, run Task with required dependencies
         // if lead decode or duplicate error, return error without running side effects
@@ -51,17 +58,19 @@ export function Leadbar (props: LeadbarProps): React.ReactElement {
     socket.onmessage = handle
 
     eventEmitter.on('NEW_LEAD', handle)
+    eventEmitter.on('BOOKMARK_LEAD', bookmark)
     // remove listeners on each render
     return () => {
       socket.removeEventListener('NEW_LEAD', handle)
       eventEmitter.off(`NEW_LEAD`, handle)
+      eventEmitter.off(`BOOKMARK_LEAD`, handle)
     }
   }, [leads])
 
   return (
     <div id={styles.leadbar}>
-      {leads.map((lead: LeadProps) => (
-        <Lead {...lead} />
+      {leads[1].map((lead: LeadProps) => (
+        <Lead {...lead} key={`${lead.suit}${lead.number}`} />
       ))}
     </div>
   )
@@ -71,8 +80,20 @@ export function Lead (props: LeadProps) {
   return (
     <button
       className={styles.lead}
-      key={`${props.suit}${props.number}`}
       style={{ color: '#FFF' }}
+      onClick={() => {
+        socket.send(
+          JSON.stringify({
+            event: 'BOOKMARK_LEAD',
+            suit: props.suit,
+            number: props.number
+          })
+        )
+        eventEmitter.emit(
+          'BOOKMARK_LEAD',
+          JSON.stringify({ suit: props.suit, number: props.number })
+        )
+      }}
     >
       {suit[props.suit]}&nbsp;
       {`${props.number}`}

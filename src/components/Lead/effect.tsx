@@ -56,7 +56,7 @@ export type Prompt = Reader<Dependencies, Task<void>>
  */
 export interface Dependencies {
   bounty: string
-  setState: React.Dispatch<React.SetStateAction<LeadProps[]>>
+  setState: React.Dispatch<React.SetStateAction<Record<string, LeadProps[]>>>
 }
 
 /**
@@ -70,8 +70,8 @@ export type Effect = (deps: Dependencies) => (state: LeadProps[]) => void
  * @param {LeadProps[]} state State to set and save to local storage
  */
 const effect: Effect = deps => async state => {
-  deps.setState(state)
-  await localForage.setItem(`${deps.bounty}.leads`, state)
+  deps.setState({ [deps['bounty']]: state })
+  await localForage.setItem(`leads.${deps.bounty}`, state)
 }
 
 /**
