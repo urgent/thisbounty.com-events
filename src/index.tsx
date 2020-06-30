@@ -48,6 +48,11 @@ diezDs.attach((ds: DesignLanguage) => {
               maxmoney={3}
               programmer={50}
               user={1}
+              click={() =>
+                eventEmitter.emit('CLICK_BOUNTY', {
+                  data: JSON.stringify({ id: '1' })
+                })
+              }
             />
             <Bounty
               id='2'

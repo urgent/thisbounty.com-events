@@ -40,6 +40,7 @@ export interface LeadProps {
 
 let handle: (message: MessageEvent) => void
 let bookmark = (message: MessageEvent) => console.log(message)
+let clickbounty = (message: MessageEvent) => console.log(message)
 export function Leadbar (props: LeadbarProps): React.ReactElement {
   const [leads, setLeads] = useState(props.leads)
   const [bounty, setBounty] = useState(props.bounty)
@@ -56,14 +57,15 @@ export function Leadbar (props: LeadbarProps): React.ReactElement {
       )
 
     socket.onmessage = handle
-
     eventEmitter.on('NEW_LEAD', handle)
     eventEmitter.on('BOOKMARK_LEAD', bookmark)
+    eventEmitter.on('CLICK_BOUNTY', clickbounty)
     // remove listeners on each render
     return () => {
       socket.removeEventListener('NEW_LEAD', handle)
       eventEmitter.off(`NEW_LEAD`, handle)
-      eventEmitter.off(`BOOKMARK_LEAD`, handle)
+      eventEmitter.off(`BOOKMARK_LEAD`, bookmark)
+      eventEmitter.off(`CLICK_BOUNTY`, clickbounty)
     }
   }, [leads])
 

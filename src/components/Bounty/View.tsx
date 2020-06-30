@@ -10,11 +10,12 @@ export interface ViewProps {
   programmer: React.ReactElement
   user: React.ReactElement
   icon?: React.ReactElement
+  click?: () => void
 }
 
 export function View (props: ViewProps): React.ReactElement {
   return (
-    <div className={styles.bounty}>
+    <div className={styles.bounty} onClick={props.click}>
       <div className={styles.image}>{props.image}</div>
       <div className={styles.stats}>
         <div className={`${styles.title} ${styles.bar}`}>

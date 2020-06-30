@@ -79,3 +79,17 @@ test('run returns results on Prompt input', () => {
   const _ = run(deps)(result);
   expect(_(deps)()).toEqual(result(deps)())
 })
+
+test('effect changes for specified bounty by id', () => {
+  let state = { bounty: "1", leads: { "1": [{ suit: "H", number: "K" }, { suit: "H", number: "A" }], "2": [{ suit: "D", number: "K" }, { suit: "D", number: "A" }] } }
+  const setState = (update) => state.leads = Object.assign({}, state.leads, update)
+  const unit = create([])(event)({ bounty: "1", setState });
+  expect(state.leads["1"]).toEqual([{ suit: "H", number: 2 }]);
+});
+
+test('effect leaves alone bounties not specified by id', () => {
+  let state = { bounty: "1", leads: { "1": [{ suit: "H", number: "K" }, { suit: "H", number: "A" }], "2": [{ suit: "D", number: "K" }, { suit: "D", number: "A" }] } }
+  const setState = (update) => state.leads = Object.assign({}, state.leads, update)
+  const unit = create([])(event)({ bounty: "1", setState });
+  expect(state.leads["2"]).toEqual([{ suit: "D", number: "K" }, { suit: "D", number: "A" }]);
+});
