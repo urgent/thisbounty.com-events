@@ -1,6 +1,7 @@
 @import './sass/breakpoints.mixin.scss';
 
-body {
+html {
+  overflow-y: scroll;
   overflow-x: hidden;
 }
 
