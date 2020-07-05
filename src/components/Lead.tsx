@@ -1,9 +1,9 @@
 import React, { useState, useEffect } from 'react'
 import eventEmitter from '../utilities/eventEmitter'
 import socket from '../utilities/socket'
-import { create, run } from './Lead/effect'
+import { create } from './Lead/create.effect'
+import { filter } from './Lead/filter.effect'
 import styles from './Lead/styles.module.scss'
-import { pipe } from 'fp-ts/lib/function'
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 import { faHeart } from '@fortawesome/free-solid-svg-icons/faHeart'
 import club from './Lead/club'
@@ -38,40 +38,37 @@ export interface LeadProps {
   number: number | 'A' | 'K' | 'Q' | 'J'
 }
 
-let handle: (message: MessageEvent) => void
-let bookmark = (message: MessageEvent) => console.log(message)
-let clickbounty = (message: MessageEvent) => console.log(message)
+let _create: (lead: MessageEvent) => void
+let _filter: (lead: MessageEvent) => void
+let _bookmark: (lead: MessageEvent) => void
+
 export function Leadbar (props: LeadbarProps): React.ReactElement {
-  const [leads, setLeads] = useState(props.leads)
+  const [leads, setLeads] = useState(
+    Object.assign({ '1': [], '2': [], '3': [], '4': [] }, props.leads)
+  )
   const [bounty, setBounty] = useState(props.bounty)
-
+  const deps = { bounty, setLeads, setBounty }
   useEffect(() => {
-    handle = (message: MessageEvent) =>
-      pipe(
-        // create an effect to set state and save to local storage
-        create(leads[bounty])(message),
-        // create return type is a union of io-ts error, string error, or a Task
-        // if no error, run Task with required dependencies
-        // if lead decode or duplicate error, return error without running side effects
-        run({ bounty: props.bounty, setState: setLeads })
-      )
+    _create = create(leads[bounty])(deps)
 
-    socket.onmessage = handle
-    eventEmitter.on('NEW_LEAD', handle)
-    eventEmitter.on('BOOKMARK_LEAD', bookmark)
-    eventEmitter.on('CLICK_BOUNTY', clickbounty)
+    _filter = filter(deps)
+    _bookmark = event => console.log(event)
+    socket.onmessage = _create
+    eventEmitter.on('NEW_LEAD', _create)
+    eventEmitter.on('BOOKMARK_LEAD', _bookmark)
+    eventEmitter.on('CLICK_BOUNTY', _filter)
     // remove listeners on each render
     return () => {
-      socket.removeEventListener('NEW_LEAD', handle)
-      eventEmitter.off(`NEW_LEAD`, handle)
-      eventEmitter.off(`BOOKMARK_LEAD`, bookmark)
-      eventEmitter.off(`CLICK_BOUNTY`, clickbounty)
+      socket.removeEventListener('NEW_LEAD', _create)
+      eventEmitter.off(`NEW_LEAD`, _create)
+      eventEmitter.off(`BOOKMARK_LEAD`, _bookmark)
+      eventEmitter.off(`CLICK_BOUNTY`, _filter)
     }
   }, [leads])
 
   return (
     <div id={styles.leadbar}>
-      {leads[1].map((lead: LeadProps) => (
+      {leads[bounty].map((lead: LeadProps) => (
         <Lead {...lead} key={`${lead.suit}${lead.number}`} />
       ))}
     </div>

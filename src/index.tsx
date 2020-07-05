@@ -64,6 +64,11 @@ diezDs.attach((ds: DesignLanguage) => {
               maxmoney={3}
               programmer={50}
               user={1}
+              click={() =>
+                eventEmitter.emit('CLICK_BOUNTY', {
+                  data: JSON.stringify({ id: '2' })
+                })
+              }
             />
             <Bounty
               id='3'
@@ -75,6 +80,11 @@ diezDs.attach((ds: DesignLanguage) => {
               maxmoney={3}
               programmer={50}
               user={1}
+              click={() =>
+                eventEmitter.emit('CLICK_BOUNTY', {
+                  data: JSON.stringify({ id: '3' })
+                })
+              }
             />
             <Bounty
               id='4'
@@ -130,7 +140,8 @@ diezDs.attach((ds: DesignLanguage) => {
             { suit: 'S', number: 9 },
             { suit: 'C', number: 9 },
             { suit: 'D', number: 9 }
-          ]
+          ],
+          '2': [{ suit: 'D', number: 9 }]
         }}
       />
     </DSContext.Provider>,
