@@ -22,6 +22,7 @@ export const contraError = (error: t.Errors) =>
  */
 export interface Dependencies {
   bounty: string
+  leads: Record<string, LeadProps[]>
   setLeads: React.Dispatch<React.SetStateAction<Record<string, LeadProps[]>>>
   setBounty: React.Dispatch<React.SetStateAction<string>>
 }

@@ -52,17 +52,17 @@ test('make returns a function', () => {
   expect(unit).toEqual(expect.any(Function))
 });
 
-test('action changes for specified bounty by id', () => {
+test('action mutates states for specified bounty by id', () => {
   let state = { bounty: "1", leads: { "1": [{ suit: "H", number: "K" }, { suit: "H", number: "A" }], "2": [{ suit: "D", number: "K" }, { suit: "D", number: "A" }] } }
-  const setLeads = (update) => state.leads = Object.assign({}, state.leads, update);
+  const setLeads = (update) => state.leads = update;
   // first parameter is empty. state.leads["1"] overwritten. Used here, not in production, for easier equality test
   create([])({ bounty: "1", setLeads, setBounty: () => { } })(event);
   expect(state.leads["1"]).toEqual([{ suit: "H", number: 2 }]);
 });
 
-test('effect leaves alone bounties not specified by id', () => {
+test('action isolates state mutation by bounty', () => {
   let state = { bounty: "1", leads: { "1": [{ suit: "H", number: "K" }, { suit: "H", number: "A" }], "2": [{ suit: "D", number: "K" }, { suit: "D", number: "A" }] } }
-  const setLeads = (update) => state.leads = Object.assign({}, state.leads, update)
+  const setLeads = (update) => state.leads = update
   create([])(event)({ bounty: "1", setLeads });
   expect(state.leads["2"]).toEqual([{ suit: "D", number: "K" }, { suit: "D", number: "A" }]);
 });

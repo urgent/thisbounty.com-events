@@ -17,7 +17,7 @@ export type Action = (deps: Dependencies) => (state: LeadProps[]) => void
  * @param {LeadProps[]} state State to set and save to local storage
  */
 const action: Action = deps => async state => {
-  deps.setLeads({ [deps['bounty']]: state })
+  deps.setLeads(Object.assign({}, deps.leads, { [deps['bounty']]: state }))
   await localForage.setItem(`leads.${deps.bounty}`, state)
 }
 
