@@ -10,13 +10,25 @@ export interface ViewProps {
   programmer: React.ReactElement
   user: React.ReactElement
   icon?: React.ReactElement
+  center?: boolean
   click?: () => void
 }
 
+function style (props: ViewProps) {
+  return (id: string) => {
+    if (props.center && id === 'image') {
+      return `${styles.image} ${styles.center}`
+    }
+    return styles.image
+  }
+}
+
 export function View (props: ViewProps): React.ReactElement {
+  const _style = style(props)
+
   return (
     <div className={styles.bounty} onClick={props.click}>
-      <div className={styles.image}>{props.image}</div>
+      <div className={_style('image')}>{props.image}</div>
       <div className={styles.stats}>
         <div className={`${styles.title} ${styles.bar}`}>
           <h2>{props.title}</h2> <h3>#{props.id}</h3>

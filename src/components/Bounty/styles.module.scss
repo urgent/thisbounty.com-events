@@ -2,7 +2,7 @@
 
 div {
   .bounty {
-    &:nth-child(2) {
+    &:nth-child(1) {
       border-radius: 10px 10px 0 0;
 
       img {
@@ -25,6 +25,10 @@ div {
     grid-column: image;
     width: 128px;
     height: 192px;
+    &.center {
+      background: black;
+      display: flex;
+    }
   }
 
   .stats {

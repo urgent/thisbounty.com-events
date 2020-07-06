@@ -17,6 +17,7 @@ export interface BountyProps {
   maxmoney: number
   programmer?: number
   user?: number
+  center?: boolean
   click?: () => void
 }
 
@@ -34,6 +35,7 @@ export function Bounty (props: BountyProps): React.ReactElement {
       user={<UserLevel degree={props.user} />}
       icon={<FontAwesomeIcon icon={faGithub} />}
       click={props.click}
+      center={props.center}
     />
   )
 }

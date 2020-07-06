@@ -152,9 +152,9 @@ Number of programmers working on this bounty.
 
 Health earned during development. See issues for badges.
 
-1.5
+1.6
 2.1
-3.17
+3.19
 4.7
 
 ### Coming Soon

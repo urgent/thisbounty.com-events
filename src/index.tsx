@@ -40,13 +40,13 @@ diezDs.attach((ds: DesignLanguage) => {
           <div id={styles.bounties}>
             <Bounty
               id='1'
-              title='Test'
+              title='Diez'
               image='/static/King of Hearts.svg'
               life={2}
               maxlife={3}
-              money={2}
-              maxmoney={3}
-              programmer={50}
+              money={1}
+              maxmoney={4}
+              programmer={25}
               user={1}
               click={() =>
                 eventEmitter.emit('CLICK_BOUNTY', {
@@ -56,13 +56,13 @@ diezDs.attach((ds: DesignLanguage) => {
             />
             <Bounty
               id='2'
-              title='Test2'
-              image='/static/King of Hearts.svg'
+              title='Storybook'
+              image='/static/safe camp.jpg'
               life={2}
               maxlife={3}
-              money={2}
-              maxmoney={3}
-              programmer={50}
+              money={1}
+              maxmoney={4}
+              programmer={25}
               user={1}
               click={() =>
                 eventEmitter.emit('CLICK_BOUNTY', {
@@ -72,12 +72,13 @@ diezDs.attach((ds: DesignLanguage) => {
             />
             <Bounty
               id='3'
-              title='Test3'
-              image='/static/King of Hearts.svg'
-              life={2}
+              title='React'
+              image='/static/Pirate_Flag_of_Blackbeard_(Edward_Teach).svg'
+              center={true}
+              life={3}
               maxlife={3}
               money={2}
-              maxmoney={3}
+              maxmoney={4}
               programmer={50}
               user={1}
               click={() =>
@@ -88,14 +89,19 @@ diezDs.attach((ds: DesignLanguage) => {
             />
             <Bounty
               id='4'
-              title='Test4'
-              image='/static/King of Hearts.svg'
-              life={2}
+              title='Websocket'
+              image='/static/nc wyeth treasure island.jpeg'
+              life={1}
               maxlife={3}
-              money={2}
-              maxmoney={3}
-              programmer={50}
+              money={3}
+              maxmoney={4}
+              programmer={25}
               user={1}
+              click={() =>
+                eventEmitter.emit('CLICK_BOUNTY', {
+                  data: JSON.stringify({ id: '4' })
+                })
+              }
             />
           </div>
         </div>
@@ -103,44 +109,7 @@ diezDs.attach((ds: DesignLanguage) => {
       <Leadbar
         bounty={'1'}
         leads={{
-          1: [
-            { suit: 'H', number: 'A' },
-            { suit: 'S', number: 'K' },
-            { suit: 'C', number: 'Q' },
-            { suit: 'D', number: 'J' },
-            { suit: 'H', number: 2 },
-            { suit: 'S', number: 2 },
-            { suit: 'C', number: 2 },
-            { suit: 'D', number: 2 },
-            { suit: 'H', number: 3 },
-            { suit: 'S', number: 3 },
-            { suit: 'C', number: 3 },
-            { suit: 'D', number: 3 },
-            { suit: 'H', number: 4 },
-            { suit: 'S', number: 4 },
-            { suit: 'C', number: 4 },
-            { suit: 'D', number: 4 },
-            { suit: 'H', number: 5 },
-            { suit: 'S', number: 5 },
-            { suit: 'C', number: 5 },
-            { suit: 'D', number: 5 },
-            { suit: 'H', number: 6 },
-            { suit: 'S', number: 6 },
-            { suit: 'C', number: 6 },
-            { suit: 'D', number: 6 },
-            { suit: 'H', number: 7 },
-            { suit: 'S', number: 7 },
-            { suit: 'C', number: 7 },
-            { suit: 'D', number: 7 },
-            { suit: 'H', number: 8 },
-            { suit: 'S', number: 8 },
-            { suit: 'C', number: 8 },
-            { suit: 'D', number: 8 },
-            { suit: 'H', number: 9 },
-            { suit: 'S', number: 9 },
-            { suit: 'C', number: 9 },
-            { suit: 'D', number: 9 }
-          ],
+          '1': [{ suit: 'H', number: 'K' }],
           '2': [{ suit: 'D', number: 9 }]
         }}
       />
