@@ -1,4 +1,4 @@
-const socket = new WebSocket('ws://echo.websocket.org')
+const socket = new WebSocket('wss://echo.websocket.org')
 
 socket.onopen = function () {
   //socket.send(JSON.stringify({ CREATE_LEAD: 'echo.websocket.org connected' }))
