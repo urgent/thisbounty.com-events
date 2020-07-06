@@ -31,12 +31,13 @@ export const Moneybar = (props: MoneybarProps): React.ReactElement => {
             <path
               fill='url(#linearGradient4670)'
               d={`M14 14h${(money / max) *
-                160}c5.059-.106 4.081 8.083-.793 7H14v-7z`}
+                16 *
+                props.max}c5.059-.106 4.081 8.083-.793 7H14v-7z`}
             ></path>
             <path
               stroke='#fff'
               strokeWidth='2'
-              d='M14 13h-1v9h159.5a4.5 4.5 0 000-9z'
+              d={`M14 13h-1v9h${16 * props.max - 0.5}a4.5 4.5 0 000-9z`}
             ></path>
           </g>
           <path
