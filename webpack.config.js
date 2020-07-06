@@ -26,7 +26,7 @@ module.exports = {
       patterns: [{ from: 'static', to: 'static' }, { from: './static/favicon/' }]
     }),
   ],
-  watch: true,
+  watch: false,
   module: {
     noParse: /node_modules\/localforage\/dist\/localforage.js/,
     rules: [
