@@ -47,8 +47,6 @@ export function Leadbar (props: LeadbarProps): React.ReactElement {
     Object.assign({ '1': [], '2': [], '3': [], '4': [] }, props.leads)
   )
   const [bounty, setBounty] = useState(props.bounty)
-  console.log(leads)
-  console.log(bounty)
 
   useEffect(() => {
     const deps = { leads, bounty, setLeads, setBounty }

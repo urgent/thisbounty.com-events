@@ -34,7 +34,33 @@ diezDs.attach((ds: DesignLanguage) => {
                 })
               }
             >
-              Click
+              LEAD
+            </button>
+            <br />
+            <br />
+            <button
+              onClick={() =>
+                eventEmitter.emit('HEAL', {
+                  data: JSON.stringify({
+                    bounty: '1'
+                  })
+                })
+              }
+            >
+              HEAL
+            </button>
+            <br />
+            <br />
+            <button
+              onClick={() =>
+                eventEmitter.emit('HURT', {
+                  data: JSON.stringify({
+                    bounty: '1'
+                  })
+                })
+              }
+            >
+              HURT
             </button>
           </div>
           <div id={styles.bounties}>
