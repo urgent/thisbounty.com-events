@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from 'react'
 import eventEmitter from '../utilities/eventEmitter'
 import socket from '../utilities/socket'
+import localForage from 'localforage'
 import { create } from './Lead/create.effect'
 import { filter } from './Lead/filter.effect'
 import styles from './Lead/styles.module.scss'
@@ -26,7 +27,6 @@ Find bounty id.
  */
 
 export interface LeadbarProps {
-  leads: Record<string, LeadProps[]>
   bounty: string
 }
 
@@ -44,7 +44,7 @@ let _bookmark: (lead: MessageEvent) => void
 
 export function Leadbar (props: LeadbarProps): React.ReactElement {
   const [leads, setLeads] = useState(
-    Object.assign({ '1': [], '2': [], '3': [], '4': [] }, props.leads)
+    Object.assign({ '1': [], '2': [], '3': [], '4': [] })
   )
   const [bounty, setBounty] = useState(props.bounty)
 
@@ -53,6 +53,7 @@ export function Leadbar (props: LeadbarProps): React.ReactElement {
     _create = create(leads[bounty])(deps)
 
     _filter = filter(deps)
+
     _bookmark = event => console.log(event)
     socket.onmessage = _create
     eventEmitter.on('NEW_LEAD', _create)
@@ -65,7 +66,18 @@ export function Leadbar (props: LeadbarProps): React.ReactElement {
       eventEmitter.off(`BOOKMARK_LEAD`, _bookmark)
       eventEmitter.off(`CLICK_BOUNTY`, _filter)
     }
-  }, [leads])
+  }, [leads, bounty])
+
+  useEffect(() => {
+    // collision between reading local storage, and events ?
+    void (async () =>
+      setLeads(
+        Object.assign(
+          { '1': [], '2': [], '3': [], '4': [] },
+          await localForage.getItem(`leads`)
+        )
+      ))()
+  }, [])
 
   return (
     <div id={styles.leadbar}>

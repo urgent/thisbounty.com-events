@@ -158,13 +158,7 @@ diezDs.attach((ds: DesignLanguage) => {
           </div>
         </div>
       </div>
-      <Leadbar
-        bounty={'1'}
-        leads={{
-          '1': [{ suit: 'H', number: 'K' }],
-          '2': [{ suit: 'D', number: 9 }]
-        }}
-      />
+      <Leadbar bounty={'1'} />
     </DSContext.Provider>,
     document.getElementById('root')
   )
