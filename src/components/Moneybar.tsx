@@ -4,15 +4,40 @@ import eventEmitter from '../utilities/eventEmitter'
 export interface MoneybarProps {
   max: number
   money: number
+  bounty: string
 }
+
+let _pay: (lead: MessageEvent) => void
+let _spend: (lead: MessageEvent) => void
 
 export const Moneybar = (props: MoneybarProps): React.ReactElement => {
   const [money, setMoney] = useState(props.money)
   const [max, setMaxMoney] = useState(props.max)
 
   useEffect(() => {
-    // eventEmitter.on('your-event', () => setMoney(3))
-  })
+    _pay = (event: MessageEvent) => {
+      const data = JSON.parse(event.data)
+      if (data.bounty == props.bounty) {
+        setMoney(Math.min(money + 1, max))
+      }
+    }
+
+    _spend = (event: MessageEvent) => {
+      const data = JSON.parse(event.data)
+      if (data.bounty == props.bounty) {
+        setMoney(Math.max(money - 1, 0))
+      }
+    }
+
+    eventEmitter.on('PAY', _pay)
+    eventEmitter.on('SPEND', _spend)
+
+    // remove listeners on each render
+    return () => {
+      eventEmitter.off(`PAY`, _pay)
+      eventEmitter.off(`SPEND`, _spend)
+    }
+  }, [money])
 
   return (
     <>

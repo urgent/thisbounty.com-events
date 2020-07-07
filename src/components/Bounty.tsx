@@ -28,7 +28,9 @@ export function Bounty (props: BountyProps): React.ReactElement {
       title={props.title}
       id={props.id}
       life={<Lifebar life={props.life} max={props.maxlife} bounty={props.id} />}
-      money={<Moneybar money={props.money} max={props.maxmoney} />}
+      money={
+        <Moneybar money={props.money} max={props.maxmoney} bounty={props.id} />
+      }
       programmer={
         <ProgrammerLevel percent={props.programmer} color='#000000' />
       }
