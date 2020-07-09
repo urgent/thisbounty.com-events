@@ -1,6 +1,6 @@
 import eventEmitter from '../../utilities/eventEmitter'
 import socket from '../../utilities/socket'
-import { make, action } from './read.effect';
+import { make, action } from './response.effect';
 
 const validLeads = {
     '1': [
@@ -22,7 +22,7 @@ const extraLeads = {
     ]
 }
 const validRead = {
-    event: 'READ_LEADS',
+    event: 'RESPONSE_LEADS',
     data: validLeads
 };
 const deps = { setLeads: () => { }, bounty: "1" }
@@ -40,12 +40,12 @@ test('receives websocket message and emits event', (done) => {
         done();
     }, 5000);
 
-    eventEmitter.on('READ_LEADS', () => {
+    eventEmitter.on('RESPONSE_LEADS', () => {
         spy()
     });
     socket.onopen = function (evt) {
         console.log('socket send')
-        socket.send(JSON.stringify({ event: 'READ_LEADS', data: validRead }))
+        socket.send(JSON.stringify({ event: 'RESPONSE_LEADS', data: validRead }))
     }
 })
 

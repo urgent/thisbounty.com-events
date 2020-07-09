@@ -4,7 +4,7 @@ const socket = new WebSocket(
   'wss://connect.websocket.in/v3/1?apiKey=66FzbgigXbiN77D7eYNEQBJ0F0SGGXfhGonNoNYz7IejUldW82tOUn7kT5gO'
 )
 
-export const authorize = ['NEED_LEADS', 'READ_LEADS']
+export const authorize = ['REQUEST_LEADS', 'RESPONSE_LEADS']
 
 function testWebSocket () {
   socket.onopen = function (evt: MessageEvent) {

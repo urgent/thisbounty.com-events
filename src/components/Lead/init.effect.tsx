@@ -1,10 +1,7 @@
-import socket from '../../utilities/socket'
-import { LeadProps } from '../Lead'
-import { Dependencies, Effect, contraError, exec } from './effect'
-import { filter, size } from 'fp-ts/lib/Record'
-import { task } from 'fp-ts/lib/Task'
-import { pipe } from 'fp-ts/lib/function'
+import { Dependencies } from './effect'
 import localForage from 'localforage'
+import eventEmitter from '../../utilities/eventEmitter'
+import { task } from 'fp-ts/lib/Task'
 
 export const action = async (deps: Dependencies) => {
   const storage = await localForage.getItem(`leads`)
@@ -15,14 +12,7 @@ export const action = async (deps: Dependencies) => {
   deps.setLeads(leads)
 
   // send to channel if need leads
-  const empty = pipe(
-    leads,
-    filter((leads: LeadProps[]) => leads.length < 5)
-  )
-  if (size(empty) !== 0) {
-    socket.onopen = () =>
-      socket.send(JSON.stringify({ event: 'NEED_LEADS', data: empty }))
-  }
+  eventEmitter.emit(JSON.stringify({ event: 'REQUEST_LEADS', data: leads }))
 }
 
 export const init = (deps: Dependencies) => task.of(action(deps))

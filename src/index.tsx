@@ -95,7 +95,7 @@ diezDs.attach((ds: DesignLanguage) => {
               onClick={() =>
                 socket.send(
                   JSON.stringify({
-                    event: 'READ_LEADS',
+                    event: 'RESPONSE_LEADS',
                     data: {
                       '1': [
                         { suit: 'H', number: 2 },

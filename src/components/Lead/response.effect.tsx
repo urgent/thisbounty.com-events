@@ -16,3 +16,9 @@ type Make = (leads: Record<string, LeadProps[]>) => Effect
 export const make: Make = leads => {
   return (deps: Dependencies) => task.of(action(leads)(deps))
 }
+
+export const response = (state: Record<string, LeadProps[]>) => (
+  event: MessageEvent
+) => {
+  // setLeads(Object.assign({}, leads, event))
+}
