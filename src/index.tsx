@@ -6,6 +6,7 @@ import { Bounty } from './components/Bounty'
 import { Leadbar } from './components/Lead'
 import styles from './index.module.scss'
 import eventEmitter from './utilities/eventEmitter'
+import socket from './utilities/socket'
 
 const diezDs = new Diez(DesignLanguage)
 
@@ -87,6 +88,25 @@ diezDs.attach((ds: DesignLanguage) => {
               }
             >
               SPEND
+            </button>
+            <br />
+            <br />
+            <button
+              onClick={() =>
+                socket.send(
+                  JSON.stringify({
+                    event: 'READ_LEADS',
+                    data: {
+                      '1': [
+                        { suit: 'H', number: 2 },
+                        { suit: 'H', number: 3 }
+                      ]
+                    }
+                  })
+                )
+              }
+            >
+              SEND
             </button>
           </div>
           <div id={styles.bounties}>

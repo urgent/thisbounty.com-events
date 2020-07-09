@@ -4,7 +4,7 @@ const HtmlWebpackPlugin = require('html-webpack-plugin')
 const CopyPlugin = require('copy-webpack-plugin')
 
 module.exports = {
-  mode: 'production',
+  mode: 'development',
   target: 'web',
   devtool: 'source-map',
   resolve: {

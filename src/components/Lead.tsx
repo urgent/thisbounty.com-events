@@ -1,9 +1,9 @@
 import React, { useState, useEffect } from 'react'
 import eventEmitter from '../utilities/eventEmitter'
 import socket from '../utilities/socket'
-import localForage from 'localforage'
 import { create } from './Lead/create.effect'
 import { filter } from './Lead/filter.effect'
+import { init } from './Lead/init.effect'
 import styles from './Lead/styles.module.scss'
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 import { faHeart } from '@fortawesome/free-solid-svg-icons/faHeart'
@@ -47,36 +47,36 @@ export function Leadbar (props: LeadbarProps): React.ReactElement {
     Object.assign({ '1': [], '2': [], '3': [], '4': [] })
   )
   const [bounty, setBounty] = useState(props.bounty)
+  const deps = { leads, bounty, setLeads, setBounty }
 
   useEffect(() => {
-    const deps = { leads, bounty, setLeads, setBounty }
     _create = create(leads[bounty])(deps)
-
     _filter = filter(deps)
-
     _bookmark = event => console.log(event)
-    socket.onmessage = _create
+
+    const need = (event: MessageEvent) =>
+      socket.send(JSON.stringify({ event: 'READ_LEADS', data: leads }))
+
+    const read = (event: Record<string, LeadProps[]>) =>
+      setLeads(Object.assign({}, leads, event))
+
     eventEmitter.on('NEW_LEAD', _create)
     eventEmitter.on('BOOKMARK_LEAD', _bookmark)
     eventEmitter.on('CLICK_BOUNTY', _filter)
+    eventEmitter.on('NEED_LEADS', need)
+    eventEmitter.on('READ_LEADS', read)
     // remove listeners on each render
     return () => {
-      socket.removeEventListener('NEW_LEAD', _create)
       eventEmitter.off(`NEW_LEAD`, _create)
       eventEmitter.off(`BOOKMARK_LEAD`, _bookmark)
       eventEmitter.off(`CLICK_BOUNTY`, _filter)
+      eventEmitter.off(`NEED_LEADS`, need)
+      eventEmitter.off(`READ_LEADS`, read)
     }
   }, [leads, bounty])
 
   useEffect(() => {
-    // collision between reading local storage, and events ?
-    void (async () =>
-      setLeads(
-        Object.assign(
-          { '1': [], '2': [], '3': [], '4': [] },
-          await localForage.getItem(`leads`)
-        )
-      ))()
+    init(deps)()
   }, [])
 
   return (

@@ -1,4 +1,4 @@
-import { Dependencies, Prompt, Effect, contraError, exec } from './effect'
+import { Dependencies, Effect, contraError, exec } from './effect'
 import * as t from 'io-ts'
 import { pipe, identity } from 'fp-ts/lib/function'
 import { fold, parseJSON, toError } from 'fp-ts/lib/Either'

@@ -9,9 +9,11 @@
       "request": "launch",
       "name": "Launch Chrome against localhost",
       "url": "http://localhost:8080",
-      "webRoot": "${workspaceFolder}/src",
+      "webRoot": "${workspaceFolder}",
       "sourceMaps": true,
-      "trace": true
+      "trace": true,
+      "breakOnLoad": true,
+      "runtimeArgs": ["--inspect-brk", "--runInBand"]
     },
     {
       "name": "Debug Jest Tests",
