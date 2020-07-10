@@ -34,26 +34,18 @@ afterAll(() => {
 test('receives websocket message and emits event', (done) => {
     jest.setTimeout(5500);
     let spy = jest.fn();
-
+    eventEmitter.on('RESPONSE_LEADS', spy);
+    socket.onopen = (evt) => socket.send(JSON.stringify({ event: 'RESPONSE_LEADS', data: validRead }))
     setTimeout(() => {
         expect(spy).toHaveBeenCalled();
         done();
     }, 5000);
-
-    eventEmitter.on('RESPONSE_LEADS', () => {
-        spy()
-    });
-    socket.onopen = function (evt) {
-        console.log('socket send')
-        socket.send(JSON.stringify({ event: 'RESPONSE_LEADS', data: validRead }))
-    }
 })
 
 test('make returns a function', () => {
     expect(make(validLeads)(deps)).toEqual(expect.any(Function))
 })
 
-// action sets valid leads
 test('action sets valid leads', () => {
     let state = emptyLeads
     const setLeads = update => state = update;
@@ -87,3 +79,6 @@ test('buffer captures consecutive state', (done) => {
     }, 5000);
 })
 
+test('if no leads, do not respond', () => {
+
+});

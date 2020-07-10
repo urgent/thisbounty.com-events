@@ -12,7 +12,7 @@ export const action = async (deps: Dependencies) => {
   deps.setLeads(leads)
 
   // send to channel if need leads
-  eventEmitter.emit(JSON.stringify({ event: 'REQUEST_LEADS', data: leads }))
+  eventEmitter.emit('REQUEST_LEADS', JSON.stringify({ data: leads }))
 }
 
 export const init = (deps: Dependencies) => task.of(action(deps))

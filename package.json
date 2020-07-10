@@ -4,8 +4,8 @@
   "description": "",
   "main": "webpack.config.js",
   "scripts": {
-    "test": "jest --watch",
-    "build": "npx webpack",
+    "test": "jest --watch --setupFiles dotenv/config",
+    "build": "npx webpack -r dotenv/config",
     "storybook": "start-storybook -s ./static -p 6006",
     "build-storybook": "build-storybook",
     "start:dev": "npm run build & webpack-dev-server"

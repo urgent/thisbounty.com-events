@@ -1,7 +1,13 @@
 import * as t from 'io-ts'
 import { Reader } from 'fp-ts/lib/Reader'
 import { Task } from 'fp-ts/lib/Task'
+import { IO } from 'fp-ts/lib/IO'
 import { LeadProps } from 'components/Lead'
+
+/**
+ * Shorthand type to dimension leads by bounty
+ */
+export type Leadbar = Record<string, LeadProps[]>
 
 /**
  * Cast a io-ts Lead decode error into a Node Error
@@ -22,15 +28,16 @@ export const contraError = (error: t.Errors) =>
  */
 export interface Dependencies {
   bounty: string
-  leads: Record<string, LeadProps[]>
-  setLeads: React.Dispatch<React.SetStateAction<Record<string, LeadProps[]>>>
+  leads: Leadbar
+  setLeads: React.Dispatch<React.SetStateAction<Leadbar>>
   setBounty: React.Dispatch<React.SetStateAction<string>>
+  socket: WebSocket
 }
 
 /**
  * Prompt for dependencies required to run action
  */
-export type Prompt = Reader<Dependencies, Task<void>>
+export type Prompt = Reader<Dependencies, Task<void> | IO<void>>
 
 /**
  * Effectful function

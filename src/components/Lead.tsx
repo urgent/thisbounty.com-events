@@ -1,5 +1,6 @@
 import React, { useState, useEffect } from 'react'
 import eventEmitter from '../utilities/eventEmitter'
+import socket from '../utilities/socket'
 import { create } from './Lead/create.effect'
 import { filter } from './Lead/filter.effect'
 import { init } from './Lead/init.effect'
@@ -21,10 +22,8 @@ const suit = {
 }
 
 /**
- 
-LeadbarProps passed as an array.
-Find bounty id.
-
+ * Leadbar component props
+ * Leads have bounty dimension, active lead visible
  */
 
 export interface LeadbarProps {
@@ -55,13 +54,13 @@ export function Leadbar (props: LeadbarProps): React.ReactElement {
   const [responding, setResponding] = useState(false)
   // buffer
   const [interval, setInterval] = useState(false)
-  const deps = { leads, bounty, setLeads, setBounty }
+  const deps = { leads, bounty, setLeads, setBounty, socket }
 
   useEffect(() => {
     _create = create(leads[bounty])(deps)
     _filter = filter(deps)
     _bookmark = event => console.log(event)
-    _request = request(leads)
+    _request = request(leads)(deps)
     _response = response(leads)
 
     eventEmitter.on('NEW_LEAD', _create)
