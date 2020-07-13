@@ -6,7 +6,6 @@ import { filter } from './Lead/filter.effect'
 import { init } from './Lead/init.effect'
 import { request } from './Lead/request.effect'
 import { response } from './Lead/response.effect'
-import { receive } from './Lead/receive.effect'
 import styles from './Lead/styles.module.scss'
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 import { faHeart } from '@fortawesome/free-solid-svg-icons/faHeart'
@@ -44,9 +43,6 @@ let _filter: (lead: MessageEvent) => void
 let _bookmark: (lead: MessageEvent) => void
 let _request: (lead: MessageEvent) => void
 let _response: (lead: MessageEvent) => void
-let _receive: (lead: MessageEvent) => void
-
-receive
 
 export function Leadbar (props: LeadbarProps): React.ReactElement {
   const [leads, setLeads] = useState(
@@ -65,23 +61,21 @@ export function Leadbar (props: LeadbarProps): React.ReactElement {
     _filter = filter(deps)
     _bookmark = event => console.log(event)
     _request = request(leads)(deps)
-    _response = response(leads)(deps)
-    _receive = receive(leads)
+    _response = response(leads)
 
     eventEmitter.on('NEW_LEAD', _create)
     eventEmitter.on('BOOKMARK_LEAD', _bookmark)
     eventEmitter.on('CLICK_BOUNTY', _filter)
     eventEmitter.on('REQUEST_LEADS', _request)
     eventEmitter.on('RESPONSE_LEADS', _response)
-    eventEmitter.on('RECEIVE_LEADS', _receive)
+    eventEmitter.on('RECEIVE_LEADS', _request)
     // remove listeners on each render
     return () => {
       eventEmitter.off(`NEW_LEAD`, _create)
       eventEmitter.off(`BOOKMARK_LEAD`, _bookmark)
       eventEmitter.off(`CLICK_BOUNTY`, _filter)
-      eventEmitter.off(`REQUEST_LEADS`, _request)
+      eventEmitter.off(`REQUEST_LEADS`, _sendRequest)
       eventEmitter.off(`RESPONSE_LEADS`, _response)
-      eventEmitter.off('RECEIVE_LEADS', _receive)
     }
   }, [leads, bounty])
 

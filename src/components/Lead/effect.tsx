@@ -16,7 +16,8 @@ export type Leadbar = Record<string, LeadProps[]>
 export const contraError = (error: t.Errors) =>
   Error(
     error.reduce(
-      (prev, current): string => `${prev} ${current.context}:${current.value}`,
+      (prev, current): string =>
+        `${prev} Runtime error value: ${current.value} -- `,
       ''
     )
   )

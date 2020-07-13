@@ -11,7 +11,7 @@ export const action = async (deps: Dependencies) => {
   // set leads from local storage
   deps.setLeads(leads)
 
-  // send to channel if need leads
+  // effect does not run if leads above threshold
   eventEmitter.emit('REQUEST_LEADS', JSON.stringify({ data: leads }))
 }
 

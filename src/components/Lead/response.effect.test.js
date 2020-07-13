@@ -1,84 +1,83 @@
 import eventEmitter from '../../utilities/eventEmitter'
 import socket from '../../utilities/socket'
-import { make, action } from './response.effect';
+import { action, make, response } from './response.effect';
 
-const validLeads = {
-    '1': [
-        { suit: 'H', number: 4 },
-        { suit: 'H', number: 5 }
-    ]
+const validLeads = [
+    { suit: 'H', number: 4 },
+    { suit: 'H', number: 5 },
+    { suit: 'H', number: 6 },
+    { suit: 'H', number: 7 }
+]
+
+const invalidLeads = [
+    { suit: 'Z', number: 4 },
+    { suit: 'Z', number: 5 },
+    { suit: 'H', number: 11 },
+    { suit: 'H', number: 12 }
+]
+
+const validLeadbar = {
+    '1': validLeads,
+    '2': validLeads,
+    '3': validLeads,
+    '4': validLeads
 };
-const invalidLeads = {
-    '1': [
-        { suit: 'Z', number: 0 },
-        { suit: 'X', number: 99 }
-    ]
+const invalidLeadbar = {
+    '1': invalidLeads,
+    '2': invalidLeads,
+    '3': invalidLeads,
+    '4': invalidLeads
 };
-const emptyLeads = { '1': [] }
-const extraLeads = {
-    '2': [
-        { suit: 'H', number: 4 },
-        { suit: 'H', number: 5 }
-    ]
+const emptyLeadbar = {
+    '1': [],
+    '2': [],
+    '3': [],
+    '4': []
 }
-const validRead = {
-    event: 'RESPONSE_LEADS',
-    data: validLeads
-};
-const deps = { setLeads: () => { }, bounty: "1" }
+const fewLeadbar = {
+    '1': [{ suit: 'H', number: 5 }, { suit: 'H', number: 4 }, { suit: 'H', number: 3 }],
+    '2': [{ suit: 'H', number: 4 }, { suit: 'H', number: 3 }],
+    '3': [{ suit: 'H', number: 4 }],
+    '4': []
+}
 
-afterAll(() => {
-    socket.close()
+const deps = {
+    socket: {
+        send: (message) => {
+            console.log(message)
+            throw (message);
+        }
+    }
+}
+
+test('env working', () => {
+    expect(process.env.REQUEST_LEADS_THRESHOLD).toBe("4")
+})
+
+test('make with valid leads returns a function', () => {
+    expect(make(validLeadbar)).toEqual(expect.any(Function))
+})
+
+test('make with few leads returns an error', () => {
+    expect(make(fewLeadbar)).toEqual(expect.any(Error))
 });
 
-test('receives websocket message and emits event', (done) => {
-    jest.setTimeout(5500);
-    let spy = jest.fn();
-    eventEmitter.on('RESPONSE_LEADS', spy);
-    socket.onopen = (evt) => socket.send(JSON.stringify({ event: 'RESPONSE_LEADS', data: validRead }))
-    setTimeout(() => {
-        expect(spy).toHaveBeenCalled();
-        done();
-    }, 5000);
+test('make with empty leads returns an error', () => {
+    expect(make(emptyLeadbar)).toEqual(expect.any(Error))
+});
+
+test('action emits REQUEST_LEADS', () => {
+    expect(() => action(deps)(validLeadbar)).toThrow(JSON.stringify({ event: 'RESPONSE_LEADS', data: validLeadbar }))
+});
+
+test('response with valid leads runs socket.send from reader', () => {
+    expect(response(validLeadbar)(deps)).toThrow(JSON.stringify({ event: 'RESPONSE_LEADS', data: validLeadbar }))
 })
 
-test('make returns a function', () => {
-    expect(make(validLeads)(deps)).toEqual(expect.any(Function))
-})
+test('response with few leads returns an error', () => {
+    expect(response(fewLeadbar)(deps)({ event: 'RESPONSE_LEADS', data: {} })).toEqual(expect.any(Error))
+});
 
-test('action sets valid leads', () => {
-    let state = emptyLeads
-    const setLeads = update => state = update;
-    action(validLeads)({ setLeads })
-    expect(state).toEqual(validLeads)
-})
-
-test('action does not delete valid leads', () => {
-    let state = validLeads
-    const setLeads = update => state = update;
-    action(emptyLeads)({ setLeads })
-    expect(state).toEqual(validLeads)
-})
-
-test('buffer waits before changing state', (done) => {
-    let state = emptyLeads
-    const setLeads = update => state = update;
-    action(validLeads)({ setLeads })
-    expect(state).toEqual(emptyLeads)
-})
-
-test('buffer captures consecutive state', (done) => {
-    let state = emptyLeads
-    const setLeads = update => state = update;
-    action(validLeads)({ setLeads })
-    expect(state).toEqual(emptyLeads)
-    setTimeout(() => {
-        action(extraLeads)({ setLeads })
-        expect(state).toEqual(Object.assign({}, validLeads, extraLeads))
-        done();
-    }, 5000);
-})
-
-test('if no leads, do not respond', () => {
-
+test('response with empty leads returns an error', () => {
+    expect(response(emptyLeadbar)(deps)({ event: 'RESPONSE_LEADS', data: {} })).toEqual(expect.any(Error))
 });

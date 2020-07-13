@@ -2,8 +2,8 @@ import { Leadbar, Dependencies, Effect, contraError, exec } from './effect'
 import { LeadProps } from '../Lead'
 import { io } from 'fp-ts/lib/IO'
 import { Either, left, right, fold } from 'fp-ts/lib/Either'
-import { pipe, identity } from 'fp-ts/lib/function'
 import { filter, size } from 'fp-ts/lib/Record'
+import { pipe, identity } from 'fp-ts/lib/function'
 
 /**
  * Action with effect to run on valid lead request to socket
@@ -16,8 +16,7 @@ type Action = (deps: Dependencies) => (leadbar: Leadbar) => void
  * @param {Dependencies} deps Dependencies needed to send to socket
  */
 const action: Action = deps => leadbar => {
-  deps.socket.onopen = () =>
-    deps.socket.send(JSON.stringify({ event: 'REQUEST_LEADS', data: leadbar }))
+  deps.socket.send(JSON.stringify({ event: 'REQUEST_LEADS', data: leadbar }))
 }
 
 /**
@@ -30,7 +29,7 @@ type Valid = (leadbar: Leadbar) => Either<Error, Leadbar>
  * @param {Leadbar} leadbar leads with bounty dimension
  * @returns {Either<Error, Leadbar>} Leadbar if valid, Error leadbar under threshold
  */
-const valid: Valid = leadbar => {
+const validate: Valid = leadbar => {
   const empty = pipe(
     leadbar,
     filter(
@@ -61,7 +60,8 @@ type Make = (leadbar: Leadbar) => Effect
  */
 export const make: Make = leadbar =>
   pipe(
-    valid(leadbar),
+    leadbar,
+    validate,
     fold<Error, Leadbar, Effect>(identity, leadbar => (deps: Dependencies) =>
       io.of(action(deps)(leadbar))
     )

@@ -11,9 +11,9 @@ test('isEffect returns false with an Error', () => {
     expect(isEffect(new Error())).toEqual(false)
 });
 
-test('run calls a function on Prompt input', () => {
+test('exec calls a function on Prompt input', () => {
     expect(
-        () => run(deps)((deps) => { throw ('Run!') })).toThrow()
+        () => exec(deps)((deps) => { throw ('Run!') })).toThrowError('Run!')
 });
 
 test('exec returns error if error', () => {
