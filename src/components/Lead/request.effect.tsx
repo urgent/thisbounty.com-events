@@ -1,8 +1,17 @@
-import { Leadbar, Dependencies, Effect, contraError, exec } from './effect'
+import {
+  Leadbar,
+  Dependencies,
+  Effect,
+  need,
+  under,
+  pick,
+  exec
+} from './effect'
 import { LeadProps } from '../Lead'
+import * as t from 'io-ts'
 import { io } from 'fp-ts/lib/IO'
-import { Either, left, right, fold } from 'fp-ts/lib/Either'
-import { filter, size } from 'fp-ts/lib/Record'
+import { Either, fold } from 'fp-ts/lib/Either'
+import { filter, map } from 'fp-ts/lib/Record'
 import { pipe, identity } from 'fp-ts/lib/function'
 
 /**
@@ -15,38 +24,26 @@ type Action = (deps: Dependencies) => (leadbar: Leadbar) => void
  * @param {Leadbar} leadbar existing leads so peers can check
  * @param {Dependencies} deps Dependencies needed to send to socket
  */
-const action: Action = deps => leadbar => {
+export const action: Action = deps => leadbar => {
   deps.socket.send(JSON.stringify({ event: 'REQUEST_LEADS', data: leadbar }))
 }
 
-/**
- * Validation to determine if REQUEST_LEADS should send to websocket
- */
-type Valid = (leadbar: Leadbar) => Either<Error, Leadbar>
+const _under = under(parseInt(process.env.REQUEST_LEADS_THRESHOLD))
 
 /**
  * Validate leadbar for REQUEST_LEADS websocket send
  * @param {Leadbar} leadbar leads with bounty dimension
  * @returns {Either<Error, Leadbar>} Leadbar if valid, Error leadbar under threshold
  */
-const validate: Valid = leadbar => {
-  const empty = pipe(
+const validate = (leadbar: Leadbar): Either<Error, Leadbar> =>
+  pipe(
     leadbar,
-    filter(
-      (leads: LeadProps[]) =>
-        leads.length < parseInt(process.env.REQUEST_LEADS_THRESHOLD)
+    map(pick),
+    filter(_under),
+    need(
+      `REQUEST_LEADS canceled. No bounties under threshold of ${process.env.REQUEST_LEADS_THRESHOLD} leads`
     )
   )
-  if (size(empty) === 0) {
-    return left(
-      new Error(
-        `REQUEST_LEADS canceled. No bounties under threshold of ${process.env.REQUEST_LEADS_THRESHOLD} leads`
-      )
-    )
-  } else {
-    return right(empty)
-  }
-}
 
 /**
  * Make an effectful function for REQUEST_LEADS send
@@ -70,11 +67,13 @@ export const make: Make = leadbar =>
 /**
  * Request leads from websocket
  */
-type Request = (leadbar: Leadbar) => (deps: Dependencies) => () => void
+type Request = (
+  leadbar: Leadbar
+) => (deps: Dependencies) => (event: MessageEvent) => void
 
 /**
  * Send a request to a websocket for leads
  * @param leadbar existing leads in state dimensioned by bounty
  */
-export const request: Request = leadbar => deps => () =>
+export const request: Request = leadbar => deps => message =>
   pipe(make(leadbar), exec(deps))

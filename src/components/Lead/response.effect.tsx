@@ -1,6 +1,6 @@
 import { Leadbar, Dependencies, Effect, contraError, exec } from './effect'
 import { LeadProps } from '../Lead'
-import { task } from 'fp-ts/lib/Task'
+import { io } from 'fp-ts/lib/IO'
 import { Either, left, right, fold } from 'fp-ts/lib/Either'
 import { filter, size } from 'fp-ts/lib/Record'
 import { pipe, identity } from 'fp-ts/lib/function'
@@ -47,8 +47,8 @@ function valid (leads: LeadProps[]) {
  * @returns {Either<Error, Leadbar>} Leadbar if leads over threshold, Error if under threshold
  */
 const validate: Validate = leadbar =>
-  pipe(leadbar, filter(valid), (empty: Leadbar) => {
-    if (size(empty) === 0) {
+  pipe(leadbar, filter(valid), (valid: Leadbar) => {
+    if (size(valid) === 0) {
       return left(
         new Error(
           `RESPONSE_LEADS canceled. Amount of leads in state under threshold of ${process.env.REQUEST_LEADS_THRESHOLD}`
@@ -68,7 +68,7 @@ export const make: Make = leadbar => {
     leadbar,
     validate,
     fold<Error, Leadbar, Effect>(identity, leadbar => (deps: Dependencies) =>
-      task.of(action(deps)(leadbar))
+      io.of(action(deps)(leadbar))
     )
   )
 }

@@ -66,7 +66,7 @@ export function Leadbar (props: LeadbarProps): React.ReactElement {
     _bookmark = event => console.log(event)
     _request = request(leads)(deps)
     _response = response(leads)(deps)
-    _receive = receive(leads)
+    _receive = receive(leads)(deps)
 
     eventEmitter.on('NEW_LEAD', _create)
     eventEmitter.on('BOOKMARK_LEAD', _bookmark)

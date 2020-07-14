@@ -54,21 +54,13 @@ test('env working', () => {
     expect(process.env.REQUEST_LEADS_THRESHOLD).toBe("4")
 })
 
-test('make with valid leads returns a function', () => {
-    expect(make(validLeadbar)).toEqual(expect.any(Function))
-})
-
-test('make with few leads returns an error', () => {
-    expect(make(fewLeadbar)).toEqual(expect.any(Error))
-});
-
-test('make with empty leads returns an error', () => {
-    expect(make(emptyLeadbar)).toEqual(expect.any(Error))
-});
-
 test('action emits REQUEST_LEADS', () => {
     expect(() => action(deps)(validLeadbar)).toThrow(JSON.stringify({ event: 'RESPONSE_LEADS', data: validLeadbar }))
 });
+
+test('make with valid leads returns a function', () => {
+    expect(make(validLeadbar)).toEqual(expect.any(Function))
+})
 
 test('response with valid leads runs socket.send from reader', () => {
     expect(response(validLeadbar)(deps)).toThrow(JSON.stringify({ event: 'RESPONSE_LEADS', data: validLeadbar }))

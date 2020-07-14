@@ -1,6 +1,13 @@
 import { LeadProps } from 'components/Lead'
 import localForage from 'localforage'
-import { Dependencies, Prompt, Effect, contraError, exec } from './effect'
+import {
+  Dependencies,
+  Prompt,
+  Effect,
+  Runtime,
+  contraError,
+  exec
+} from './effect'
 import * as t from 'io-ts'
 import { Either, fold, left, right, parseJSON, toError } from 'fp-ts/lib/Either'
 import { task } from 'fp-ts/lib/Task'
@@ -21,16 +28,6 @@ const action: Action = deps => async state => {
   deps.setLeads(update)
   await localForage.setItem(`leads`, update)
 }
-
-/**
- * Runtime type for a Bounty lead
- */
-export const Runtime = t.type({
-  suit: t.keyof({ C: null, D: null, H: null, S: null, X: null }),
-  number: t.union([t.keyof({ A: null, K: null, Q: null, J: null }), t.Int])
-})
-
-type Runtime = t.TypeOf<typeof Runtime>
 
 /**
  * Merge runtime with component state

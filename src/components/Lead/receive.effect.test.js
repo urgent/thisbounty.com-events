@@ -41,27 +41,8 @@ test('action sets valid leads', () => {
 test('action does not delete valid leads', () => {
     let state = validLeads
     const setLeads = update => state = update;
-    action(emptyLeads)({ setLeads })
+    action(emptyLeads)({ leads: validLeads, setLeads })
     expect(state).toEqual(validLeads)
-})
-
-test('buffer waits before changing state', (done) => {
-    let state = emptyLeads
-    const setLeads = update => state = update;
-    action(validLeads)({ setLeads })
-    expect(state).toEqual(emptyLeads)
-})
-
-test('buffer captures consecutive state', (done) => {
-    let state = emptyLeads
-    const setLeads = update => state = update;
-    action(validLeads)({ setLeads })
-    expect(state).toEqual(emptyLeads)
-    setTimeout(() => {
-        action(extraLeads)({ setLeads })
-        expect(state).toEqual(Object.assign({}, validLeads, extraLeads))
-        done();
-    }, 5000);
 })
 
 test('if no leads, do not respond', () => {
