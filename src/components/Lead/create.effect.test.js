@@ -1,4 +1,5 @@
-import { Runtime, merge, onRuntime, onMerge, make, create } from './create.effect';
+import { merge, onRuntime, onMerge, make, create } from './create.effect';
+import { Runtime } from './effect'
 import { left, right, isLeft } from 'fp-ts/lib/Either'
 
 
