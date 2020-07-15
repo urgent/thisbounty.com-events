@@ -1,5 +1,3 @@
-import eventEmitter from '../../utilities/eventEmitter'
-import socket from '../../utilities/socket'
 import { action, make, response } from './response.effect';
 
 const validLeads = [

@@ -99,12 +99,22 @@ export const need = (message: string) => (
 /**
  * Returns true if amount of leads is less than provided threshold
  *
- * @param {number} threshold Amount of leads must be less for true
+ * @param {number} threshold Amount of leads
  * @param {LeadProps[]} leads Leads to check
  * @returns {boolean} Result of leads less than threshold comparison
  */
 export const under = (threshold: number) => (leads: LeadProps[]): boolean =>
   leads.length < threshold
+
+/**
+ * Returns true if amount of leads is greater than or equal to provided threshold
+ *
+ * @param {number} threshold Amount of leads
+ * @param {LeadProps[]} leads Leads to check
+ * @returns {boolean} Result of leads greater than threshold comparison
+ */
+export const over = (threshold: number) => (leads: LeadProps[]): boolean =>
+  leads.length >= threshold
 
 /**
  * Decode Runtime data returning false on failure

@@ -1,4 +1,4 @@
-import { Leadbar, Dependencies, Effect, contraError, exec } from './effect'
+import { Leadbar, Dependencies, Effect, exec, need } from './effect'
 import { LeadProps } from '../Lead'
 import { io } from 'fp-ts/lib/IO'
 import { Either, left, right, fold } from 'fp-ts/lib/Either'
@@ -47,16 +47,13 @@ function valid (leads: LeadProps[]) {
  * @returns {Either<Error, Leadbar>} Leadbar if leads over threshold, Error if under threshold
  */
 const validate: Validate = leadbar =>
-  pipe(leadbar, filter(valid), (valid: Leadbar) => {
-    if (size(valid) === 0) {
-      return left(
-        new Error(
-          `RESPONSE_LEADS canceled. Amount of leads in state under threshold of ${process.env.REQUEST_LEADS_THRESHOLD}`
-        )
-      )
-    }
-    return right(leadbar)
-  })
+  pipe(
+    leadbar,
+    filter(valid),
+    need(
+      `RESPONSE_LEADS canceled. Amount of leads in state under threshold of ${process.env.REQUEST_LEADS_THRESHOLD}`
+    )
+  )
 
 /**
  * Make an effectual function to send RESPONSE_LEADS to websocket

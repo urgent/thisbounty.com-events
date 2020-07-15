@@ -1,4 +1,4 @@
-import { Runtime, isEffect, exec, contraError, need, under, decode, pick } from './effect'
+import { Runtime, isEffect, exec, contraError, need, over, under, decode, pick } from './effect'
 import { task } from 'fp-ts/lib/Task'
 import { pipe, identity } from 'fp-ts/lib/function'
 import { fold, left, right } from 'fp-ts/lib/Either'
@@ -48,6 +48,11 @@ test('need returns left on valid', () => {
 test('under compares to env', () => {
     expect(under(process.env.REQUEST_LEADS_THRESHOLD)(['', '', ''])).toEqual(true)
     expect(under(process.env.REQUEST_LEADS_THRESHOLD)(['', '', '', ''])).toEqual(false)
+})
+
+test('over compares to env', () => {
+    expect(over(process.env.REQUEST_LEADS_THRESHOLD)(['', '', '', ''])).toEqual(true)
+    expect(over(process.env.REQUEST_LEADS_THRESHOLD)(['', '', ''])).toEqual(false)
 })
 
 test('decode compares', () => {
