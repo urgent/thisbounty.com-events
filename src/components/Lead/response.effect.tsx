@@ -1,8 +1,7 @@
-import { Leadbar, Dependencies, Effect, exec, need } from './effect'
-import { LeadProps } from '../Lead'
+import { Leadbar, Dependencies, Effect, exec, pick, over, need } from './effect'
 import { io } from 'fp-ts/lib/IO'
-import { Either, left, right, fold } from 'fp-ts/lib/Either'
-import { filter, size } from 'fp-ts/lib/Record'
+import { Either, fold } from 'fp-ts/lib/Either'
+import { filter, map } from 'fp-ts/lib/Record'
 import { pipe, identity } from 'fp-ts/lib/function'
 
 /**
@@ -20,25 +19,12 @@ export const action: Action = deps => leadbar => {
   deps.socket.send(JSON.stringify({ event: 'RESPONSE_LEADS', data: leadbar }))
 }
 
+const _over = over(parseInt(process.env.REQUEST_LEADS_THRESHOLD))
+
 /**
  * Validates leadbar for amount of leads over threshold
  */
 type Validate = (leadbar: Leadbar) => Either<Error, Leadbar>
-
-/**
- * Checks length
- *
- * @param {LeadProps[]} leads
- * @returns
- */
-function valid (leads: LeadProps[]) {
-  return leads.length >= parseInt(process.env.REQUEST_LEADS_THRESHOLD)
-}
-
-/**
- * Make sure leads are unique to request
- * @param leadbar
- */
 
 /**
  * Validate leadbar eligibility to send to websocket for RESPONSE_LEADS
@@ -49,7 +35,8 @@ function valid (leads: LeadProps[]) {
 const validate: Validate = leadbar =>
   pipe(
     leadbar,
-    filter(valid),
+    map(pick),
+    filter(_over),
     need(
       `RESPONSE_LEADS canceled. Amount of leads in state under threshold of ${process.env.REQUEST_LEADS_THRESHOLD}`
     )
