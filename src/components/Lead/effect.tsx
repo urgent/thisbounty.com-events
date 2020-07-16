@@ -4,6 +4,7 @@ import { Task } from 'fp-ts/lib/Task'
 import { IO } from 'fp-ts/lib/IO'
 import { LeadProps } from 'components/Lead'
 import { size } from 'fp-ts/lib/Record'
+import { Eq } from 'fp-ts/lib/Eq'
 import { Either, left, right, fold } from 'fp-ts/lib/Either'
 import { pipe, identity } from 'fp-ts/lib/function'
 
@@ -135,3 +136,8 @@ export const decode = (lead: LeadProps): false | Runtime =>
  * @returns {LeadProps[]} Leads cast by decoding Runtime, with invalid leads removed
  */
 export const pick = (leads: LeadProps[]): LeadProps[] => leads.filter(decode)
+
+export const eqLead: Eq<LeadProps> = {
+  equals: (x: LeadProps, y: LeadProps) =>
+    x.suit === y.suit && x.number === y.number
+}

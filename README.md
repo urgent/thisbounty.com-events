@@ -154,7 +154,7 @@ Health earned during development. See issues for badges.
 
 1.6
 2.1
-3.22
+3.23
 4.10
 
 ### Coming Soon
