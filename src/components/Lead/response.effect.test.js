@@ -48,6 +48,8 @@ const deps = {
     }
 }
 
+const event = { event: 'RESPONSE_LEADS', data: { '1': [], '2': [], '3': [], '4': [] } }
+
 test('env working', () => {
     expect(process.env.REQUEST_LEADS_THRESHOLD).toBe("4")
 })
@@ -61,13 +63,13 @@ test('make with valid leads returns a function', () => {
 })
 
 test('response with valid leads runs socket.send from reader', () => {
-    expect(response(validLeadbar)(deps)).toThrow(JSON.stringify({ event: 'RESPONSE_LEADS', data: validLeadbar }))
+    expect(() => response(validLeadbar)(deps)(event)).toThrow(JSON.stringify({ event: 'RESPONSE_LEADS', data: validLeadbar }))
 })
 
 test('response with few leads returns an error', () => {
-    expect(response(fewLeadbar)(deps)({ event: 'RESPONSE_LEADS', data: {} })).toEqual(expect.any(Error))
+    expect(response(fewLeadbar)(deps)(event)).toEqual(expect.any(Error))
 });
 
 test('response with empty leads returns an error', () => {
-    expect(response(emptyLeadbar)(deps)({ event: 'RESPONSE_LEADS', data: {} })).toEqual(expect.any(Error))
+    expect(response(emptyLeadbar)(deps)(event)).toEqual(expect.any(Error))
 });

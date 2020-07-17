@@ -141,3 +141,37 @@ export const eqLead: Eq<LeadProps> = {
   equals: (x: LeadProps, y: LeadProps) =>
     x.suit === y.suit && x.number === y.number
 }
+
+/**
+ * Compare one lead to another, returning true if the same
+ * Curry of eqLead.equals
+ *
+ * @param {LeadProps} state lead to compare
+ * @param {LeadProps} event lead to compare
+ * @returns {boolean} Comparison result, true if the same
+ */
+const _equals = (state: LeadProps) => (event: LeadProps): boolean =>
+  eqLead.equals(state, event)
+
+/**
+ * Search an array for a lead, returning true if not found
+ *
+ * @param {LeadProps[]} event array of leads to search
+ * @param {LeadProps} state lead to search for
+ * @returns {boolean} Inverse result of search. Not found is true
+ */
+const xmatch = (event: LeadProps[]) => (state: LeadProps): boolean =>
+  event.findIndex(_equals(state)) === -1
+
+/**
+ * Filter leads array with a keyed Leadbar search
+ *
+ * @param {Leadbar} event leads to search
+ * @param {string} bounty key to search in
+ * @param {LeadProps[]} state leads to filter
+ * @returns {LeadProps[]} leads from state not in event
+ */
+export const deduplicate = (event: Leadbar) => (
+  bounty: string,
+  state: LeadProps[]
+): LeadProps[] => state.filter(xmatch(event[bounty]))

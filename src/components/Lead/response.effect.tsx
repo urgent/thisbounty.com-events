@@ -1,7 +1,16 @@
-import { Leadbar, Dependencies, Effect, exec, pick, over, need } from './effect'
+import {
+  Leadbar,
+  Dependencies,
+  Effect,
+  pick,
+  over,
+  need,
+  deduplicate,
+  exec
+} from './effect'
 import { io } from 'fp-ts/lib/IO'
 import { Either, fold } from 'fp-ts/lib/Either'
-import { filter, map } from 'fp-ts/lib/Record'
+import { filter, mapWithIndex, map } from 'fp-ts/lib/Record'
 import { pipe, identity } from 'fp-ts/lib/function'
 
 /**
@@ -15,16 +24,24 @@ type Action = (deps: Dependencies) => (leadbar: Leadbar) => void
  * @param deps
  * @returns {void}
  */
-export const action: Action = deps => leadbar => {
-  deps.socket.send(JSON.stringify({ event: 'RESPONSE_LEADS', data: leadbar }))
+export const action: Action = deps => response => {
+  deps.socket.send(JSON.stringify({ event: 'RESPONSE_LEADS', data: response }))
 }
 
+/**
+ * Returns true if amount of leads is greater than or equal to env.REQUEST_LEADS_THRESHOLD
+ *
+ * @param {LeadProps[]} leads amout of leads to check
+ * @return {boolean} result of leads to env comparison
+ */
 const _over = over(parseInt(process.env.REQUEST_LEADS_THRESHOLD))
 
 /**
  * Validates leadbar for amount of leads over threshold
  */
-type Validate = (leadbar: Leadbar) => Either<Error, Leadbar>
+type Validate = (
+  event: MessageEvent
+) => (state: Leadbar) => Either<Error, Leadbar>
 
 /**
  * Validate leadbar eligibility to send to websocket for RESPONSE_LEADS
@@ -32,10 +49,11 @@ type Validate = (leadbar: Leadbar) => Either<Error, Leadbar>
  * @param {Leadbar} leadbar leads dimensioned by bounty
  * @returns {Either<Error, Leadbar>} Leadbar if leads over threshold, Error if under threshold
  */
-const validate: Validate = leadbar =>
+const validate: Validate = event => state =>
   pipe(
-    leadbar,
+    state,
     map(pick),
+    mapWithIndex(deduplicate(event)),
     filter(_over),
     need(
       `RESPONSE_LEADS canceled. Amount of leads in state under threshold of ${process.env.REQUEST_LEADS_THRESHOLD}`
@@ -45,14 +63,14 @@ const validate: Validate = leadbar =>
 /**
  * Make an effectual function to send RESPONSE_LEADS to websocket
  */
-type Make = (leadbar: Leadbar) => Effect
+type Make = (state: Leadbar) => (event: MessageEvent) => Effect
 
-export const make: Make = leadbar => {
+export const make: Make = state => event => {
   return pipe(
-    leadbar,
-    validate,
-    fold<Error, Leadbar, Effect>(identity, leadbar => (deps: Dependencies) =>
-      io.of(action(deps)(leadbar))
+    state,
+    validate(event),
+    fold<Error, Leadbar, Effect>(identity, response => (deps: Dependencies) =>
+      io.of(action(deps)(response))
     )
   )
 }
@@ -61,6 +79,6 @@ export const make: Make = leadbar => {
  * Send leads to websocket
  * @param state
  */
-export const response = (leadbar: Leadbar) => (deps: Dependencies) => (
+export const response = (state: Leadbar) => (deps: Dependencies) => (
   event: MessageEvent
-) => pipe(make(leadbar), exec(deps))
+) => pipe(make(state)(event), exec(deps))
