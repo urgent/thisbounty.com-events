@@ -53,7 +53,7 @@ const validate: Validate = event => state =>
   pipe(
     state,
     map(pick),
-    mapWithIndex(deduplicate(event)),
+    mapWithIndex(deduplicate(event.data)),
     filter(_over),
     need(
       `RESPONSE_LEADS canceled. Amount of leads in state under threshold of ${process.env.REQUEST_LEADS_THRESHOLD}`
