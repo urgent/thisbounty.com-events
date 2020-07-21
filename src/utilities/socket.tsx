@@ -1,4 +1,5 @@
 import eventEmitter from '../utilities/eventEmitter'
+import WebSocket from 'isomorphic-ws'
 
 const socket = new WebSocket(
   'wss://connect.websocket.in/v3/1?apiKey=66FzbgigXbiN77D7eYNEQBJ0F0SGGXfhGonNoNYz7IejUldW82tOUn7kT5gO'

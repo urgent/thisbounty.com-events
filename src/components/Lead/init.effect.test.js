@@ -1,7 +1,7 @@
 import eventEmitter from '../../utilities/eventEmitter'
 import { action, init } from './init.effect';
 
-const deps = { setLeads: () => { }, bounty: "1" }
+const deps = { setLeads: () => { }, bounty: "1", localForage: { getItem: () => { } } }
 
 test('init returns a function', () => {
     expect(init(deps)).toEqual(expect.any(Function))

@@ -1,5 +1,7 @@
 import eventEmitter from '../utilities/eventEmitter'
+import WebSocket from 'ws'
 import socket from '../utilities/socket'
+
 
 const socket2 = new WebSocket(
     'wss://connect.websocket.in/v3/1?apiKey=66FzbgigXbiN77D7eYNEQBJ0F0SGGXfhGonNoNYz7IejUldW82tOUn7kT5gO'
@@ -21,5 +23,5 @@ test('receives websocket message and emits event', (done) => {
     setTimeout(() => {
         expect(spy).toHaveBeenCalled();
         done();
-    }, 2500);
+    }, 4000);
 })

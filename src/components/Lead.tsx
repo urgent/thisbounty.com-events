@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from 'react'
 import eventEmitter from '../utilities/eventEmitter'
 import socket from '../utilities/socket'
+import localForage from 'localforage'
 import { create } from './Lead/create.effect'
 import { filter } from './Lead/filter.effect'
 import { init } from './Lead/init.effect'
@@ -58,7 +59,7 @@ export function Leadbar (props: LeadbarProps): React.ReactElement {
   const [responding, setResponding] = useState(false)
   // buffer
   const [interval, setInterval] = useState(false)
-  const deps = { leads, bounty, setLeads, setBounty, socket }
+  const deps = { leads, bounty, setLeads, setBounty, socket, localForage }
 
   useEffect(() => {
     _create = create(leads[bounty])(deps)

@@ -37,9 +37,12 @@
     "fork-ts-checker-webpack-plugin": "^4.1.6",
     "html-webpack-plugin": "^4.3.0",
     "identity-obj-proxy": "^3.0.0",
+    "isomorphic-ws": "^4.0.1",
     "jest": "^26.1.0",
+    "jest-puppeteer": "^4.4.0",
     "mini-css-extract-plugin": "^0.9.0",
     "node-sass": "^4.14.1",
+    "puppeteer": "^5.2.1",
     "react-docgen-typescript-loader": "^3.7.2",
     "react-test-renderer": "^16.13.1",
     "sass-loader": "^8.0.2",
@@ -50,7 +53,8 @@
     "webpack": "^4.43.0",
     "webpack-cli": "^3.3.12",
     "webpack-dev-server": "^3.11.0",
-    "webpack-nano": "^1.0.0"
+    "webpack-nano": "^1.0.0",
+    "ws": "^7.3.1"
   },
   "dependencies": {
     "@fortawesome/fontawesome-svg-core": "^1.2.30",
@@ -65,19 +69,5 @@
     "localforage": "^1.7.4",
     "react": "^16.13.1",
     "react-dom": "^16.13.1"
-  },
-  "jest": {
-    "moduleNameMapper": {
-      "\\.(jpg|jpeg|png|gif|eot|otf|webp|svg|ttf|woff|woff2|mp4|webm|wav|mp3|m4a|aac|oga)$": "<rootDir>/__mocks__/fileMock.js",
-      "\\.(css|less|scss)$": "identity-obj-proxy"
-    },
-    "ignorePattern": "node_modules",
-    "testPathIgnorePatterns": [
-      "/node_modules/"
-    ],
-    "coveragePathIgnorePatterns": [
-      "node_modules",
-      "dist"
-    ]
   }
 }

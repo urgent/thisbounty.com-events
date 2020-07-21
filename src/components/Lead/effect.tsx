@@ -7,6 +7,7 @@ import { size } from 'fp-ts/lib/Record'
 import { Eq } from 'fp-ts/lib/Eq'
 import { Either, left, right, fold } from 'fp-ts/lib/Either'
 import { pipe, identity } from 'fp-ts/lib/function'
+import localForage from 'localforage'
 
 /**
  * Shorthand type to dimension leads by bounty
@@ -34,6 +35,7 @@ export interface Dependencies {
   setLeads: React.Dispatch<React.SetStateAction<Leadbar>>
   setBounty: React.Dispatch<React.SetStateAction<string>>
   socket: WebSocket
+  localForage: typeof localForage
 }
 
 /**
