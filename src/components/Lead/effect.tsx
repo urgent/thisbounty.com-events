@@ -171,7 +171,7 @@ const xmatch = (event: LeadProps[]) => (state: LeadProps): boolean =>
  * @param {LeadProps[]} state leads to filter
  * @returns {LeadProps[]} leads from state not in event
  */
-export const deduplicate = (event: Leadbar) => (
+export const deduplicate = (state: Leadbar) => (
   bounty: string,
-  state: LeadProps[]
-): LeadProps[] => state.filter(xmatch(event[bounty]))
+  event: LeadProps[]
+): LeadProps[] => event.filter(xmatch(state[bounty]))

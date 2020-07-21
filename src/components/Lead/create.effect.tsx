@@ -9,7 +9,15 @@ import {
   exec
 } from './effect'
 import * as t from 'io-ts'
-import { Either, fold, left, right, parseJSON, toError } from 'fp-ts/lib/Either'
+import {
+  Either,
+  fold,
+  left,
+  right,
+  parseJSON,
+  Json,
+  toError
+} from 'fp-ts/lib/Either'
 import { task } from 'fp-ts/lib/Task'
 import { pipe, identity } from 'fp-ts/lib/function'
 
@@ -102,7 +110,7 @@ type Make = (state: LeadProps[]) => (event: MessageEvent) => Effect
 export const make: Make = state => event =>
   pipe(
     parseJSON<Error>(event.data, toError),
-    fold<Error, JSON, Effect>(identity, (json: JSON) =>
+    fold<Error, Json, Effect>(identity, (json: Json) =>
       pipe(
         Runtime.decode(json),
         fold<t.Errors, Runtime, Effect>(contraError, onRuntime(state))

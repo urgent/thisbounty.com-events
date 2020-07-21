@@ -1,10 +1,16 @@
+const path = require("path");
+const webpack = require('webpack');
 const DiezWebpackPlugin = require('diez-webpack-plugin')
 const MiniCssExtractPlugin = require('mini-css-extract-plugin')
 const HtmlWebpackPlugin = require('html-webpack-plugin')
 const CopyPlugin = require('copy-webpack-plugin')
+const dotenv = require('dotenv').config({
+  path: path.join(__dirname, '.env')
+});
+
 
 module.exports = {
-  mode: 'development',
+  mode: 'production',
   target: 'web',
   devtool: 'source-map',
   resolve: {
@@ -23,10 +29,19 @@ module.exports = {
       template: 'src/index.html'
     }),
     new CopyPlugin({
-      patterns: [{ from: 'static', to: 'static' }, { from: './static/favicon/' }]
+      patterns: [{ from: 'static', to: 'static' }, { from: './static/favicon/' }],
+      options: {
+        concurrency: 10,
+      }
+    }),
+    new webpack.DefinePlugin({
+      "process.env": dotenv.parsed
     }),
   ],
   watch: false,
+  watchOptions: {
+    ignored: /node_modules/
+  },
   module: {
     noParse: /node_modules\/localforage\/dist\/localforage.js/,
     rules: [
@@ -47,6 +62,7 @@ module.exports = {
       },
       {
         test: /\.(png|jpe?g|gif)$/,
+        exclude: [/.*@diez.*/],
         use: [
           {
             loader: 'file-loader',
@@ -75,7 +91,7 @@ module.exports = {
       },
       {
         test: /\.s(a|c)ss$/,
-        exclude: /\.module.(s(a|c)ss)$/,
+        exclude: [/\.module.(s(a|c)ss)$/],
         loader: [
           MiniCssExtractPlugin.loader,
           'style-loader',

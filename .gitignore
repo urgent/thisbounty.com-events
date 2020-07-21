@@ -2,3 +2,4 @@ node_modules
 diez
 dist
 storybook-static
+.env

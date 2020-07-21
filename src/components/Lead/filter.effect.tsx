@@ -1,7 +1,7 @@
 import { Dependencies, Effect, contraError, exec } from './effect'
 import * as t from 'io-ts'
 import { pipe, identity } from 'fp-ts/lib/function'
-import { fold, parseJSON, toError } from 'fp-ts/lib/Either'
+import { fold, parseJSON, Json, toError } from 'fp-ts/lib/Either'
 import { task } from 'fp-ts/lib/Task'
 
 export const Bounty = t.type({
@@ -13,7 +13,7 @@ type Bounty = t.TypeOf<typeof Bounty>
 export const make = (bounty: MessageEvent): Effect =>
   pipe(
     parseJSON(bounty.data, toError),
-    fold(identity, (json: JSON) =>
+    fold(identity, (json: Json) =>
       pipe(
         Bounty.decode(json),
         fold<t.Errors, Bounty, Effect>(

@@ -98,8 +98,10 @@ diezDs.attach((ds: DesignLanguage) => {
                     event: 'RESPONSE_LEADS',
                     data: {
                       '1': [
-                        { suit: 'H', number: 2 },
-                        { suit: 'H', number: 3 }
+                        { suit: 'H', number: 'J' },
+                        { suit: 'H', number: 'Q' },
+                        { suit: 'H', number: 'K' },
+                        { suit: 'H', number: 'A' }
                       ]
                     }
                   })

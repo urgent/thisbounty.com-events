@@ -11,16 +11,25 @@ const valid = {
 const invalid = {
     '1': [
         { suit: 'Z', number: 0 },
-        { suit: 'X', number: 99 },
+        { suit: 'Y', number: 99 },
         { suit: 'Z', number: 2 },
         { suit: 'Z', number: 3 },
     ]
 };
 const empty = { '1': [] }
 
-const few = { "1": [{ suit: 'H', number: 8 }] }
+const few = { "1": [{ suit: 'H', number: 2 }] }
 
-const deps = { setLeads: () => { }, bounty: "1" }
+const deps = { setLeads: () => { }, leads: valid, bounty: "1" }
+
+const event = {
+    '1': [
+        { suit: 'H', number: 8 },
+        { suit: 'H', number: 9 },
+        { suit: 'H', number: 10 },
+        { suit: 'H', number: 'J' }
+    ]
+}
 
 test('action sets valid leads', () => {
     let state = empty
@@ -37,20 +46,19 @@ test('action does not delete valid leads', () => {
 })
 
 test('make returns a function with valid input', () => {
-    expect(make(valid)).toEqual(expect.any(Function))
+    expect(make(valid)(event)).toEqual(expect.any(Function))
 })
 
 test('make returns an error with invalid input', () => {
-    expect(make(invalid)).toEqual(expect.any(Error))
-    expect(make(empty)).toEqual(expect.any(Error))
+    expect(make(valid)(invalid)).toEqual(expect.any(Error))
+    expect(make(valid)(empty)).toEqual(expect.any(Error))
 })
 
 test('receive returns a function with valid parameters', () => {
-    expect(receive(valid)(deps)).toEqual(expect.any(Function))
+    expect(receive(valid)(deps)(event)).toEqual(expect.any(Function))
 });
 
 test('receive sets leads', () => {
     const deps = { leads: few, setLeads: (update) => { throw (JSON.stringify(update)) } };
-    const event = { event: 'RECEIVE_LEADS', data: valid }
-    expect(() => receive(valid)(deps)(event)).toThrowError(JSON.stringify(({ "1": [...few["1"], ...valid["1"]] })))
+    expect(() => receive(valid)(deps)(event)).toThrowError(JSON.stringify(({ "1": [...few["1"], ...event["1"]], })))
 });
