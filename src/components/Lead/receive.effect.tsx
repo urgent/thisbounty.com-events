@@ -11,7 +11,7 @@ import {
 } from './effect'
 import { LeadProps } from 'components/Lead'
 import { io } from 'fp-ts/lib/IO'
-import { Either, fold, parseJSON, Json, toError } from 'fp-ts/lib/Either'
+import { Either, fold } from 'fp-ts/lib/Either'
 import { filter, map, mapWithIndex } from 'fp-ts/lib/Record'
 import { uniq } from 'fp-ts/lib/Array'
 import { pipe, identity } from 'fp-ts/lib/function'
@@ -32,8 +32,6 @@ export const action = (leadbar: Leadbar) => (deps: Dependencies) => {
     let result = uniq<LeadProps>(eqLead)(update)
     return result
   }
-  // need to adjust for
-
   const update = pipe(deps.leads, mapWithIndex(assign))
   deps.setLeads(update)
 }
