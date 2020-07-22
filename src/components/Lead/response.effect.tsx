@@ -50,10 +50,15 @@ type Validate = (
  * @returns {Either<Error, Leadbar>} Leadbar if leads over threshold, Error if under threshold
  */
 const validate: Validate = event => state =>
+  // need to invert params. Check local state before sending in response, check response in receive
   pipe(
     state,
     map(pick),
-    mapWithIndex(deduplicate(event.data)),
+    mapWithIndex(
+      deduplicate(
+        Object.assign({ '1': [], '2': [], '3': [], '4': [] } as Leadbar, event)
+      )
+    ),
     filter(_over),
     need(
       `RESPONSE_LEADS canceled. Amount of leads in state under threshold of ${process.env.REQUEST_LEADS_THRESHOLD}`

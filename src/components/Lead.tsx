@@ -82,7 +82,7 @@ export function Leadbar (props: LeadbarProps): React.ReactElement {
   }, [leads, bounty])
 
   useEffect(() => {
-    //init(deps)()
+    init(deps)()
   }, [])
 
   return (

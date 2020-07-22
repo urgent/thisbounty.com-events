@@ -48,7 +48,7 @@ const deps = {
     }
 }
 
-const event = { event: 'RESPONSE_LEADS', data: { '1': [], '2': [], '3': [], '4': [] } }
+const event = { '1': [], '2': [], '3': [], '4': [] }
 
 test('env working', () => {
     expect(process.env.REQUEST_LEADS_THRESHOLD).toBe("4")
