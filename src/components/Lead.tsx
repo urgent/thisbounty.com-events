@@ -54,11 +54,6 @@ export function Leadbar (props: LeadbarProps): React.ReactElement {
     Object.assign({ '1': [], '2': [], '3': [], '4': [] })
   )
   const [bounty, setBounty] = useState(props.bounty)
-  // flags for websocket
-  const [requesting, setRequesting] = useState(false)
-  const [responding, setResponding] = useState(false)
-  // buffer
-  const [interval, setInterval] = useState(false)
   const deps = { leads, bounty, setLeads, setBounty, socket, localForage }
 
   useEffect(() => {
@@ -87,7 +82,7 @@ export function Leadbar (props: LeadbarProps): React.ReactElement {
   }, [leads, bounty])
 
   useEffect(() => {
-    init(deps)()
+    //init(deps)()
   }, [])
 
   return (
