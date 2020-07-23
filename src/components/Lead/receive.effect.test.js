@@ -31,17 +31,17 @@ const event = {
     ]
 }
 
-test('action sets valid leads', () => {
+test('action sets valid leads', async () => {
     let state = empty
     const setLeads = update => state = update;
-    action(valid)({ leads: valid, setLeads })
+    await action(valid)({ leads: valid, setLeads, localForage: { setItem: () => { } } })
     expect(state).toEqual(valid)
 })
 
-test('action does not delete valid leads', () => {
+test('action does not delete valid leads', async () => {
     let state = valid
     const setLeads = update => state = update;
-    action(few)({ leads: valid, setLeads })
+    await action(few)({ leads: valid, setLeads, localForage: { setItem: () => { } } })
     expect(state).toEqual({ '1': [...valid['1'], ...few['1']] })
 })
 
@@ -58,7 +58,9 @@ test('receive returns a function with valid parameters', () => {
     expect(receive(valid)(deps)(event)).toEqual(expect.any(Function))
 });
 
-test('receive sets leads', () => {
-    const deps = { leads: few, setLeads: (update) => { throw (JSON.stringify(update)) } };
-    expect(() => receive(valid)(deps)(event)).toThrowError(JSON.stringify(({ "1": [...few["1"], ...event["1"]], })))
+test('receive sets leads', async () => {
+    let leads = {}
+    const deps = { leads: few, setLeads: (update) => { leads = update }, localForage: { setItem: () => { } } };
+    await receive(valid)(deps)(event)
+    expect(leads).toEqual({ "1": [...few["1"], ...event["1"]], })
 });

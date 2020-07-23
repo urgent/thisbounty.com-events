@@ -10,7 +10,7 @@ import {
   eqLead
 } from './effect'
 import { LeadProps } from 'components/Lead'
-import { io } from 'fp-ts/lib/IO'
+import { task } from 'fp-ts/lib/Task'
 import { Either, fold } from 'fp-ts/lib/Either'
 import { filter, map, mapWithIndex } from 'fp-ts/lib/Record'
 import { uniq } from 'fp-ts/lib/Array'
@@ -24,7 +24,7 @@ import { pipe, identity } from 'fp-ts/lib/function'
  *
  * @return {void} runs effect
  */
-export const action = (leadbar: Leadbar) => (deps: Dependencies) => {
+export const action = (leadbar: Leadbar) => async (deps: Dependencies) => {
   leadbar = Object.assign({ '1': [], '2': [], '3': [], '4': [] }, leadbar)
 
   const assign = (bounty: string, leads: LeadProps[]): LeadProps[] => {
@@ -33,6 +33,7 @@ export const action = (leadbar: Leadbar) => (deps: Dependencies) => {
     return result
   }
   const update = pipe(deps.leads, mapWithIndex(assign))
+  await deps.localForage.setItem(`leads`, update)
   deps.setLeads(update)
 }
 
@@ -64,7 +65,7 @@ export const make: Make = leadbar => event =>
     event,
     validate(leadbar),
     fold<Error, Leadbar, Effect>(identity, leadbar => (deps: Dependencies) =>
-      io.of(action(leadbar)(deps))
+      task.of(action(leadbar)(deps))
     )
   )
 

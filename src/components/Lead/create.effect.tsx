@@ -1,5 +1,4 @@
 import { LeadProps } from 'components/Lead'
-import localForage from 'localforage'
 import {
   Dependencies,
   Prompt,
@@ -34,7 +33,7 @@ export type Action = (deps: Dependencies) => (state: LeadProps[]) => void
 const action: Action = deps => async state => {
   const update = Object.assign({}, deps.leads, { [deps['bounty']]: state })
   deps.setLeads(update)
-  await localForage.setItem(`leads`, update)
+  await deps.localForage.setItem(`leads`, update)
 }
 
 /**
