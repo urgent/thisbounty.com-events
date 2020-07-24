@@ -44,12 +44,14 @@ export const codex = {
  */
 export interface Dependencies {
   bounty: string
+  setBounty: React.Dispatch<React.SetStateAction<string>>
   state: Codex
   setState: React.Dispatch<React.SetStateAction<Codex>>
-  setBounty: React.Dispatch<React.SetStateAction<string>>
   socket: WebSocket
   localForage: typeof localForage
   eventEmitter: EventEmitter
+  codec: Codec
+  eq: EqCodec
 }
 
 /**
