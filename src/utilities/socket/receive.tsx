@@ -25,10 +25,8 @@ import { Eq } from 'fp-ts/lib/Eq'
  *
  * @return {void} runs effect
  */
-export const action = (eq: Eq<Codec>) => (state: Codex) => (
-  valid: Codex
-) => async (deps: Dependencies) => {
-  const update = pipe(state, mapWithIndex(assign(eq)(valid)))
+export const action = (valid: Codex) => async (deps: Dependencies) => {
+  const update = pipe(deps.state, mapWithIndex(assign(deps.eq)(valid)))
   await deps.localForage.setItem(`leads`, update)
   deps.setState(update)
 }
@@ -36,19 +34,17 @@ export const action = (eq: Eq<Codec>) => (state: Codex) => (
 const _over = over(parseInt(process.env.REQUEST_LEADS_THRESHOLD))
 
 type Validate = (
-  codec: Codec
-) => (
-  eq: Eq<Codec>
-) => (state: Codex) => (event: MessageEvent) => Either<Error, Codex>
+  deps: Dependencies
+) => (event: MessageEvent) => Either<Error, Codex>
 /**
  * Remove empty or invalid leads
  */
-const validate: Validate = codec => eq => state => event =>
+const validate: Validate = deps => event =>
   pipe(
     event,
     codex.of,
-    pipe(pick(codec), map),
-    pipe(deduplicate(eq)(state), mapWithIndex),
+    pipe(pick(deps.codec), map),
+    pipe(deduplicate(deps.eq)(deps.state), mapWithIndex),
     filter(_over),
     need(
       `RECEIVE_LEADS canceled. No bounties over threshold of ${process.env.REQUEST_LEADS_THRESHOLD} leads`
@@ -58,24 +54,17 @@ const validate: Validate = codec => eq => state => event =>
 /**
  * Make an effectual function from a runtime message
  */
-type Make = (
-  codec: Codec
-) => (eq: Eq<Codec>) => (state: Codex) => (event: MessageEvent) => Effect
-export const make: Make = codec => eq => state => event =>
+type Make = (deps: Dependencies) => (event: MessageEvent) => Effect
+export const make: Make = deps => event =>
   pipe(
     event,
-    validate(codec)(eq)(state),
+    validate(deps),
     fold<Error, Codex, Effect>(
       identity,
-      (valid: Codex) => (deps: Dependencies) =>
-        task.of(action(eq)(state)(valid)(deps))
+      (valid: Codex) => (deps: Dependencies) => task.of(action(valid)(deps))
     )
   )
 
-type Receive = (
-  codec: Codec
-) => (
-  eq: Eq<Codec>
-) => (state: Codex) => (deps: Dependencies) => (event: MessageEvent) => Effect
-export const receive: Receive = codec => eq => state => deps => event =>
-  pipe(make(codec)(eq)(state)(event), exec(deps))
+type Receive = (deps: Dependencies) => (event: MessageEvent) => Effect
+export const receive: Receive = deps => event =>
+  pipe(make(deps)(event), exec(deps))
