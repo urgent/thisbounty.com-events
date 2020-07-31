@@ -1,25 +1,27 @@
-import { make, action, receive } from './receive';
+import { decodeWith, unique, receive } from './receive';
 import * as t from 'io-ts'
+import { sequenceT } from 'fp-ts/lib/Apply'
+import { Either, right, left, fold } from 'fp-ts/lib/Either'
+import { sequence } from 'fp-ts/lib/Record'
+import { pipe, identity } from 'fp-ts/lib/function'
 
-const valid = {
-    '1': [
-        { suit: 'H', number: 4 },
-        { suit: 'H', number: 5 },
-        { suit: 'H', number: 6 },
-        { suit: 'H', number: 7 }
+const valid = [
+    { suit: 'H', number: 4 },
+    { suit: 'H', number: 5 },
+    { suit: 'H', number: 6 },
+    { suit: 'H', number: 7 }
+]
+const invalid =
+    [
+        { suit: 'ZZ', number: 1, bounty: '1' },
+        { suit: 'Y', number: 99, bounty: '1' },
+        { suit: 'Zb', number: 2, bounty: '1' },
+        { suit: 'Za', number: 3, bounty: '1' },
     ]
-};
-const invalid = {
-    '1': [
-        { suit: 'Z', number: 0 },
-        { suit: 'Y', number: 99 },
-        { suit: 'Z', number: 2 },
-        { suit: 'Z', number: 3 },
-    ]
-};
-const empty = { '1': [] }
 
-const few = { "1": [{ suit: 'H', number: 2 }] }
+const empty = []
+
+const few = [{ suit: 'H', number: 2 }]
 
 export const Lead = t.type({
     suit: t.keyof({ C: null, D: null, H: null, S: null, X: null }),
@@ -41,48 +43,42 @@ const deps = {
 }
 
 const event = {
-    data: {
-        '1': [
-            { suit: 'H', number: 8 },
-            { suit: 'H', number: 9 },
-            { suit: 'H', number: 10 },
-            { suit: 'H', number: 'J' }
-        ]
-    }
+    data: [
+        { suit: 'H', number: 8, bounty: '1' },
+        { suit: 'H', number: 9, bounty: '1' },
+        { suit: 'H', number: 10, bounty: '1' },
+        { suit: 'H', number: 'J', bounty: '1' }
+    ]
 }
 
-
-
-test('action sets valid leads', async () => {
-    deps.state = empty
-    deps.setState = update => deps.state = update;
-    await action(valid)(deps)
-    expect(deps.state).toEqual(valid)
+test('decodeWith decodes Lead', async () => {
+    expect(await decodeWith(deps.codec)(valid[0])).toEqual(right(valid[0]))
 })
 
-test('action does not delete valid leads', async () => {
-    deps.state = valid
-    deps.setState = update => deps.state = update;
-    await action(few)(deps)
-    expect(deps.state).toEqual({ '1': [...valid['1'], ...few['1']] })
+test('decodeWith returns error on invalid', async () => {
+    expect(await decodeWith(deps.codec)(invalid[0])).toEqual(left(new Error('Invalid value "ZZ" supplied to : { suit: "C" | "D" | "H" | "S" | "X", number: ("A" | "K" | "Q" | "J" | Int) }/suit: "C" | "D" | "H" | "S" | "X"')))
 })
 
-test('make returns a function with valid input', () => {
-    expect(make(deps)(event)).toEqual(expect.any(Function))
+test('unique finds unique leads', async () => {
+    expect(await unique(deps.eq)(valid)(event.data[0])).toEqual(right(event.data[0]))
 })
 
-test('make returns an error with invalid input', () => {
-    expect(make(deps)(invalid)).toEqual(expect.any(Error))
-    expect(make(deps)(empty)).toEqual(expect.any(Error))
+test('unique returns error on duplicate lead', async () => {
+    expect(await unique(deps.eq)(valid)(valid[0])).toEqual(left(new Error(`Event ${JSON.stringify(valid[0])} already exists in state`)))
 })
 
-test('receive returns a function with valid parameters', () => {
-    expect(receive(deps)(event)).toEqual(expect.any(Function))
-});
+test('receive catches errors', async () => {
+    const unit = pipe(
+        await receive(valid)(invalid)(),
+        fold(identity, identity)
+    )
+    expect(unit.errors.length).toEqual(4)
+})
 
-test('receive sets leads', async () => {
-    deps.state = valid
-    deps.setState = (update) => { deps.state = update }
-    await receive(deps)(event)
-    expect(deps.state).toEqual({ "1": [...valid["1"], ...event.data["1"]], })
-});
+test('receive works', async () => {
+    const unit = pipe(
+        await receive(valid)(event.data)(),
+        fold(identity, identity)
+    )
+    expect(unit.leads).toEqual(event.data)
+})

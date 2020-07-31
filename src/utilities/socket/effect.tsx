@@ -19,9 +19,7 @@ Need input for
 
 export type Decodable = object
 
-export interface Codec {
-  decode: (runtime: Decodable) => Either<t.Errors, Codec>
-}
+export type Codec = t.TypeC<any>
 
 export interface EqCodec {
   equals: (x: Codec, y: Codec) => boolean
