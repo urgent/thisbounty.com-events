@@ -1,8 +1,6 @@
 import { decodeWith, unique, receive } from './receive';
 import * as t from 'io-ts'
-import { sequenceT } from 'fp-ts/lib/Apply'
-import { Either, right, left, fold } from 'fp-ts/lib/Either'
-import { sequence } from 'fp-ts/lib/Record'
+import { right, left, fold } from 'fp-ts/lib/Either'
 import { pipe, identity } from 'fp-ts/lib/function'
 
 const valid = [
@@ -52,11 +50,11 @@ const event = {
 }
 
 test('decodeWith decodes Lead', async () => {
-    expect(await decodeWith(deps.codec)(valid[0])).toEqual(right(valid[0]))
+    expect(await decodeWith(deps.decoder)(valid[0])).toEqual(right(valid[0]))
 })
 
 test('decodeWith returns error on invalid', async () => {
-    expect(await decodeWith(deps.codec)(invalid[0])).toEqual(left(new Error('Invalid value "ZZ" supplied to : { suit: "C" | "D" | "H" | "S" | "X", number: ("A" | "K" | "Q" | "J" | Int) }/suit: "C" | "D" | "H" | "S" | "X"')))
+    expect(await decodeWith(deps.decoder)(invalid[0])).toEqual(left(new Error('Invalid value "ZZ" supplied to : { suit: "C" | "D" | "H" | "S" | "X", number: ("A" | "K" | "Q" | "J" | Int) }/suit: "C" | "D" | "H" | "S" | "X"')))
 })
 
 test('unique finds unique leads', async () => {
