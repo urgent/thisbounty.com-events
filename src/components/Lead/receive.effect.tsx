@@ -6,8 +6,7 @@ import {
   need,
   over,
   pick,
-  deduplicate,
-  eqLead
+  deduplicate
 } from './effect'
 import { LeadProps } from 'components/Lead'
 import { task } from 'fp-ts/lib/Task'
@@ -15,6 +14,8 @@ import { Either, fold } from 'fp-ts/lib/Either'
 import { filter, map, mapWithIndex } from 'fp-ts/lib/Record'
 import { uniq } from 'fp-ts/lib/Array'
 import { pipe, identity } from 'fp-ts/lib/function'
+import * as t from 'io-ts'
+import { Eq } from 'fp-ts/lib/Eq'
 
 /**
  * Add leads from websocket to state
@@ -72,3 +73,15 @@ export const make: Make = leadbar => event =>
 export const receive = (state: Leadbar) => (deps: Dependencies) => (
   event: MessageEvent
 ) => pipe(make(state)(event), exec(deps))
+
+export const Lead = t.type({
+  suit: t.keyof({ C: null, D: null, H: null, S: null, X: null }),
+  number: t.union([t.keyof({ A: null, K: null, Q: null, J: null }), t.number]),
+  bounty: t.keyof({ 1: null, 2: null, 3: null, 4: null })
+})
+
+export type Lead = t.TypeOf<typeof Lead>
+
+export const eqLead: Eq<Lead> = {
+  equals: (x: Lead, y: Lead) => x.suit === y.suit && x.number === y.number
+}

@@ -37,7 +37,7 @@ const deps = {
     bounty: "1",
     state: valid,
     setState: () => { },
-    codec: Lead,
+    decoder: Lead,
     eq: eqLead,
     localForage: { setItem: () => { } }
 }
@@ -69,7 +69,7 @@ test('unique returns error on duplicate lead', async () => {
 
 test('receive catches errors', async () => {
     const unit = pipe(
-        await receive(valid)(invalid)(),
+        await receive(deps.decoder)(deps.eq)(valid)(invalid)(),
         fold(identity, identity)
     )
     expect(unit.errors.length).toEqual(4)
@@ -77,7 +77,7 @@ test('receive catches errors', async () => {
 
 test('receive works', async () => {
     const unit = pipe(
-        await receive(valid)(event.data)(),
+        await receive(deps.decoder)(deps.eq)(valid)(event.data)(),
         fold(identity, identity)
     )
     expect(unit.leads).toEqual(event.data)
