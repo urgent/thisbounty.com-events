@@ -1,6 +1,6 @@
-import { decodeWith, unique, receive } from './receive';
+import { decodeWith, deduplicate, receive, parse } from './receive';
 import * as t from 'io-ts'
-import { right, left, fold } from 'fp-ts/lib/Either'
+import * as E from 'fp-ts/lib/Either'
 import { pipe, identity } from 'fp-ts/lib/function'
 
 const valid = [
@@ -50,33 +50,43 @@ const event = {
 }
 
 test('decodeWith decodes Lead', async () => {
-    expect(await decodeWith(deps.decoder)(valid[0])).toEqual(right(valid[0]))
+    const unit = await decodeWith(deps.decoder)(valid[0]);
+    expect(E.isRight(unit)).toBeTruthy()
 })
 
 test('decodeWith returns error on invalid', async () => {
-    expect(await decodeWith(deps.decoder)(invalid[0])).toEqual(left(new Error('Invalid value "ZZ" supplied to : { suit: "C" | "D" | "H" | "S" | "X", number: ("A" | "K" | "Q" | "J" | Int) }/suit: "C" | "D" | "H" | "S" | "X"')))
+    const unit = await decodeWith(deps.decoder)(invalid[0])
+    expect(E.isLeft(unit)).toBeTruthy()
 })
 
-test('unique finds unique leads', async () => {
-    expect(await unique(deps.eq)(valid)(event.data[0])).toEqual(right(event.data[0]))
+test('deduplicate finds unique leads', async () => {
+    const unit = await deduplicate(deps.eq)(valid)(event.data[0]);
+    expect(E.isRight(unit)).toBeTruthy()
 })
 
-test('unique returns error on duplicate lead', async () => {
-    expect(await unique(deps.eq)(valid)(valid[0])).toEqual(left(new Error(`Event ${JSON.stringify(valid[0])} already exists in state`)))
+test('deduplicate returns error on duplicate lead', async () => {
+    const unit = await deduplicate(deps.eq)(valid)(valid[0]);
+    expect(E.isLeft(unit)).toBeTruthy()
+})
+
+test('parse catches errors', async () => {
+    const unit = await parse(invalid)(deps)
+    expect(unit.errors.length).toBe(4)
+    expect(unit.valid.length).toBe(0)
+})
+
+test('parse validates', async () => {
+    const unit = await parse(event.data)(deps)
+    expect(unit.errors.length).toBe(0)
+    expect(unit.valid.length).toBe(4)
 })
 
 test('receive catches errors', async () => {
-    const unit = pipe(
-        await receive(deps.decoder)(deps.eq)(valid)(invalid)(),
-        fold(identity, identity)
-    )
-    expect(unit.errors.length).toEqual(4)
+    const unit = await receive(invalid)(deps)()
+    expect(E.isLeft(unit)).toBeTruthy()
 })
 
 test('receive works', async () => {
-    const unit = pipe(
-        await receive(deps.decoder)(deps.eq)(valid)(event.data)(),
-        fold(identity, identity)
-    )
-    expect(unit.leads).toEqual(event.data)
+    const unit = await receive(event.data)(deps)()
+    expect(E.isRight(unit)).toBeTruthy()
 })
