@@ -4,20 +4,23 @@ import { pipe } from 'fp-ts/lib/function'
 import { Dependencies, Result, parse } from './utilities'
 
 /**
- * Receive data from peer and return effects to run
+ * Respond to peer request for data
  *
  * @export
  * @template A
- * @param {A[]} data event data received
+ * @param {A[]} data peer data sent with request
  * @returns {Reader<Dependencies<A>, TE.TaskEither<Error, Result<A>>>} Dependecies Reader for effects to run
  */
-export function receive<A> (
+export function respond<A> (
   data: A[]
 ): Reader<Dependencies<A>, TE.TaskEither<Error, Result<A>>> {
   return pipe(
     ask<Dependencies<A>>(),
     // allows the Reader from action to use Dependencies for parse
-    chain((deps: Dependencies<A>) => action<A>(parse(data)(deps)))
+    chain((deps: Dependencies<A>) =>
+      // switch state and event data. Responding with state
+      action<A>(parse(deps.state)(Object.assign({}, deps, { state: data })))
+    )
   )
 }
 
@@ -36,13 +39,14 @@ export function action<A> (
     if (result.valid.length === 0) {
       return TE.left(new Error(String(result.errors)))
     } else {
-      return TE.right(
-        void (async () => {
-          await deps.localForage.setItem(`leads`, result.valid)
-          deps.setState(result.valid)
-          return result
-        })()
-      )
+      return TE.right(send(deps, result))
     }
   }
+}
+
+export function send<A> (deps: Dependencies<A>, result: Result<A>) {
+  deps.socket.send(
+    JSON.stringify({ event: 'RESPONSE_LEADS', data: result.valid })
+  )
+  return result
 }

@@ -154,7 +154,7 @@ export function validate<A> (decoder: t.Decoder<unknown, A>) {
 }
 
 /**
- * Parse event data
+ * Parse event data for runtime check and state uniqueness
  *
  * @template A
  * @param {A[]} data event data to parse
