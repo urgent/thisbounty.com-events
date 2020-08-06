@@ -182,3 +182,15 @@ export function parse<A> (data: A[]): Reader<Dependencies<A>, Result<A>> {
       )
     )
 }
+
+export function over<A> (data: A[]) {
+  if (data.length >= parseInt(process.env.REQUEST_LEADS_THRESHOLD)) {
+    return E.right(data)
+  } else {
+    return E.left(
+      new Error(
+        `REQUEST_LEADS_THRESHOLD of ${process.env.REQUEST_LEADS_THRESHOLD}`
+      )
+    )
+  }
+}

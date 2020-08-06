@@ -25,7 +25,7 @@ export function respond<A> (
 }
 
 /**
- * Run effectful actions
+ * Return effectful actions, or list of errors if no valid data
  *
  * @export
  * @template A

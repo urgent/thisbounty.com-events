@@ -13,7 +13,7 @@ describe('Leads', () => {
     });
 
     it('should accept leads"', async () => {
-        jest.setTimeout(7000);
+        jest.setTimeout(7500);
         // no lead exists
         const prior = await page.$x("//button[text()='J']");
         expect(prior.length).toEqual(0);

@@ -1,29 +1,60 @@
-import { action, make, request } from './request.effect'
+import { request } from './request';
+import * as t from 'io-ts'
+import * as E from 'fp-ts/lib/Either'
 
+const valid = [
+    { suit: 'H', number: 4 },
+    { suit: 'H', number: 5 },
+    { suit: 'H', number: 6 },
+    { suit: 'H', number: 7 }
+]
+const invalid =
+    [
+        { suit: 'ZZ', number: 1, bounty: '1' },
+        { suit: 'Y', number: 99, bounty: '1' },
+        { suit: 'Zb', number: 2, bounty: '1' },
+        { suit: 'Za', number: 3, bounty: '1' },
+    ]
 
-const full = [{ suit: 'H', number: 2 }, { suit: 'H', number: 3 }, { suit: 'H', number: 4 }, { suit: 'H', number: 5 }]
-const valid = { "1": [{ suit: 'H', number: 2 }], "2": [{ suit: 'H', number: 2 }], "3": [], "4": [] };
-const invalid = { "1": full, "2": full, "3": full, "4": full };
-const deps = {
-    socket: {
-        send: (message) => {
-            throw (message);
-        }
-    }
+const empty = []
+
+const few = [{ suit: 'H', number: 2 }]
+
+const Lead = t.type({
+    suit: t.keyof({ C: null, D: null, H: null, S: null, X: null }),
+    number: t.union([t.keyof({ A: null, K: null, Q: null, J: null }), t.Int])
+})
+
+const eqLead = {
+    equals: (x, y) =>
+        x.suit === y.suit && x.number === y.number
 }
 
-test('action sends to websocket', () => {
-    expect(() => action(deps)(valid)).toThrowError(JSON.stringify({ event: 'REQUEST_LEADS', data: valid }))
+const deps = {
+    bounty: "1",
+    state: valid,
+    setState: () => { },
+    decoder: Lead,
+    eq: eqLead,
+    localForage: { setItem: () => { } },
+    socket: { send: () => { } }
+}
+
+const event = {
+    data: [
+        { suit: 'H', number: 8, bounty: '1' },
+        { suit: 'H', number: 9, bounty: '1' },
+        { suit: 'H', number: 10, bounty: '1' },
+        { suit: 'H', number: 'J', bounty: '1' }
+    ]
+}
+
+test('request catches errors', async () => {
+    // too few leads to send
+    const unit = await request(Object.assign({}, deps, { state: few }))()
+    expect(E.isLeft(unit)).toBeTruthy()
 })
-
-test('make returns function with valid input', () => {
-    expect(make(valid)).toEqual(expect.any(Function))
+test('request works', async () => {
+    const unit = await request(deps)()
+    expect(E.isRight(unit)).toBeTruthy()
 })
-
-test('make returns error with invalid input', () => {
-    expect(make(invalid)).toEqual(expect.any(Error))
-});
-
-test('request sends to websocket', () => {
-    expect(() => request(valid)(deps)({ event: 'REQUEST_LEADS', data: {} })).toThrowError(JSON.stringify({ event: 'REQUEST_LEADS', data: valid }))
-});
