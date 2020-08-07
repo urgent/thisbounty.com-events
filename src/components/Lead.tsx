@@ -5,9 +5,12 @@ import localForage from 'localforage'
 import { create } from './Lead/create.effect'
 import { filter } from './Lead/filter.effect'
 import { init } from './Lead/init.effect'
-import { request } from './Lead/request.effect'
-import { response } from './Lead/response.effect'
-import { receive } from './Lead/receive.effect'
+import * as TE from 'fp-ts/lib/TaskEither'
+import { request } from '../utilities/socket/request'
+import { respond } from '../utilities/socket/respond'
+import { receive } from '../utilities/socket/receive'
+import { pipe, flow } from 'fp-ts/lib/function'
+import * as t from 'io-ts'
 import styles from './Lead/styles.module.scss'
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 import { faHeart } from '@fortawesome/free-solid-svg-icons/faHeart'
@@ -43,46 +46,66 @@ export interface LeadProps {
 let _create: (lead: MessageEvent) => void
 let _filter: (lead: MessageEvent) => void
 let _bookmark: (lead: MessageEvent) => void
-let _request: (lead: MessageEvent) => void
-let _response: (lead: MessageEvent) => void
-let _receive: (lead: MessageEvent) => void
 
-receive
+const decoder = t.type({
+  suit: t.keyof({ C: null, D: null, H: null, S: null, X: null }),
+  number: t.union([t.keyof({ A: null, K: null, Q: null, J: null }), t.Int])
+})
+
+type Codec = t.TypeOf<typeof decoder>
+
+const eq = {
+  equals: (x: Codec, y: Codec) => x.suit === y.suit && x.number === y.number
+}
 
 export function Leadbar (props: LeadbarProps): React.ReactElement {
   const [leads, setLeads] = useState(
     Object.assign({ '1': [], '2': [], '3': [], '4': [] })
   )
   const [bounty, setBounty] = useState(props.bounty)
-  const deps = { leads, bounty, setLeads, setBounty, socket, localForage }
+
+  const deps = Object.assign(
+    {},
+    { bounty, setBounty, socket, localForage, decoder, eq },
+    { state: leads, setState: setLeads }
+  )
 
   useEffect(() => {
     _create = create(leads[bounty])(deps)
     _filter = filter(deps)
     _bookmark = event => console.log(event)
-    _request = request(leads)(deps)
-    _response = response(leads)(deps)
-    _receive = receive(leads)(deps)
 
     eventEmitter.on('NEW_LEAD', _create)
     eventEmitter.on('BOOKMARK_LEAD', _bookmark)
     eventEmitter.on('CLICK_BOUNTY', _filter)
-    eventEmitter.on('REQUEST_LEADS', _request)
-    eventEmitter.on('RESPONSE_LEADS', _response)
-    eventEmitter.on('RECEIVE_LEADS', _receive)
+    eventEmitter.on('REQUEST_LEADS', request(deps))
+    eventEmitter.on(
+      'RESPOND_LEADS',
+      flow(respond, reader => reader(deps)())
+    )
+    eventEmitter.on(
+      'RECEIVE_LEADS',
+      flow(receive, reader => reader(deps)())
+    )
     // remove listeners on each render
     return () => {
       eventEmitter.off(`NEW_LEAD`, _create)
       eventEmitter.off(`BOOKMARK_LEAD`, _bookmark)
       eventEmitter.off(`CLICK_BOUNTY`, _filter)
-      eventEmitter.off(`REQUEST_LEADS`, _request)
-      eventEmitter.off(`RESPONSE_LEADS`, _response)
-      eventEmitter.off('RECEIVE_LEADS', _receive)
+      eventEmitter.off(`REQUEST_LEADS`, request(deps))
+      eventEmitter.off(
+        `RESPOND_LEADS`,
+        flow(respond, reader => reader(deps)())
+      )
+      eventEmitter.off(
+        'RECEIVE_LEADS',
+        flow(receive, reader => reader(deps)())
+      )
     }
   }, [leads, bounty])
 
   useEffect(() => {
-    init(deps)()
+    //init(deps)()
   }, [])
 
   return (

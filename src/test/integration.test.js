@@ -13,7 +13,7 @@ describe('Leads', () => {
     });
 
     it('should accept leads"', async () => {
-        jest.setTimeout(7500);
+        jest.setTimeout(8000);
         // no lead exists
         const prior = await page.$x("//button[text()='J']");
         expect(prior.length).toEqual(0);
@@ -21,7 +21,7 @@ describe('Leads', () => {
         setTimeout(() => {
             socket.send(
                 JSON.stringify({
-                    event: 'RESPONSE_LEADS',
+                    event: 'RESPOND_LEADS',
                     data: {
                         '1': [
                             { suit: 'H', number: 'J' },

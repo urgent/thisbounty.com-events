@@ -17,7 +17,7 @@ test('receives websocket message and emits event', (done) => {
         spy()
     });
     setTimeout(() => {
-        socket2.send(JSON.stringify({ event: 'RESPONSE_LEADS', data: {} }))
+        socket2.send(JSON.stringify({ event: 'RESPOND_LEADS', data: {} }))
     }, 1000)
 
     setTimeout(() => {

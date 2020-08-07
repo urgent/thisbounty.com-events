@@ -14,18 +14,18 @@ import { filter, mapWithIndex, map } from 'fp-ts/lib/Record'
 import { pipe, identity } from 'fp-ts/lib/function'
 
 /**
- * Action with effect to send for valid RESPONSE_LEADS
+ * Action with effect to send for valid RESPOND_LEADS
  */
 type Action = (deps: Dependencies) => (leadbar: Leadbar) => void
 
 /**
- * Send RESPONSE_LEADS with data to websocket
+ * Send RESPOND_LEADS with data to websocket
  *
  * @param deps
  * @returns {void}
  */
 export const action: Action = deps => response => {
-  deps.socket.send(JSON.stringify({ event: 'RESPONSE_LEADS', data: response }))
+  deps.socket.send(JSON.stringify({ event: 'RESPOND_LEADS', data: response }))
 }
 
 /**
@@ -44,7 +44,7 @@ type Validate = (
 ) => (state: Leadbar) => Either<Error, Leadbar>
 
 /**
- * Validate leadbar eligibility to send to websocket for RESPONSE_LEADS
+ * Validate leadbar eligibility to send to websocket for RESPOND_LEADS
  *
  * @param {Leadbar} leadbar leads dimensioned by bounty
  * @returns {Either<Error, Leadbar>} Leadbar if leads over threshold, Error if under threshold
@@ -61,12 +61,12 @@ const validate: Validate = event => state =>
     ),
     filter(_over),
     need(
-      `RESPONSE_LEADS canceled. Amount of leads in state under threshold of ${process.env.REQUEST_LEADS_THRESHOLD}`
+      `RESPOND_LEADS canceled. Amount of leads in state under threshold of ${process.env.REQUEST_LEADS_THRESHOLD}`
     )
   )
 
 /**
- * Make an effectual function to send RESPONSE_LEADS to websocket
+ * Make an effectual function to send RESPOND_LEADS to websocket
  */
 type Make = (state: Leadbar) => (event: MessageEvent) => Effect
 

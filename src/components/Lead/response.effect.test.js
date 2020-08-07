@@ -55,7 +55,7 @@ test('env working', () => {
 })
 
 test('action emits REQUEST_LEADS', () => {
-    expect(() => action(deps)(validLeadbar)).toThrow(JSON.stringify({ event: 'RESPONSE_LEADS', data: validLeadbar }))
+    expect(() => action(deps)(validLeadbar)).toThrow(JSON.stringify({ event: 'RESPOND_LEADS', data: validLeadbar }))
 });
 
 test('make with valid leads returns a function', () => {
@@ -63,7 +63,7 @@ test('make with valid leads returns a function', () => {
 })
 
 test('response with valid leads runs socket.send from reader', () => {
-    expect(() => response(validLeadbar)(deps)(event)).toThrow(JSON.stringify({ event: 'RESPONSE_LEADS', data: validLeadbar }))
+    expect(() => response(validLeadbar)(deps)(event)).toThrow(JSON.stringify({ event: 'RESPOND_LEADS', data: validLeadbar }))
 })
 
 test('response with few leads returns an error', () => {

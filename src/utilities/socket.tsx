@@ -6,8 +6,8 @@ const socket = new WebSocket(
 )
 
 export const action: Record<string, string> = {
-  REQUEST_LEADS: 'RESPONSE_LEADS',
-  RESPONSE_LEADS: 'RECEIVE_LEADS'
+  REQUEST_LEADS: 'RESPOND_LEADS',
+  RESPOND_LEADS: 'RECEIVE_LEADS'
 }
 
 socket.onopen = function (evt: MessageEvent) {

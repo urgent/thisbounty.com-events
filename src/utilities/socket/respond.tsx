@@ -46,7 +46,7 @@ export function action<A> (
 
 export function send<A> (deps: Dependencies<A>, result: Result<A>) {
   deps.socket.send(
-    JSON.stringify({ event: 'RESPONSE_LEADS', data: result.valid })
+    JSON.stringify({ event: 'RESPOND_LEADS', data: result.valid })
   )
   return result
 }
