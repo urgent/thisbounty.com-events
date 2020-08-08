@@ -4,13 +4,12 @@ import socket from '../utilities/socket'
 import localForage from 'localforage'
 import { create } from './Lead/create.effect'
 import { filter } from './Lead/filter.effect'
-import { init } from './Lead/init.effect'
-import * as TE from 'fp-ts/lib/TaskEither'
 import { request } from '../utilities/socket/request'
 import { respond } from '../utilities/socket/respond'
 import { receive } from '../utilities/socket/receive'
-import { pipe, flow } from 'fp-ts/lib/function'
-import * as t from 'io-ts'
+import { flow } from 'fp-ts/lib/function'
+import { Lead as decoder } from '../utilities/security/codec'
+import { Lead as eq } from '../utilities/security/eq'
 import styles from './Lead/styles.module.scss'
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 import { faHeart } from '@fortawesome/free-solid-svg-icons/faHeart'
@@ -46,17 +45,6 @@ export interface LeadProps {
 let _create: (lead: MessageEvent) => void
 let _filter: (lead: MessageEvent) => void
 let _bookmark: (lead: MessageEvent) => void
-
-const decoder = t.type({
-  suit: t.keyof({ C: null, D: null, H: null, S: null, X: null }),
-  number: t.union([t.keyof({ A: null, K: null, Q: null, J: null }), t.Int])
-})
-
-type Codec = t.TypeOf<typeof decoder>
-
-const eq = {
-  equals: (x: Codec, y: Codec) => x.suit === y.suit && x.number === y.number
-}
 
 export function Leadbar (props: LeadbarProps): React.ReactElement {
   const [leads, setLeads] = useState(
