@@ -26,13 +26,13 @@ diezDs.attach((ds: DesignLanguage) => {
           <div id={styles.navbar}>
             <button
               onClick={() =>
-                eventEmitter.emit('NEW_LEAD', {
-                  data: JSON.stringify({
+                eventEmitter.emit('NEW_LEAD', [
+                  {
                     suit: 'H',
                     number: Math.floor(Math.random() * 10) + 1,
                     bounty: '1'
-                  })
-                })
+                  }
+                ])
               }
             >
               LEAD

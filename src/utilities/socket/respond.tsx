@@ -1,7 +1,7 @@
 import * as TE from 'fp-ts/lib/TaskEither'
 import { Reader, ask, chain } from 'fp-ts/lib/Reader'
 import { pipe } from 'fp-ts/lib/function'
-import { Dependencies, Result, parse } from './utilities'
+import { Dependencies, Result, parse } from '../utilities'
 
 /**
  * Respond to peer request for data
@@ -19,7 +19,7 @@ export function respond<A> (
     // allows the Reader from action to use Dependencies for parse
     chain((deps: Dependencies<A>) =>
       // switch state and event data. Responding with state
-      action<A>(parse(deps.state)(Object.assign({}, deps, { state: data })))
+      action<A>(parse(Object.assign({}, deps, { state: data }))(deps.state))
     )
   )
 }

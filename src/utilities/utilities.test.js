@@ -69,13 +69,13 @@ test('deduplicate returns error on duplicate lead', async () => {
 })
 
 test('parse catches errors', async () => {
-    const unit = await parse(invalid)(deps)
+    const unit = await parse(deps)(invalid)
     expect(unit.errors.length).toBe(4)
     expect(unit.valid.length).toBe(0)
 })
 
 test('parse validates', async () => {
-    const unit = await parse(event.data)(deps)
+    const unit = await parse(deps)(event.data)
     expect(unit.errors.length).toBe(0)
     expect(unit.valid.length).toBe(4)
 })

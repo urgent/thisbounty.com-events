@@ -1,6 +1,6 @@
 import * as TE from 'fp-ts/lib/TaskEither'
 import { Reader, ask, chain } from 'fp-ts/lib/Reader'
-import { pipe } from 'fp-ts/lib/function'
+import { pipe, flow } from 'fp-ts/lib/function'
 import { Dependencies, Result, parse } from '../utilities'
 
 /**
@@ -11,14 +11,8 @@ import { Dependencies, Result, parse } from '../utilities'
  * @param {A[]} data event data received
  * @returns {Reader<Dependencies<A>, TE.TaskEither<Error, Result<A>>>} Dependecies Reader for effects to run
  */
-export function receive<A> (
-  data: A[]
-): Reader<Dependencies<A>, TE.TaskEither<Error, Result<A>>> {
-  return pipe(
-    ask<Dependencies<A>>(),
-    // allows the Reader from action to use Dependencies for parse
-    chain((deps: Dependencies<A>) => action<A>(parse(deps)(data)))
-  )
+export function create<A> (deps: Dependencies<A>) {
+  return flow(parse(deps), action<A>(deps))
 }
 
 /**
@@ -29,18 +23,16 @@ export function receive<A> (
  * @param {Result<A>} result Parsed event data
  * @returns {Reader<Dependencies<A>, TE.TaskEither<Error, Result<A>>>} Dependecies Reader for effects to run
  */
-export function action<A> (
-  result: Result<A>
-): Reader<Dependencies<A>, TE.TaskEither<Error, Result<A>>> {
-  return (deps: Dependencies<A>) => {
+export function action<A> (deps: Dependencies<A>) {
+  return (result: Result<A>) => {
     if (result.valid.length === 0) {
       return TE.left(new Error(String(result.errors)))
     } else {
       return TE.right(
         void (async () => {
           const update = [...deps.state, ...result.valid]
-          await deps.localForage.setItem(`leads`, update)
           deps.setState(update)
+          await deps.localForage.setItem(`leads`, update)
           return result
         })()
       )

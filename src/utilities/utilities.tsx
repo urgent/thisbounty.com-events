@@ -160,27 +160,25 @@ export function validate<A> (decoder: t.Decoder<unknown, A>) {
  * @param {A[]} data event data to parse
  * @returns {Reader<Dependencies<A>, Result<A>>} Dependecies Reader for parsed data
  */
-export function parse<A> (data: A[]): Reader<Dependencies<A>, Result<A>> {
-  return (deps: Dependencies<A>) =>
-    pipe(
-      data,
-      reduce({ errors: [], valid: [] }, (acc: Result<A>, item) =>
-        pipe(
-          item,
-          validate(deps.decoder)(deps.eq)(deps.state),
-          E.fold<Error, A, Result<A>>(
-            (e: Error) => {
-              acc['errors'] = [...acc['errors'], e]
-              return acc
-            },
-            (item: A) => {
-              acc['valid'] = [...acc['valid'], item]
-              return acc
-            }
-          )
+export function parse<A> (deps: Dependencies<A>) {
+  return flow(
+    reduce({ errors: [], valid: [] }, (acc: Result<A>, item) =>
+      pipe(
+        item,
+        validate(deps.decoder)(deps.eq)(deps.state),
+        E.fold<Error, A, Result<A>>(
+          (e: Error) => {
+            acc['errors'] = [...acc['errors'], e]
+            return acc
+          },
+          (item: A) => {
+            acc['valid'] = [...acc['valid'], item]
+            return acc
+          }
         )
       )
     )
+  )
 }
 
 export function over<A> (data: A[]) {

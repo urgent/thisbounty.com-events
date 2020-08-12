@@ -1,8 +1,7 @@
 import * as TE from 'fp-ts/lib/TaskEither'
 import * as E from 'fp-ts/lib/Either'
-import { Reader, ask, chain } from 'fp-ts/lib/Reader'
 import { pipe, flow } from 'fp-ts/lib/function'
-import { Dependencies, over } from './utilities'
+import { Dependencies, over } from '../utilities'
 
 /**
  * Request data from peers
