@@ -49,11 +49,11 @@ const event = {
 }
 
 test('receive catches errors', async () => {
-    const unit = await receive(invalid)(deps)()
+    const unit = await receive(deps)(invalid)()
     expect(E.isLeft(unit)).toBeTruthy()
 })
 
 test('receive works', async () => {
-    const unit = await receive(event.data)(deps)()
+    const unit = await receive(deps)(event.data)()
     expect(E.isRight(unit)).toBeTruthy()
 })

@@ -55,14 +55,14 @@ test('env working', () => {
 
 test('respond catches errors', async () => {
     // duplicate, deps.state = valid
-    const unit = await respond(valid)(deps)()
+    const unit = await respond(deps)(valid)()
     expect(E.isLeft(unit)).toBeTruthy()
 })
 test('respond works', async () => {
-    const unit = await respond(event.data)(deps)()
+    const unit = await respond(deps)(event.data)()
     expect(E.isRight(unit)).toBeTruthy()
 })
 test('respond sends state', async () => {
-    const unit = await respond(event.data)(deps)()
+    const unit = await respond(deps)(event.data)()
     expect(unit).toEqual(E.right({ errors: [], valid: valid }))
 })
