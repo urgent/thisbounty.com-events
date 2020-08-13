@@ -1,10 +1,8 @@
-import * as TE from 'fp-ts/lib/TaskEither'
-import { Reader, ask, chain } from 'fp-ts/lib/Reader'
-import { pipe, flow } from 'fp-ts/lib/function'
-import { Dependencies, Result, parse } from '../utilities'
+import { flow } from 'fp-ts/lib/function'
+import { Dependencies, parse, action, update } from '../utilities'
 
 /**
- * Receive data from peer and return effects to run
+ * Create new lead
  *
  * @export
  * @template A
@@ -12,30 +10,5 @@ import { Dependencies, Result, parse } from '../utilities'
  * @returns {Reader<Dependencies<A>, TE.TaskEither<Error, Result<A>>>} Dependecies Reader for effects to run
  */
 export function create<A> (deps: Dependencies<A>) {
-  return flow(parse(deps), action<A>(deps))
-}
-
-/**
- * Run effectful actions
- *
- * @export
- * @template A
- * @param {Result<A>} result Parsed event data
- * @returns {Reader<Dependencies<A>, TE.TaskEither<Error, Result<A>>>} Dependecies Reader for effects to run
- */
-export function action<A> (deps: Dependencies<A>) {
-  return (result: Result<A>) => {
-    if (result.valid.length === 0) {
-      return TE.left(new Error(String(result.errors)))
-    } else {
-      return TE.right(
-        void (async () => {
-          const update = [...deps.state, ...result.valid]
-          deps.setState(update)
-          await deps.localForage.setItem(`leads`, update)
-          return result
-        })()
-      )
-    }
-  }
+  return flow(parse(deps), action<A>(update(deps)))
 }

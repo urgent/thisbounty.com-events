@@ -1,8 +1,9 @@
 import * as E from 'fp-ts/lib/Either'
 import * as O from 'fp-ts/lib/Option'
+import * as TE from 'fp-ts/lib/TaskEither'
+import * as A from 'fp-ts/lib/Array'
+import { Separated } from 'fp-ts/lib/Compactable'
 import * as t from 'io-ts'
-import { findFirst, reduce } from 'fp-ts/lib/Array'
-import { Reader } from 'fp-ts/lib/Reader'
 import { sequenceT } from 'fp-ts/lib/Apply'
 import { NonEmptyArray, getSemigroup } from 'fp-ts/lib/NonEmptyArray'
 import { Eq } from 'fp-ts/lib/Eq'
@@ -18,11 +19,6 @@ export interface Dependencies<A> {
   decoder: t.Decoder<unknown, A>
   eq: Eq<A>
 }
-
-/**
- * Struct of errors and valid
- */
-export type Result<A> = { errors: Error[]; valid: A[] }
 
 /**
  * Decode an object with provided codec
@@ -54,7 +50,7 @@ export function deduplicate<A> (eq: Eq<A>) {
   return (collection: A[]) => (item: A): E.Either<Error, A> =>
     pipe(
       collection,
-      findFirst((_collection: A) => eq.equals(_collection, item)),
+      A.findFirst((_collection: A) => eq.equals(_collection, item)),
       O.fold(
         () => E.right(item),
         item =>
@@ -158,30 +154,21 @@ export function validate<A> (decoder: t.Decoder<unknown, A>) {
  *
  * @template A
  * @param {A[]} data event data to parse
- * @returns {Reader<Dependencies<A>, Result<A>>} Dependecies Reader for parsed data
+ * @returns {Separated<Error[], A[]>} Dependecies Reader for parsed data
  */
 export function parse<A> (deps: Dependencies<A>) {
-  return flow(
-    reduce({ errors: [], valid: [] }, (acc: Result<A>, item) =>
-      pipe(
-        item,
-        validate(deps.decoder)(deps.eq)(deps.state),
-        E.fold<Error, A, Result<A>>(
-          (e: Error) => {
-            acc['errors'] = [...acc['errors'], e]
-            return acc
-          },
-          (item: A) => {
-            acc['valid'] = [...acc['valid'], item]
-            return acc
-          }
-        )
-      )
-    )
-  )
+  return flow(A.map(validate(deps.decoder)(deps.eq)(deps.state)), A.separate)
 }
 
-export function over<A> (data: A[]) {
+/**
+ * Check for array length against env
+ *
+ * @export
+ * @template A
+ * @param {A[]} data array to check
+ * @returns {Either<Error, A[]>} result of array length check, original input if valid
+ */
+export function over<A> (data: A[]): E.Either<Error, A[]> {
   if (data.length >= parseInt(process.env.REQUEST_LEADS_THRESHOLD)) {
     return E.right(data)
   } else {
@@ -191,4 +178,54 @@ export function over<A> (data: A[]) {
       )
     )
   }
+}
+
+type Effect<A> = (a: A[]) => void
+
+/**
+ * Run effectful action
+ *
+ * @export
+ * @template A
+ * @param {Effect} effect Effect to run
+ * @param {Result<A>} result Effect parameter with at least one valid property
+ * @returns {TaskEither<Error, A[]>} Task of effectful action
+ */
+export function action<A> (effect: Effect<A>) {
+  return (
+    data: Separated<Error[], A[]>
+  ): TE.TaskEither<Error, Separated<Error[], A[]>> => {
+    if (data.right.length === 0) {
+      return TE.left(new Error(String(data.left)))
+    } else {
+      effect(data.right)
+      return TE.right(data)
+    }
+  }
+}
+
+/**
+ * Merge, save to state and local storage
+ *
+ * @export
+ * @template A
+ * @param {Dependencies<A>} deps Dependencies required to run effect
+ * @returns {void}
+ */
+export function update<A> (deps: Dependencies<A>) {
+  return (data: A[]): void =>
+    void (async () => {
+      const update = [...deps.state, ...data]
+      await deps.localForage.setItem(`leads`, update)
+      deps.setState(update)
+      return data
+    })()
+}
+
+export function write<A> (event: string) {
+  return (data: A[]) => ({ event, data })
+}
+
+export function send<A> (deps: Dependencies<A>) {
+  return flow(JSON.stringify, deps.socket.send)
 }

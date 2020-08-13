@@ -21,15 +21,15 @@ describe('Leads', () => {
         setTimeout(() => {
             socket.send(
                 JSON.stringify({
-                    event: 'RESPOND_LEADS',
-                    data: {
-                        '1': [
-                            { suit: 'H', number: 'J' },
-                            { suit: 'H', number: 'Q' },
-                            { suit: 'H', number: 'K' },
-                            { suit: 'H', number: 'A' }
+                    event: 'RECEIVE_LEADS',
+                    data:
+                        [
+                            { suit: 'H', number: 'J', bounty: '1' },
+                            { suit: 'H', number: 'Q', bounty: '1' },
+                            { suit: 'H', number: 'K', bounty: '1' },
+                            { suit: 'H', number: 'A', bounty: '1' }
                         ]
-                    }
+
                 })
             )
         }, 1000)

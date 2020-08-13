@@ -5,10 +5,7 @@ import localForage from 'localforage'
 import { create } from '../utilities/component/create'
 import { request } from '../utilities/socket/request'
 import { respond } from '../utilities/socket/respond'
-import { receive } from '../utilities/socket/receive'
-import { flow } from 'fp-ts/lib/function'
 import { Lead as decoder } from '../utilities/security/codec'
-import { Lead as Type } from '../utilities/security/type'
 import { Lead as eq } from '../utilities/security/eq'
 import styles from './Lead/styles.module.scss'
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
@@ -16,8 +13,6 @@ import { faHeart } from '@fortawesome/free-solid-svg-icons/faHeart'
 import club from './Lead/club'
 import diamond from './Lead/diamond'
 import spade from './Lead/spade'
-import * as E from 'fp-ts/lib/Either'
-import { Dependencies, Result, parse } from '../utilities/utilities'
 
 const suit = {
   H: <FontAwesomeIcon icon={faHeart} className={styles.heart} />,
@@ -58,16 +53,14 @@ export function Leadbar (props: LeadbarProps): React.ReactElement {
 
   useEffect(() => {
     eventEmitter.on('NEW_LEAD', _create)
+    eventEmitter.on('RECEIVE_LEADS', _create)
     /*eventEmitter.on('BOOKMARK_LEAD', _bookmark)
     eventEmitter.on('REQUEST_LEADS', request(deps))
     eventEmitter.on(
       'RESPOND_LEADS',
       flow(respond, reader => reader(deps)())
     )
-    eventEmitter.on(
-      'RECEIVE_LEADS',
-      flow(receive, reader => reader(deps)())
-    )*/
+    */
     // remove listeners on each render
     return () => {
       eventEmitter.off(`NEW_LEAD`, _create)
@@ -76,11 +69,8 @@ export function Leadbar (props: LeadbarProps): React.ReactElement {
       eventEmitter.off(
         `RESPOND_LEADS`,
         flow(respond, reader => reader(deps)())
-      )
-      eventEmitter.off(
-        'RECEIVE_LEADS',
-        flow(receive, reader => reader(deps)())
       )*/
+      eventEmitter.off('RECEIVE_LEADS', _create)
     }
   }, [leads, bounty])
 

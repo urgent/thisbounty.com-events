@@ -64,5 +64,5 @@ test('respond works', async () => {
 })
 test('respond sends state', async () => {
     const unit = await respond(deps)(event.data)()
-    expect(unit).toEqual(E.right({ errors: [], valid: valid }))
+    expect(unit).toEqual(E.right({ left: [], right: valid }))
 })

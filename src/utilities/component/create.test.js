@@ -49,7 +49,7 @@ const event = {
 }
 
 test('create returns errors', async () => {
-  const unit = await create(invalid)(deps)()
+  const unit = await create(deps)(invalid)()
   expect(E.isLeft(unit)).toBeTruthy()
 })
 
@@ -57,12 +57,3 @@ test('create works', async () => {
   const unit = await create(deps)(event.data)()
   expect(E.isRight(unit)).toBeTruthy()
 })
-
-/*
-
-invalid
-duplicate
-merges
-update state
-
-*/
