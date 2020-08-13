@@ -29,8 +29,7 @@ diezDs.attach((ds: DesignLanguage) => {
                 eventEmitter.emit('NEW_LEAD', [
                   {
                     suit: 'H',
-                    number: Math.floor(Math.random() * 10) + 1,
-                    bounty: '1'
+                    number: Math.floor(Math.random() * 10) + 1
                   }
                 ])
               }
@@ -43,7 +42,7 @@ diezDs.attach((ds: DesignLanguage) => {
               onClick={() =>
                 eventEmitter.emit('HEAL', {
                   data: JSON.stringify({
-                    bounty: '1'
+                    bounty: 1
                   })
                 })
               }
@@ -56,7 +55,7 @@ diezDs.attach((ds: DesignLanguage) => {
               onClick={() =>
                 eventEmitter.emit('HURT', {
                   data: JSON.stringify({
-                    bounty: '1'
+                    bounty: 1
                   })
                 })
               }
@@ -69,7 +68,7 @@ diezDs.attach((ds: DesignLanguage) => {
               onClick={() =>
                 eventEmitter.emit('PAY', {
                   data: JSON.stringify({
-                    bounty: '1'
+                    bounty: 1
                   })
                 })
               }
@@ -82,7 +81,7 @@ diezDs.attach((ds: DesignLanguage) => {
               onClick={() =>
                 eventEmitter.emit('SPEND', {
                   data: JSON.stringify({
-                    bounty: '1'
+                    bounty: 1
                   })
                 })
               }
@@ -96,14 +95,12 @@ diezDs.attach((ds: DesignLanguage) => {
                 socket.send(
                   JSON.stringify({
                     event: 'RESPOND_LEADS',
-                    data: {
-                      '1': [
-                        { suit: 'H', number: 'J' },
-                        { suit: 'H', number: 'Q' },
-                        { suit: 'H', number: 'K' },
-                        { suit: 'H', number: 'A' }
-                      ]
-                    }
+                    data: [
+                      { suit: 'H', number: 'J', bounty: 1 },
+                      { suit: 'H', number: 'Q', bounty: 1 },
+                      { suit: 'H', number: 'K', bounty: 1 },
+                      { suit: 'H', number: 'A', bounty: 1 }
+                    ]
                   })
                 )
               }
@@ -122,11 +119,7 @@ diezDs.attach((ds: DesignLanguage) => {
               maxmoney={4}
               programmer={25}
               user={1}
-              click={() =>
-                eventEmitter.emit('CLICK_BOUNTY', {
-                  data: JSON.stringify({ id: '1' })
-                })
-              }
+              click={() => eventEmitter.emit('CLICK_BOUNTY', 1)}
             />
             <Bounty
               id='2'
@@ -138,11 +131,7 @@ diezDs.attach((ds: DesignLanguage) => {
               maxmoney={4}
               programmer={25}
               user={1}
-              click={() =>
-                eventEmitter.emit('CLICK_BOUNTY', {
-                  data: JSON.stringify({ id: '2' })
-                })
-              }
+              click={() => eventEmitter.emit('CLICK_BOUNTY', 2)}
             />
             <Bounty
               id='3'
@@ -155,11 +144,7 @@ diezDs.attach((ds: DesignLanguage) => {
               maxmoney={4}
               programmer={50}
               user={1}
-              click={() =>
-                eventEmitter.emit('CLICK_BOUNTY', {
-                  data: JSON.stringify({ id: '3' })
-                })
-              }
+              click={() => eventEmitter.emit('CLICK_BOUNTY', 3)}
             />
             <Bounty
               id='4'
@@ -171,16 +156,12 @@ diezDs.attach((ds: DesignLanguage) => {
               maxmoney={4}
               programmer={25}
               user={1}
-              click={() =>
-                eventEmitter.emit('CLICK_BOUNTY', {
-                  data: JSON.stringify({ id: '4' })
-                })
-              }
+              click={() => eventEmitter.emit('CLICK_BOUNTY', 4)}
             />
           </div>
         </div>
       </div>
-      <Leadbar bounty={'1'} />
+      <Leadbar bounty={1} />
     </DSContext.Provider>,
     document.getElementById('root')
   )

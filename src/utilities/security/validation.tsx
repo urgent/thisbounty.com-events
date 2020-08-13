@@ -7,6 +7,7 @@ import { NonEmptyArray, getSemigroup } from 'fp-ts/lib/NonEmptyArray'
 import { failure } from 'io-ts/lib/PathReporter'
 import * as t from 'io-ts'
 import { Eq } from 'fp-ts/lib/Eq'
+import { Dependencies } from '../security/type'
 
 /**
  * Decode an object with provided codec
@@ -128,11 +129,9 @@ function validateV<A> (decoder: t.Decoder<unknown, A>) {
  * @param {A} item Item to validate
  * @returns {E.Either<NonEmptyArray<Error>, A>} Decoder or unique error on failure, decode result on success
  */
-export function validate<A> (decoder: t.Decoder<unknown, A>) {
-  return (eq: Eq<A>) => (state: A[]) => (item: A): E.Either<Error, A> =>
-    pipe(
-      item,
-      validateV(decoder)(eq)(state),
-      E.mapLeft((err: NonEmptyArray<Error>) => new Error(String(err)))
-    )
+export function validate<A> (deps: Dependencies<A>) {
+  return flow(
+    validateV(deps.decoder)(deps.eq)(deps.state),
+    E.mapLeft((err: NonEmptyArray<Error>) => new Error(String(err)))
+  )
 }

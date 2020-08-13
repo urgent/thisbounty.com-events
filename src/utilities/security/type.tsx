@@ -8,6 +8,7 @@ export type Lead = t.TypeOf<typeof Codec.Lead>
 export interface Dependencies<A> {
   state: A[]
   setState: React.Dispatch<React.SetStateAction<A[]>>
+  bounty: number
   socket: WebSocket
   localForage: typeof localForage
   decoder: t.Decoder<unknown, A>

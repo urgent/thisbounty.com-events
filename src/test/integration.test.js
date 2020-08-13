@@ -13,7 +13,7 @@ describe('Leads', () => {
     });
 
     it('should accept leads"', async () => {
-        jest.setTimeout(8000);
+        jest.setTimeout(8500);
         // no lead exists
         const prior = await page.$x("//button[text()='J']");
         expect(prior.length).toEqual(0);
@@ -24,10 +24,10 @@ describe('Leads', () => {
                     event: 'RESPOND_LEADS',
                     data:
                         [
-                            { suit: 'H', number: 'J', bounty: '1' },
-                            { suit: 'H', number: 'Q', bounty: '1' },
-                            { suit: 'H', number: 'K', bounty: '1' },
-                            { suit: 'H', number: 'A', bounty: '1' }
+                            { suit: 'H', number: 'J', bounty: 1 },
+                            { suit: 'H', number: 'Q', bounty: 1 },
+                            { suit: 'H', number: 'K', bounty: 1 },
+                            { suit: 'H', number: 'A', bounty: 1 }
                         ]
 
                 })

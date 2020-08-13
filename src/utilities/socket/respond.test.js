@@ -3,17 +3,17 @@ import * as t from 'io-ts'
 import * as E from 'fp-ts/lib/Either'
 
 const valid = [
-    { suit: 'H', number: 4 },
-    { suit: 'H', number: 5 },
-    { suit: 'H', number: 6 },
-    { suit: 'H', number: 7 }
+    { suit: 'H', number: 4, bounty: 1 },
+    { suit: 'H', number: 5, bounty: 1 },
+    { suit: 'H', number: 6, bounty: 1 },
+    { suit: 'H', number: 7, bounty: 1 }
 ]
 const invalid =
     [
-        { suit: 'ZZ', number: 1, bounty: '1' },
-        { suit: 'Y', number: 99, bounty: '1' },
-        { suit: 'Zb', number: 2, bounty: '1' },
-        { suit: 'Za', number: 3, bounty: '1' },
+        { suit: 'ZZ', number: 1, bounty: 1 },
+        { suit: 'Y', number: 99, bounty: 1 },
+        { suit: 'Zb', number: 2, bounty: 1 },
+        { suit: 'Za', number: 3, bounty: 1 },
     ]
 
 const empty = []
@@ -42,10 +42,10 @@ const deps = {
 
 const event = {
     data: [
-        { suit: 'H', number: 8, bounty: '1' },
-        { suit: 'H', number: 9, bounty: '1' },
-        { suit: 'H', number: 10, bounty: '1' },
-        { suit: 'H', number: 'J', bounty: '1' }
+        { suit: 'H', number: 8 },
+        { suit: 'H', number: 9 },
+        { suit: 'H', number: 10 },
+        { suit: 'H', number: 'J' }
     ]
 }
 

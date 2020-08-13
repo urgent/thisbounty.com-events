@@ -10,10 +10,10 @@ const valid = [
 ]
 const invalid =
     [
-        { suit: 'ZZ', number: 1, bounty: '1' },
-        { suit: 'Y', number: 99, bounty: '1' },
-        { suit: 'Zb', number: 2, bounty: '1' },
-        { suit: 'Za', number: 3, bounty: '1' },
+        { suit: 'ZZ', number: 1, bounty: 1 },
+        { suit: 'Y', number: 99, bounty: 1 },
+        { suit: 'Zb', number: 2, bounty: 1 },
+        { suit: 'Za', number: 3, bounty: 1 },
     ]
 
 const empty = []

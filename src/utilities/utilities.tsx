@@ -14,7 +14,9 @@ import { validate } from './security/validation'
  * @returns {Separated<Error[], A[]>} Dependecies Reader for parsed data
  */
 export function parse<A> (deps: Dependencies<A>) {
-  return flow(A.map(validate(deps.decoder)(deps.eq)(deps.state)), A.separate)
+  // need to make setBounty optional. On websocket receive
+
+  return flow(A.map(validate(deps)), A.separate)
 }
 
 /**
@@ -79,10 +81,40 @@ export function update<A> (deps: Dependencies<A>) {
     })()
 }
 
+/**
+ * Prepare data to send to websocket as an event
+ *
+ * @export
+ * @template A
+ * @param {string} event Name for event
+ * @param {string} data Event data
+ * @returns {Object} Object with event and data properties
+ */
 export function write<A> (event: string) {
   return (data: A[]) => ({ event, data })
 }
 
+/**
+ * Send object to websocket as JSON
+ *
+ * @export
+ * @template A
+ * @param {Dependencies<A>} deps Dependencies required to send to websocket
+ * @returns {void} flow to JSON.stringify
+ */
 export function send<A> (deps: Dependencies<A>) {
   return flow(JSON.stringify, deps.socket.send)
+}
+
+/**
+ * Set bounty id on data item
+ *
+ * @export
+ * @template A
+ * @param {Dependencies<A>} deps Dependenices including active bounty in state
+ * @param {Object} item Data item to set bounty
+ * @returns {Object} Updated item with bounty
+ */
+export function setBounty<A> (deps: Dependencies<A>) {
+  return A.map((item: A) => Object.assign({}, item, { bounty: deps.bounty }))
 }

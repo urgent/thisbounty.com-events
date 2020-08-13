@@ -2,7 +2,7 @@ import React, { useState, useEffect } from 'react'
 import eventEmitter from '../utilities/eventEmitter'
 import socket from '../utilities/socket'
 import localForage from 'localforage'
-import { create } from '../utilities/component/create'
+import { create, receive } from '../utilities/component/create'
 import { request } from '../utilities/socket/request'
 import { respond } from '../utilities/socket/respond'
 import { Lead as decoder } from '../utilities/security/codec'
@@ -28,7 +28,7 @@ const suit = {
  */
 
 export interface LeadbarProps {
-  bounty: string
+  bounty: number
 }
 
 /**
@@ -37,6 +37,7 @@ export interface LeadbarProps {
 export interface LeadProps {
   suit: 'C' | 'D' | 'H' | 'S' | 'X'
   number: number | 'A' | 'K' | 'Q' | 'J'
+  bounty: number
 }
 
 export function Leadbar (props: LeadbarProps): React.ReactElement {
@@ -50,13 +51,15 @@ export function Leadbar (props: LeadbarProps): React.ReactElement {
   )
 
   const _create = create(deps)
+  const _receive = receive(deps)
   const _bookmark = console.log
   const _request = request(deps)
   const _respond = respond(deps)
 
   useEffect(() => {
     eventEmitter.on('NEW_LEAD', _create)
-    eventEmitter.on('RECEIVE_LEADS', _create)
+    eventEmitter.on('RECEIVE_LEADS', _receive)
+    eventEmitter.on('CLICK_BOUNTY', setBounty)
     eventEmitter.on('BOOKMARK_LEAD', _bookmark)
     eventEmitter.on('REQUEST_LEADS', _request)
     eventEmitter.on('RESPOND_LEADS', _respond)
@@ -64,7 +67,8 @@ export function Leadbar (props: LeadbarProps): React.ReactElement {
     // remove listeners on each render
     return () => {
       eventEmitter.off(`NEW_LEAD`, _create)
-      eventEmitter.off('RECEIVE_LEADS', _create)
+      eventEmitter.off('RECEIVE_LEADS', _receive)
+      eventEmitter.off('CLICK_BOUNTY', setBounty)
       eventEmitter.off(`BOOKMARK_LEAD`, _bookmark)
       eventEmitter.off(`REQUEST_LEADS`, _request)
       eventEmitter.off(`RESPOND_LEADS`, _respond)
@@ -77,9 +81,13 @@ export function Leadbar (props: LeadbarProps): React.ReactElement {
 
   return (
     <div id={styles.leadbar}>
-      {leads.map((lead: LeadProps) => (
-        <Lead {...lead} key={`${lead.suit}${lead.number}`} />
-      ))}
+      {leads
+        .filter(lead => {
+          return lead.bounty === bounty
+        })
+        .map((lead: LeadProps) => (
+          <Lead {...lead} key={`${lead.suit}${lead.number}`} />
+        ))}
     </div>
   )
 }
