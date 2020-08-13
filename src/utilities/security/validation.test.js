@@ -1,4 +1,4 @@
-import { decodeWith, deduplicate, parse } from './utilities';
+import { decodeWith, deduplicate } from './validation';
 import * as t from 'io-ts'
 import * as E from 'fp-ts/lib/Either'
 
@@ -48,14 +48,22 @@ const event = {
     ]
 }
 
-test('parse catches errors', async () => {
-    const unit = await parse(deps)(invalid)
-    expect(unit.left.length).toBe(4)
-    expect(unit.right.length).toBe(0)
+test('decodeWith decodes Lead', async () => {
+    const unit = await decodeWith(deps.decoder)(valid[0]);
+    expect(E.isRight(unit)).toBeTruthy()
 })
 
-test('parse validates', async () => {
-    const unit = await parse(deps)(event.data)
-    expect(unit.left.length).toBe(0)
-    expect(unit.right.length).toBe(4)
+test('decodeWith returns error on invalid', async () => {
+    const unit = await decodeWith(deps.decoder)(invalid[0])
+    expect(E.isLeft(unit)).toBeTruthy()
+})
+
+test('deduplicate finds unique leads', async () => {
+    const unit = await deduplicate(deps.eq)(valid)(event.data[0]);
+    expect(E.isRight(unit)).toBeTruthy()
+})
+
+test('deduplicate returns error on duplicate lead', async () => {
+    const unit = await deduplicate(deps.eq)(valid)(valid[0]);
+    expect(E.isLeft(unit)).toBeTruthy()
 })

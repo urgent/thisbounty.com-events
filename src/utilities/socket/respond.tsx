@@ -1,5 +1,6 @@
 import { flow } from 'fp-ts/lib/function'
-import { Dependencies, parse, action, write, send } from '../utilities'
+import { parse, action, write, send } from '../utilities'
+import { Dependencies } from '../security/type'
 
 /**
  * Parse state against input, returning state
