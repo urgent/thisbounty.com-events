@@ -14,8 +14,6 @@ import { validate } from './security/validation'
  * @returns {Separated<Error[], A[]>} Dependecies Reader for parsed data
  */
 export function parse<A> (deps: Dependencies<A>) {
-  // need to make setBounty optional. On websocket receive
-
   return flow(A.map(validate(deps)), A.separate)
 }
 
