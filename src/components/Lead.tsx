@@ -50,27 +50,24 @@ export function Leadbar (props: LeadbarProps): React.ReactElement {
   )
 
   const _create = create(deps)
+  const _bookmark = console.log
+  const _request = request(deps)
+  const _respond = respond(deps)
 
   useEffect(() => {
     eventEmitter.on('NEW_LEAD', _create)
     eventEmitter.on('RECEIVE_LEADS', _create)
-    /*eventEmitter.on('BOOKMARK_LEAD', _bookmark)
-    eventEmitter.on('REQUEST_LEADS', request(deps))
-    eventEmitter.on(
-      'RESPOND_LEADS',
-      flow(respond, reader => reader(deps)())
-    )
-    */
+    eventEmitter.on('BOOKMARK_LEAD', _bookmark)
+    eventEmitter.on('REQUEST_LEADS', _request)
+    eventEmitter.on('RESPOND_LEADS', _respond)
+
     // remove listeners on each render
     return () => {
       eventEmitter.off(`NEW_LEAD`, _create)
-      /*eventEmitter.off(`BOOKMARK_LEAD`, _bookmark)
-      eventEmitter.off(`REQUEST_LEADS`, request(deps))
-      eventEmitter.off(
-        `RESPOND_LEADS`,
-        flow(respond, reader => reader(deps)())
-      )*/
       eventEmitter.off('RECEIVE_LEADS', _create)
+      eventEmitter.off(`BOOKMARK_LEAD`, _bookmark)
+      eventEmitter.off(`REQUEST_LEADS`, _request)
+      eventEmitter.off(`RESPOND_LEADS`, _respond)
     }
   }, [leads, bounty])
 
