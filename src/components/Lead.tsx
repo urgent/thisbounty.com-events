@@ -1,10 +1,10 @@
 import React, { useState, useEffect } from 'react'
 import eventEmitter from '../utilities/eventEmitter'
-import socket from '../utilities/socket'
 import localForage from 'localforage'
 import { create, receive } from '../utilities/component/create'
 import { request } from '../utilities/socket/request'
 import { respond } from '../utilities/socket/respond'
+import { init } from '../utilities/component/init'
 import { Lead as decoder } from '../utilities/security/codec'
 import { Lead as eq } from '../utilities/security/eq'
 import styles from './Lead/styles.module.scss'
@@ -13,6 +13,7 @@ import { faHeart } from '@fortawesome/free-solid-svg-icons/faHeart'
 import club from './Lead/club'
 import diamond from './Lead/diamond'
 import spade from './Lead/spade'
+import { doSend } from '../utilities/socket'
 
 const suit = {
   H: <FontAwesomeIcon icon={faHeart} className={styles.heart} />,
@@ -46,14 +47,16 @@ export function Leadbar (props: LeadbarProps): React.ReactElement {
 
   const deps = Object.assign(
     {},
-    { bounty, setBounty, socket, localForage, decoder, eq },
+    { bounty, setBounty, doSend, localForage, decoder, eq },
     { state: leads, setState: setLeads }
   )
 
   const _create = create(deps)
   const _receive = receive(deps)
   const _bookmark = console.log
-  const _request = request(deps)
+  const _request = (event: MessageEvent) => {
+    request(deps)()
+  }
   const _respond = respond(deps)
 
   useEffect(() => {
@@ -76,7 +79,7 @@ export function Leadbar (props: LeadbarProps): React.ReactElement {
   }, [leads, bounty])
 
   useEffect(() => {
-    //init(deps)()
+    init(deps)('leads')()
   }, [])
 
   return (

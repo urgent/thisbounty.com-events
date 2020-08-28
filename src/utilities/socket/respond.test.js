@@ -59,8 +59,8 @@ test('respond catches errors', async () => {
     expect(E.isLeft(unit)).toBeTruthy()
 })
 test('respond works', async () => {
-    const unit = await respond(deps)(event.data)()
-    expect(E.isRight(unit)).toBeTruthy()
+    const unit = await respond(deps)(event.data)
+    expect(unit).toBeTruthy()
 })
 test('respond sends state', async () => {
     const unit = await respond(deps)(event.data)()

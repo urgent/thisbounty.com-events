@@ -2,8 +2,10 @@ import eventEmitter from '../utilities/eventEmitter'
 import WebSocket from 'isomorphic-ws'
 
 const socket = new WebSocket(
-  'wss://connect.websocket.in/v3/1?apiKey=66FzbgigXbiN77D7eYNEQBJ0F0SGGXfhGonNoNYz7IejUldW82tOUn7kT5gO'
+  'wss://connect.websocket.in/v3/1?apiKey=4sC6D9hsMYg5zcl15Y94nXNz8KAxr8eezGglKE9FkhRLnHcokuKsgCCQKZcW'
 )
+
+let queue: Array<string> = []
 
 export const action: Record<string, string> = {
   REQUEST_LEADS: 'RESPOND_LEADS',
@@ -25,6 +27,9 @@ socket.onerror = function (evt: MessageEvent) {
 
 function onOpen (evt: MessageEvent) {
   writeToScreen('CONNECTED')
+  while (queue.length > 0) {
+    socket.send(queue.pop())
+  }
 }
 
 function onClose (evt: CloseEvent) {
@@ -32,10 +37,9 @@ function onClose (evt: CloseEvent) {
 }
 
 function onMessage (evt: MessageEvent) {
-  writeToScreen(evt.data)
   const message = JSON.parse(evt.data)
   if (Object.keys(action).includes(message.event)) {
-    eventEmitter.emit(action[message.event], message.data)
+    eventEmitter.emit(action[message.event], [...message.data])
   }
 }
 
@@ -43,9 +47,13 @@ function onError (evt: MessageEvent) {
   writeToScreen(evt.data)
 }
 
-function doSend (message: string) {
-  writeToScreen('SENT: ' + message)
-  socket.send(message)
+export function doSend (message: string) {
+  if (socket.readyState !== 1) {
+    queue = [message, ...queue]
+  } else {
+    writeToScreen('SENT: ' + message)
+    socket.send(message)
+  }
 }
 
 function writeToScreen (message: string) {

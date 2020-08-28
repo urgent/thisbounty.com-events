@@ -4,7 +4,7 @@ import socket from '../utilities/socket'
 
 
 const socket2 = new WebSocket(
-    'wss://connect.websocket.in/v3/1?apiKey=66FzbgigXbiN77D7eYNEQBJ0F0SGGXfhGonNoNYz7IejUldW82tOUn7kT5gO'
+    'wss://connect.websocket.in/v3/1?apiKey=4sC6D9hsMYg5zcl15Y94nXNz8KAxr8eezGglKE9FkhRLnHcokuKsgCCQKZcW'
 )
 
 afterAll(() => {
@@ -17,7 +17,7 @@ test('receives websocket message and emits event', (done) => {
         spy()
     });
     setTimeout(() => {
-        socket2.send(JSON.stringify({ event: 'RESPOND_LEADS', data: {} }))
+        socket2.send(JSON.stringify({ event: 'RESPOND_LEADS', data: [{}] }))
     }, 1000)
 
     setTimeout(() => {

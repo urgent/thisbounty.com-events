@@ -1,7 +1,6 @@
-import * as TE from 'fp-ts/lib/TaskEither'
-import * as E from 'fp-ts/lib/Either'
-import { pipe, flow } from 'fp-ts/lib/function'
-import { over, write, send } from '../utilities'
+import * as T from 'fp-ts/lib/Task'
+import { pipe } from 'fp-ts/lib/function'
+import { write, send } from '../utilities'
 import { Dependencies } from '../security/type'
 
 /**
@@ -10,19 +9,16 @@ import { Dependencies } from '../security/type'
  * @export
  * @template A
  * @param {A[]} data peer data sent with request
- * @returns {Reader<Dependencies<A>, TE.TaskEither<Error, Result<A>>>} Dependecies Reader for effects to run
+ * @returns {Reader<Dependencies<A>, T.Task<Result<A>>>} Dependecies Reader for effects to run
  */
-export function request<A> (deps: Dependencies<A>): TE.TaskEither<Error, void> {
-  return pipe(
-    deps.state,
-    over,
-    E.fold<Error, A[], TE.TaskEither<Error, void>>(
-      TE.left,
-      //  send(deps)
-      flow(
-        TE.right,
-        TE.chain(flow(write('REQUEST_LEADS'), send(deps), TE.right))
-      )
-    )
-  )
+export function request<A> (deps: Dependencies<A>): T.Task<void> {
+  return T.of(pipe(deps.state, write('REQUEST_LEADS'), send(deps)))
 }
+
+/*
+ under,
+    E.fold<Error, A[], TE.TaskEither<Error, () => void>>(
+      error => {
+        console.log(error)
+        return TE.left(error)
+      },*/

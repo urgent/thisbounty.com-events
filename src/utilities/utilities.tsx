@@ -31,7 +31,27 @@ export function over<A> (data: A[]): E.Either<Error, A[]> {
   } else {
     return E.left(
       new Error(
-        `REQUEST_LEADS_THRESHOLD of ${process.env.REQUEST_LEADS_THRESHOLD}`
+        `Over REQUEST_LEADS_THRESHOLD of ${process.env.REQUEST_LEADS_THRESHOLD}`
+      )
+    )
+  }
+}
+
+/**
+ * Check for array length against env
+ *
+ * @export
+ * @template A
+ * @param {A[]} data array to check
+ * @returns {Either<Error, A[]>} result of array length check, original input if valid
+ */
+export function under<A> (data: A[]): E.Either<Error, A[]> {
+  if (data.length < parseInt(process.env.REQUEST_LEADS_THRESHOLD)) {
+    return E.right(data)
+  } else {
+    return E.left(
+      new Error(
+        `Under REQUEST_LEADS_THRESHOLD of ${process.env.REQUEST_LEADS_THRESHOLD}`
       )
     )
   }
@@ -101,7 +121,8 @@ export function write<A> (event: string) {
  * @returns {void} flow to JSON.stringify
  */
 export function send<A> (deps: Dependencies<A>) {
-  return flow(JSON.stringify, deps.socket.send)
+  console.log('socket send')
+  return flow(JSON.stringify, deps.doSend)
 }
 
 /**

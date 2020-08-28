@@ -9,7 +9,7 @@ export interface Dependencies<A> {
   state: A[]
   setState: React.Dispatch<React.SetStateAction<A[]>>
   bounty: number
-  socket: WebSocket
+  doSend: (message: string) => void
   localForage: typeof localForage
   decoder: t.Decoder<unknown, A>
   eq: Eq<A>

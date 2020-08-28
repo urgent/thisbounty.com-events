@@ -1,4 +1,4 @@
-import { flow } from 'fp-ts/lib/function'
+import { flow, pipe } from 'fp-ts/lib/function'
 import { parse, action, write, send } from '../utilities'
 import { Dependencies } from '../security/type'
 
@@ -11,8 +11,11 @@ import { Dependencies } from '../security/type'
  * @returns
  */
 function inverseParse<A> (deps: Dependencies<A>) {
-  return (data: A[]) =>
-    parse(Object.assign({}, deps, { state: data }))(deps.state)
+  return (data: A[]) => {
+    console.log('data is')
+    console.log(data)
+    return parse(Object.assign({}, deps, { state: data }))(deps.state)
+  }
 }
 
 /**
@@ -26,6 +29,8 @@ function inverseParse<A> (deps: Dependencies<A>) {
 export function respond<A> (deps: Dependencies<A>) {
   return flow(
     inverseParse(deps),
-    action<A>(flow(write('RESPOND_LEADS'), send(deps)))
+    action<A>((data: A[]) => {
+      pipe(data, write('RESPOND_LEADS'), send(deps))
+    })
   )
 }

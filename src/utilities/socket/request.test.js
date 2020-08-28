@@ -30,14 +30,21 @@ const eqLead = {
         x.suit === y.suit && x.number === y.number
 }
 
+const deps = Object.assign(
+    {},
+    { bounty, setBounty, doSend, localForage, decoder, eq },
+    { state: leads, setState: setLeads }
+)
+
 const deps = {
-    bounty: "1",
+    bounty: 1,
     state: valid,
-    setState: () => { },
+    setBounty: () => { },
     decoder: Lead,
     eq: eqLead,
     localForage: { setItem: () => { } },
-    socket: { send: () => { } }
+    socket: { send: () => { } },
+    doSend: (message) => { }
 }
 
 const event = {
@@ -51,10 +58,10 @@ const event = {
 
 test('request catches errors', async () => {
     // too few leads to send
-    const unit = await request(Object.assign({}, deps, { state: few }))()
-    expect(E.isLeft(unit)).toBeTruthy()
+    const unit = await request(Object.assign({}, deps, { state: few }))
+    expect(unit).toBeTruthy()
 })
 test('request works', async () => {
-    const unit = await request(deps)()
+    const unit = await request(deps)
     expect(E.isRight(unit)).toBeTruthy()
 })
